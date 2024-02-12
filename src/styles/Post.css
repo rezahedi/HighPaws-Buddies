@@ -1,0 +1,78 @@
+.post{
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.post figure{
+  margin: 0;
+  padding: 0;
+}
+.post figure img{
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.post figure div{
+  display: flex;
+  justify-content: space-between;
+}
+.post figure p{
+  margin: 0;
+  padding: 0;
+  font-size: small;
+  font-style: italic;
+}
+.post header{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.user{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.post footer{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.post.liked figure img{
+  animation: like 0.3s;
+}
+.post.unliked figure img{
+  animation: unlike 0.3s;
+}
+
+@keyframes like{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+@keyframes unlike{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(0.9);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
