@@ -1,11 +1,17 @@
-import '@styles/Post.css'
-import { useState } from 'react'
+import '@/styles/Post.css'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Post({ post }) {
   const [liked, setLiked] = useState<number>(0)
 
+  useEffect(() => {
+    if (liked === 0) return
+
+    // TODO: Send a request to like/unlike the post
+  }, [liked])
+
   const handleLike = () => {
-    console.log('liked', liked)
     if (liked === 0) return setLiked(1)
     setLiked( -(liked) )
   }
@@ -17,10 +23,12 @@ export default function Post({ post }) {
   return (
     <article className={`post ${addLikeClass()}`}>
       <header>
-        <a className='user' href={`/${post.user.slug}`}>
-          <img src={post.user.avatar} alt={post.user.name} />
-          {post.user.name}
-        </a>
+        {post.user &&
+          <Link className='user' to={post.user.slug}>
+            <img src={post.user.avatar} alt={post.user.name} />
+            {post.user.name}
+          </Link>
+        }
         <h3>{post.title}</h3>
       </header>
       <div>

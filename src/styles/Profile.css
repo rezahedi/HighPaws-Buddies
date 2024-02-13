@@ -1,0 +1,82 @@
+.profile{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.avatar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.avatar figure{
+  position: relative;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+.pet{
+  position: absolute;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  top: 0;
+  left: 0;
+  transition: all 0.3s;
+}
+.owner{
+  position: absolute;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  top: 70px;
+  left: 70px;
+  transition: all 0.3s;
+}
+.switched .owner{
+  width: 100px;
+  height: 100px;
+  top: 0;
+  left: 0;
+}
+.switched .pet{
+  width: 30px;
+  height: 30px;
+  top: 70px;
+  left: 70px;
+  z-index: 1;
+}
+.avatar h2{
+  margin: 0;
+  padding: 0;
+  font-size: 1.5em;
+}
+.stats{
+  display: flex;
+  gap: 20px;
+}
+.detail{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tags{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin:10px 0;
+}
+.tags a{
+  text-decoration: none;
+  padding: 5px 15px;
+  border-radius: 10px;
+  border:1px solid #ddd;
+}
