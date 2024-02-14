@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { Public, Profile } from "@/pages"
+import { Public, Profile, New } from "@/pages"
 
 function App() {
 
@@ -14,6 +14,10 @@ function App() {
       path: "/:userHandler",
       element: <Profile />,
     },
+    {
+      path: "/new",
+      element: <New />,
+    }
   ])
   return (
     <RouterProvider router={router} />
