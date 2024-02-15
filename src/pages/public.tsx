@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Post } from '@/components';
-import { app } from '@/firebase';
-import { getFirestore, collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { db } from '@/firebase';
+import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
 
-const db = getFirestore(app);
 
 /*
 title: "Morning stroll with Max 🐾",

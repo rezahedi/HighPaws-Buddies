@@ -1,10 +1,8 @@
-import { app } from '@/firebase';
+import { db } from '@/firebase';
 import { newCommentProp } from '@/types/firestore';
-import { getFirestore, collection, doc, addDoc, Timestamp, updateDoc, increment } from 'firebase/firestore';
+import { collection, doc, addDoc, Timestamp, updateDoc, increment } from 'firebase/firestore';
 import '@/styles/NewComment.css'
 import { useRef } from 'react'
-
-const db = getFirestore(app);
 
 
 export default function NewComment({postId}: {postId: string}) {

@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import '@/styles/Profile.css'
 import { Post } from "@/components"
-import { app } from '@/firebase';
-import { getFirestore, collection, doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@/firebase';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
-
-const db = getFirestore(app);
 
 export default function Profile() {
   

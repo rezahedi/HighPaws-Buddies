@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
-import { app } from '@/firebase';
-import { getFirestore, collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { db } from '@/firebase';
+import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { commentProp, returnCommentProp } from '@/types/firestore'
 import { Link } from 'react-router-dom'
 import '@/styles/Comments.css'
 import { NewComment } from '@/components';
-
-const db = getFirestore(app);
 
 export default function Comments({postId}: {postId: string}) {
 

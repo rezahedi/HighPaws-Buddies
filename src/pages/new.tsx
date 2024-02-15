@@ -3,12 +3,10 @@
 // TODO: Data validation
 
 import { newPostProp } from "@/types/firestore"
-import { getFirestore, doc, addDoc, collection, Timestamp } from 'firebase/firestore'
-import { app } from '@/firebase'
+import { doc, addDoc, collection, Timestamp } from 'firebase/firestore'
+import { db } from '@/firebase'
 import '@/styles/New.css'
 import { redirect } from 'react-router-dom'
-
-const db = getFirestore(app);
 
 export default function New() {
 
