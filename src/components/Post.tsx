@@ -3,8 +3,12 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { postProp } from '@/types/firestore'
 
+// TODO: Lazy load the Comments component when user clicks to show comments
+import { Comments } from '@/components'
+
 export default function Post({ post }: { post: postProp }) {
   const [liked, setLiked] = useState<number>(0)
+  const [showComments, setShowComments] = useState<boolean>(false)
 
   // TODO: Pass the profile details that I have from the post
   // To create profile page until profile's data is fetched
@@ -24,6 +28,11 @@ export default function Post({ post }: { post: postProp }) {
 
   const addLikeClass = () => {
     return liked === 1 ? 'liked' : liked === -1 ? 'unliked' : ''
+  }
+
+  const handleComments = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setShowComments(true)
   }
 
   return (
@@ -48,8 +57,11 @@ export default function Post({ post }: { post: postProp }) {
       </div>
       <footer>
         <a href='#'>{post.stats.likes} likes</a>
-        <a href='#'>{post.stats.comments} comments</a>
+        <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
       </footer>
+      {showComments &&
+        <Comments postId={post.id} />
+      }
     </article>
   )
 }

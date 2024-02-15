@@ -40,6 +40,17 @@ export type profileProp = {
   public: boolean;
 };
 
+export type commentProp = {
+  id: string;
+  comment: string;
+  created_at?: number;
+  profile: {
+    id: DocumentReference;
+    avatar: string;
+    name: string;
+  },
+};
+
 export function returnPostProp(doc: DocumentSnapshot): postProp {
   if( !doc.exists() ) return {} as postProp
   return {
@@ -70,5 +81,19 @@ export function returnProfileProp(doc: DocumentSnapshot): profileProp | null {
     characteristics: doc.data().characteristics,
     stats: doc.data().stats,
     public: doc.data().public,
+  }
+}
+
+export function returnCommentProp(doc: DocumentSnapshot): commentProp {
+  if( !doc.exists() ) return {} as commentProp
+  return {
+    id: doc.id,
+    comment: doc.data().comment,
+    created_at: doc.data().created_at,
+    profile: {
+      id: doc.data().profile.id,
+      avatar: doc.data().profile.avatar,
+      name: doc.data().profile.name,
+    },
   }
 }

@@ -1,0 +1,28 @@
+.comment{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #666;
+  border-radius: 5px;
+  font-size: small;
+}
+.comment a{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.comment img{
+  border-radius: 50%;
+  width: 35px;
+}
+.comment p{
+  flex-grow: 1;
+  margin: 0;
+}
+.comment time{
+  font-style: italic;
+  font-size: x-small;
+  color: #666;
+}
