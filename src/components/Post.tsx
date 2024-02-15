@@ -49,7 +49,7 @@ export default function Post({ post }: { post: postProp }) {
       <div>
         <figure>
           <div>
-            <p>{new Date(post.published_at * 1000).toLocaleDateString("en-US")}</p>
+            <p>{post.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}</p>
             <p>{post.location}</p>
           </div>
           <img src={post.media_url} alt={post.title} onClick={handleLike} />

@@ -39,7 +39,7 @@ export default function Comments({postId}: {postId: string}) {
             {comment.profile.name}
           </Link>
           <p>{comment.comment}</p>
-          <time>{new Date(comment.created_at.seconds * 1000).toLocaleString([], {dateStyle: 'short'})}</time>
+          <time>{comment.created_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}</time>
         </div>
       )}
       {!loading &&

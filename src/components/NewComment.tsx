@@ -1,12 +1,14 @@
 import { app } from '@/firebase';
-import { commentProp } from '@/types/firestore';
-import { getFirestore, collection, doc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { newCommentProp } from '@/types/firestore';
+import { getFirestore, collection, doc, addDoc, Timestamp, updateDoc, increment } from 'firebase/firestore';
 import '@/styles/NewComment.css'
+import { useRef } from 'react'
 
 const db = getFirestore(app);
 
 
 export default function NewComment({postId}: {postId: string}) {
+  const formRef = useRef<HTMLFormElement>(null)
 
   // TODO: Get user id from auth context
   const user = {
@@ -21,35 +23,33 @@ export default function NewComment({postId}: {postId: string}) {
     // TODO: Sanitize data
     const formData: FormData = new FormData(e.currentTarget)
 
-    const newComment: commentProp = {
-      id: '',
+    const newComment: newCommentProp = {
       comment: formData.get('comment') as string,
       profile: {
         avatar: user.avatar,
         name: user.name,
         id: doc(db, `profiles/${user.id}`)
       },
-      created_at: 0,
+      created_at: Timestamp.fromDate( new Date() )
     }
 
-    const docRef = await addDoc(collection(db, `posts/${postId}/comments`), {
-      ...newComment,
-      created_at: serverTimestamp()
-    })
-
-    // TODO: if added +1 to post.stats.comments count
-    // +1 could be done here or in the cloud function that listens to the comments collection
+    const docRef = await addDoc(collection(db, `posts/${postId}/comments`), newComment)
 
     if( !docRef.id ) {
       // TODO: Handle error show toast message to try agaim!
       return console.error('Error adding document: ', docRef.id)
     }
-    
-    e.currentTarget.reset()
+
+    // TODO: if comment added or removed, +1 or -1 to post.stats.comments count
+    // TODO: +1 or -1 is easier to do on the cloud function that listens to the comments collection for add or remove doc
+    const postRef = doc(db, `posts/${postId}`)
+    await updateDoc(postRef, { "stats.comments": increment(1) })
+
+    formRef.current!.reset()
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
+    <form onSubmit={(e) => handleSubmit(e)} ref={formRef}>
       <div>
         <img src={user.avatar} alt={user.name} />
         {user.name}

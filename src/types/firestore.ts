@@ -1,7 +1,6 @@
-import { DocumentReference, DocumentSnapshot } from "firebase/firestore";
+import { DocumentReference, DocumentSnapshot, Timestamp } from "firebase/firestore";
 
-export type postProp = {
-  id: string;
+export type newPostProp = {
   title: string;
   media_url: string;
   location: string;
@@ -11,15 +10,18 @@ export type postProp = {
     name: string;
   }
   profile_id: DocumentReference;
-  published_at: number;
+  published_at: Timestamp;
   stats: {
     likes: number;
     comments: number;
   }
 };
 
-export type profileProp = {
+export type postProp = newPostProp & {
   id: string;
+};
+
+export type newProfileProp = {
   name: string;
   owner: string;
   avatars: {
@@ -40,16 +42,23 @@ export type profileProp = {
   public: boolean;
 };
 
-export type commentProp = {
+export type profileProp = newProfileProp & {
   id: string;
+};
+
+export type newCommentProp = {
   comment: string;
-  created_at?: number;
+  created_at: Timestamp;
   profile: {
     id: DocumentReference;
     avatar: string;
     name: string;
   },
 };
+
+export type commentProp = newCommentProp & {
+  id: string;
+}
 
 export function returnPostProp(doc: DocumentSnapshot): postProp {
   if( !doc.exists() ) return {} as postProp

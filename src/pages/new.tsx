@@ -2,8 +2,8 @@
 // TODO: Handle file upload to CDN on the server
 // TODO: Data validation
 
-import { postProp } from "@/types/firestore"
-import { getFirestore, doc, serverTimestamp, addDoc, collection } from 'firebase/firestore'
+import { newPostProp } from "@/types/firestore"
+import { getFirestore, doc, addDoc, collection, Timestamp } from 'firebase/firestore'
 import { app } from '@/firebase'
 import '@/styles/New.css'
 import { redirect } from 'react-router-dom'
@@ -15,8 +15,7 @@ export default function New() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData: FormData = new FormData(e.currentTarget)
-    const newPost: postProp = {
-      id: '',
+    const newPost: newPostProp = {
       title: formData.get('title') as string,
       media_url: formData.get('media_url') as string,
       location: formData.get('location') as string,
@@ -25,19 +24,15 @@ export default function New() {
         name: formData.get('profile_detail_name') as string
       },
       profile_id: doc(db, formData.get('profile_id') as string),
-      published_at: Date.now(),
+      published_at: Timestamp.fromDate( new Date() ),
       stats: {
         likes: parseInt(formData.get('stats_likes') as string),
         comments: parseInt(formData.get('stats_comments') as string)
       },
       private: false
     }
-    console.log( newPost )
 
-    const docRef = await addDoc(collection(db, 'posts'), {
-      ...newPost,
-      published_at: serverTimestamp()
-    })
+    const docRef = await addDoc(collection(db, 'posts'), newPost)
     console.log( "post created:", docRef )
     redirect('/')
   }
