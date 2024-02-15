@@ -10,6 +10,18 @@ export default function Post({ post }: { post: postProp }) {
   const [liked, setLiked] = useState<number>(0)
   const [showComments, setShowComments] = useState<boolean>(false)
 
+  // TODO: Get user id from auth context
+  const user = {
+    id:     '8gx3nLgpa75dVxo8q6dy',
+    avatar: 'https://fakeimg.pl/50x50/FFD3E0?text=Max',
+    name:   'Bjorn'
+  }
+
+  useEffect(() => {
+    // TODO: check if loggedin user has liked the post
+    // But this way with each post, it will make a request to check if user has liked the post
+  }, [])
+
   // TODO: Pass the profile details that I have from the post
   // To create profile page until profile's data is fetched
   // Create the below state and send as Link's state : <Link to='/:profileID' state={{profile: passingProfileState}}>
