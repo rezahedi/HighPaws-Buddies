@@ -33,3 +33,5 @@ export default {
 - [ ] Create NewPost page or component, so I can add fake data
 - [ ] Use Firebase Storage to upload Images and Videos
 - [ ] Implement Firebase authentication
+- [ ] Use Firebase Functions to fanout data
+- [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
