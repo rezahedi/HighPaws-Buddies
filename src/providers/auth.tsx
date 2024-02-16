@@ -1,15 +1,18 @@
 import { useState, useEffect, useContext, createContext } from "react"
-import { auth } from "@/firebase"
+import { auth, db } from "@/firebase"
 import {
   User, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile
 } from "firebase/auth"
+import { doc, getDoc, setDoc } from "firebase/firestore"
+import { returnProfileProp, profileProp, newProfileProp } from "@/types/firestore"
 
 const AuthContext = createContext(
   {} as {
-    user: User | null
+    authUser: User | null
+    profile: profileProp | null
     loading: boolean
     error: string | null
-    signup: (email: string, password: string, name: string) => Promise<User>
+    signup: (email: string, password: string, profile: newProfileProp) => Promise<User>
     login: (email: string, password: string) => Promise<User>
     logout: () => Promise<void>
     resetPassword: (email: string) => Promise<void>
@@ -23,18 +26,28 @@ export function useAuth()
 
 export default function AuthProvider({children}: {children: React.ReactNode})
 {
-	const [user, setUser] = useState<User | null>(null)
+  console.log('auth.currentUser:', auth.currentUser)
+	const [authUser, setAuthUser] = useState<User | null>(null)
+  const [profile, setProfile] = useState<profileProp | null>(null)
 	const [loading, setLoading] = useState<boolean>(true)
   // TODO: Should I handle errors here? or in auth pages /src/pages/auth/*
   const [error, setError] = useState<string | null>(null)
 
-  async function signup(email: string, password: string, name: string) {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
+  async function signup(email: string, password: string, profile: newProfileProp) {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    // TODO: Using .then() to handle create profile document promise
+    // TODO: Error catch!
+    // Create profile document
+    const profileRef = doc(db, 'profiles', userCredential.user.uid)
+    profile.owner = userCredential.user.displayName || ''
+    profile.avatars.owner = userCredential.user.photoURL || `https://fakeimg.pl/400x400/282828/?text=${profile.owner}`
+    await setDoc(profileRef, profile)
+
     // if (auth.currentUser) {
     //   await updateProfile(auth.currentUser, { displayName: name });
     // }
-    await updateProfile(res.user, { displayName: name });
-    return res.user;
+    // await updateProfile(userCredential.user, { displayName: name });
+    return userCredential.user;
   }
 
   async function login(email: string, password: string) {
@@ -55,8 +68,26 @@ export default function AuthProvider({children}: {children: React.ReactNode})
 	}
 
   useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(user => {
-			setUser(user)
+		const unsubscribe = auth.onAuthStateChanged(async user => {
+
+      // User is signed in
+      if ( user) {
+        // Get user profile
+        const profileRef = doc(db, 'profiles', user.uid)
+        const profileSnap = await getDoc(profileRef)
+        if ( profileSnap.exists() ) {
+          setProfile( returnProfileProp(profileSnap) )
+          setAuthUser(user)
+        } else {
+          setError("No such Profile!")
+        }
+        
+      // User is signed out
+      } else {
+        setAuthUser(null)
+        setProfile(null)
+      }
+
 			setLoading(false)
 		})
 
@@ -64,7 +95,8 @@ export default function AuthProvider({children}: {children: React.ReactNode})
 	}, [])
 
   const value = {
-    user,
+    authUser,
+    profile,
     loading,
     error,
     signup,
