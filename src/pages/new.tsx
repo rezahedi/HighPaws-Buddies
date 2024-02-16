@@ -6,9 +6,11 @@ import { newPostProp } from "@/types/firestore"
 import { doc, addDoc, collection, Timestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
 import '@/styles/New.css'
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function New() {
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,7 +34,7 @@ export default function New() {
 
     const docRef = await addDoc(collection(db, 'posts'), newPost)
     console.log( "post created:", docRef )
-    redirect('/')
+    navigate('/')
   }
 
   return (
