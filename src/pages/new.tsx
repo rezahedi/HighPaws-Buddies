@@ -14,7 +14,7 @@ export default function New() {
 
   const navigate = useNavigate()
   const { profile } = useAuth()
-  if(!profile) return navigate('/login')
+  if(!profile) navigate('/login')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
