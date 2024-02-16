@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import '@/styles/Profile.css'
-import { Post } from "@/components"
+import { Header, Post } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
@@ -47,39 +47,42 @@ export default function Profile() {
   }
 
   return (
-    <div className="profile">
-      {profileLoading && <p>Loading profile skeleton ...</p>}
-      {profile &&
-      <>
-      <section className="avatar">
-        <figure onClick={handleAvatarSwitch} className={switched?`switched`:``}>
-          <img className="pet" src={profile.avatars.buddy} alt={profile.name} />
-          <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
-        </figure>
-        <h2>{profile.name}</h2>
-      </section>
-      <section className="stats">
-        <a href="#">{profile.stats.followers} followers</a>
-        <a href="#">{profile.stats.following} following</a>
-        <a href="#">{profile.stats.posts} posts</a>
-      </section>
-      <section className="detail">
-        <div>🎂 {profile.age}</div>
-        <div>⚖️ {profile.weight}</div>
-        <div>🐶 {profile.breed}</div>
-        <div>📌 {profile.location}</div>
-      </section>
-      <section className="tags">
-        {profile.characteristics.map((element, index) => (
-          <a key={index} href="#">{element}</a>
+    <>
+      <Header />
+      <div className="profile">
+        {profileLoading && <p>Loading profile skeleton ...</p>}
+        {profile &&
+        <>
+        <section className="avatar">
+          <figure onClick={handleAvatarSwitch} className={switched?`switched`:``}>
+            <img className="pet" src={profile.avatars.buddy} alt={profile.name} />
+            <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
+          </figure>
+          <h2>{profile.name}</h2>
+        </section>
+        <section className="stats">
+          <a href="#">{profile.stats.followers} followers</a>
+          <a href="#">{profile.stats.following} following</a>
+          <a href="#">{profile.stats.posts} posts</a>
+        </section>
+        <section className="detail">
+          <div>🎂 {profile.age}</div>
+          <div>⚖️ {profile.weight}</div>
+          <div>🐶 {profile.breed}</div>
+          <div>📌 {profile.location}</div>
+        </section>
+        <section className="tags">
+          {profile.characteristics.map((element, index) => (
+            <a key={index} href="#">{element}</a>
+          ))}
+        </section>
+        </>
+        }
+        {postsLoading && <p>Loading posts skeleton ...</p>}
+        {posts && posts.map((post, index) => (
+          <Post key={index} post={post} />
         ))}
-      </section>
-      </>
-      }
-      {postsLoading && <p>Loading posts skeleton ...</p>}
-      {posts && posts.map((post, index) => (
-        <Post key={index} post={post} />
-      ))}
-    </div>
+      </div>
+    </>
   )
 }
