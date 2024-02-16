@@ -3,17 +3,14 @@ import { newCommentProp } from '@/types/firestore';
 import { collection, doc, addDoc, Timestamp, updateDoc, increment } from 'firebase/firestore';
 import '@/styles/NewComment.css'
 import { useRef } from 'react'
-
+import { useAuth } from '@/providers/auth';
 
 export default function NewComment({postId}: {postId: string}) {
   const formRef = useRef<HTMLFormElement>(null)
 
-  // TODO: Get user id from auth context
-  const user = {
-    id:     '8gx3nLgpa75dVxo8q6dy',
-    avatar: 'https://fakeimg.pl/50x50/FFD3E0?text=Max',
-    name:   'Bjorn'
-  }
+  // TODO: Add comments only to public posts or to following only!
+  const { profile } = useAuth()
+  if(!profile) return null
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -24,9 +21,9 @@ export default function NewComment({postId}: {postId: string}) {
     const newComment: newCommentProp = {
       comment: formData.get('comment') as string,
       profile: {
-        avatar: user.avatar,
-        name: user.name,
-        id: doc(db, `profiles/${user.id}`)
+        avatar: profile.avatars.buddy,
+        name: profile.name,
+        id: doc(db, `profiles/${profile.id}`)
       },
       created_at: Timestamp.fromDate( new Date() )
     }
@@ -49,8 +46,8 @@ export default function NewComment({postId}: {postId: string}) {
   return (
     <form onSubmit={(e) => handleSubmit(e)} ref={formRef}>
       <div>
-        <img src={user.avatar} alt={user.name} />
-        {user.name}
+        <img src={profile.avatars.buddy} alt={profile.name} />
+        {profile.name}
       </div>
       <textarea name="comment" placeholder="Write your comment ..."></textarea>
       <button type="submit">Post</button>
