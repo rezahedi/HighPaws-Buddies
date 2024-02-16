@@ -5,6 +5,8 @@ import { Header, Post } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
+import Followers from '@/components/profile/Followers';
+import Following from '@/components/profile/Following';
 
 export default function Profile() {
   
@@ -17,6 +19,8 @@ export default function Profile() {
   const [profileLoading, setProfileLoading] = useState<boolean>(true)
   const [postsLoading, setPostsLoading] = useState<boolean>(true)
   const [switched, setSwitched] = useState<boolean>(false)
+  const [showFollowers, setShowFollowers] = useState<boolean>(false)
+  const [showFollowing, setShowFollowing] = useState<boolean>(false)
   const { userHandler } = useParams()
 
   // Get user profile from /profiles/:userHandler
@@ -46,6 +50,16 @@ export default function Profile() {
     setSwitched(!switched)
   }
 
+  const handleFollowers = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    setShowFollowers(true)
+  }
+
+  const handleFollowing = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    setShowFollowing(true)
+  }
+
   return (
     <>
       <Header />
@@ -61,9 +75,11 @@ export default function Profile() {
           <h2>{profile.name}</h2>
         </section>
         <section className="stats">
-          <a href="#">{profile.stats.followers} followers</a>
-          <a href="#">{profile.stats.following} following</a>
+          <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
+          <a href="#" onClick={handleFollowing}>{profile.stats.following} following</a>
           <a href="#">{profile.stats.posts} posts</a>
+          {showFollowers && <Followers profileId={profile.id} />}
+          {showFollowing && <Following profileId={profile.id} />}
         </section>
         <section className="detail">
           <div>🎂 {profile.age}</div>
