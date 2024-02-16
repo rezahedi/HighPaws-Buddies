@@ -30,8 +30,8 @@ export default {
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
 ## Roadmap
-- [ ] Create NewPost page or component, so I can add fake data
+- [x] Create NewPost page or component, so I can add fake data
 - [ ] Use Firebase Storage to upload Images and Videos
-- [ ] Implement Firebase authentication
+- [x] Implement Firebase authentication
 - [ ] Use Firebase Functions to fanout data
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
