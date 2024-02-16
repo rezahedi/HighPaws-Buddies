@@ -35,3 +35,4 @@ export default {
 - [x] Implement Firebase authentication
 - [ ] Use Firebase Functions to fanout data
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
+- [ ] Create a modal dialog to show followers, following, or who likes
