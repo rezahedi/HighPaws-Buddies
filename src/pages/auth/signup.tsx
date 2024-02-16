@@ -1,8 +1,6 @@
 import { useRef, useState } from "react"
 import { useAuth } from "@/providers/auth"
 import { Link, useNavigate } from "react-router-dom"
-import { db } from "@/firebase"
-import { setDoc, doc } from "firebase/firestore"
 import { AuthError, /*AuthErrorCodes*/ } from "firebase/auth"
 import '@/styles/auth/signup.css'
 import { newProfileProp } from "@/types/firestore"

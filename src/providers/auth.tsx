@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, createContext } from "react"
 import { auth, db } from "@/firebase"
 import {
-  User, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile
+  User, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut
 } from "firebase/auth"
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { returnProfileProp, profileProp, newProfileProp } from "@/types/firestore"
