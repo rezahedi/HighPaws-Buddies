@@ -3,7 +3,7 @@ import { Post } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
-
+import { useAuth } from '@/providers/auth';
 
 /*
 title: "Morning stroll with Max 🐾",
@@ -71,6 +71,9 @@ export default function Public() {
 
   const [posts, setPosts] = useState<postProp[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const { user } = useAuth();
+  console.log(user);
 
   useEffect(() => {
     // snapshot listener to get real-time updates from the firestore posts collection with where filter for public posts

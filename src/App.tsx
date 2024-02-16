@@ -1,26 +1,24 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Public, Profile, New } from "@/pages"
+import { AuthProvider } from "@/providers"
+// TODO: Should be Lazy Loaded (Except main component all should be lazy loaded)
+import { Signup, Login, ForgotPassword } from "@/pages/auth"
 
 function App() {
 
-  // initialize a browser router
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Public />,
-    },
-    // other pages....
-    {
-      path: "/:userHandler",
-      element: <Profile />,
-    },
-    {
-      path: "/new",
-      element: <New />,
-    }
-  ])
   return (
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Public />} />
+          <Route path="/:userHandler" element={<Profile />} />
+          <Route path="/new" element={<New />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 
