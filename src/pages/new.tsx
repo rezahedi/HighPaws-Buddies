@@ -9,16 +9,20 @@ import '@/styles/New.css'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
 import { Header } from "@/components"
+import { useEffect } from "react"
 
 export default function New() {
 
   const navigate = useNavigate()
   const { profile } = useAuth()
-  if(!profile) navigate('/login')
+
+  useEffect(() => {
+    if( profile === null ) return navigate('/login')
+  }, [profile])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if(!profile) return null
+    if( profile === null ) return null
 
     // TODO: Sanitize data
     const formData: FormData = new FormData(e.currentTarget)
@@ -47,6 +51,7 @@ export default function New() {
   return (
     <>
       <Header />
+      {profile &&
       <form onSubmit={(e) => handleSubmit(e)} className="newpost">
         <label>
           <div>Title:</div>
@@ -61,7 +66,7 @@ export default function New() {
           <input name="location" type="text" placeholder="Location" />
         </label>
         <button type="submit">Submit</button>
-      </form>
+      </form>}
     </>
   )
 }
