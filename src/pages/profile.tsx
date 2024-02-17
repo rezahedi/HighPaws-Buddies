@@ -5,8 +5,7 @@ import { Header, Post } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
-import Followers from '@/components/profile/Followers';
-import Following from '@/components/profile/Following';
+import { Followers, Following, FollowRequest } from '@/components/profile';
 
 export default function Profile() {
   
@@ -73,6 +72,7 @@ export default function Profile() {
             <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
           </figure>
           <h2>{profile.name}</h2>
+          <FollowRequest to={profile} />
         </section>
         <section className="stats">
           <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/providers/auth"
 import { db } from "@/firebase"
 import { onSnapshot, query, collection, limit, DocumentReference } from "firebase/firestore"
-import Item from "@/components/profile/Item"
+import { Item } from "@/components/profile"
 import Modal from "@/components/Modal"
 
 type followerProp = {
