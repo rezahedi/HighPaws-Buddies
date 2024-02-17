@@ -11,13 +11,21 @@ export default function Header() {
       {authUser && <Link to="/new">New Post</Link>}
       <div>
         {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        {profile && <>
-          <Link to={`/${profile.id}`}>{profile.name}</Link><br />
-          {authUser?.email}<br />
-          <button onClick={logout}>Logout</button>
-        </>}
-        {!authUser && <Link to="/login">Login</Link>}
+        {!loading &&
+          <>
+            {error && <p>{error}</p>}
+            {profile && <>
+              <Link to={`/${profile.id}`}>{profile.name}</Link><br />
+              {authUser?.email}<br />
+              <button onClick={logout}>Logout</button>
+            </>}
+            {!authUser && 
+            <>
+              <Link to="/login">Login</Link>{' '}
+              <Link to="/signup">Signup</Link>
+            </>}
+          </>
+        }
       </div>
     </div>
   )
