@@ -36,3 +36,17 @@ export default {
 - [ ] Use Firebase Functions to fanout data
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
 - [ ] Create a modal dialog to show followers, following, or who likes
+
+## Firebase Emulators for local development
+
+Used Firebase emulators for local development and to persist data in the Firestore and Auth emulators I used export import approuch.
+
+To export/import data in `/firebase-emulators` I used the following commands and added them to the `package.json` scripts section for easy access.
+
+```bash
+{
+  "scripts": {
+    "emulators:start": "firebase emulators:start --import firebase-emulators/ --export-on-exit firebase-emulators/"
+  }
+}
+```
