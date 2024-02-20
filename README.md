@@ -41,12 +41,12 @@ export default {
 
 Used Firebase emulators for local development and to persist data in the Firestore and Auth emulators I used export import approuch.
 
-To export/import data in `/firebase-emulators` I used the following commands and added them to the `package.json` scripts section for easy access.
+To export/import data in `/firebase-export` I used the following commands and added them to the `package.json` scripts section for easy access.
 
 ```bash
 {
   "scripts": {
-    "emulators:start": "firebase emulators:start --import firebase-emulators/ --export-on-exit firebase-emulators/"
+    "emulators:start": "firebase emulators:start --import ./firebase-export/ --export-on-exit ./firebase-export/"
   }
 }
 ```
