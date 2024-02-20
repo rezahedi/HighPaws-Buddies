@@ -20,11 +20,9 @@ export default function NewComment({postId, profileId}: {postId: string, profile
 
     const newComment: newCommentProp = {
       comment: formData.get('comment') as string,
-      profile: {
-        avatar: profile.avatars.buddy,
-        name: profile.name,
-        id: doc(db, `profiles/${profile.id}`)
-      },
+      profile_id: doc(db, `profiles/${profile.id}`),
+      avatar: profile.avatars.buddy,
+      name: profile.name,
       created_at: Timestamp.fromDate( new Date() )
     }
 

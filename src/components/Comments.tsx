@@ -32,9 +32,9 @@ export default function Comments({postId, profileId}: {postId: string, profileId
       {loading && <p>Fetching comments ...</p>}
       {comments.map((comment, index) =>
         <div key={index} className='comment'>
-          <Link to={`/${comment.profile.id.id}`}>
-            <img src={comment.profile.avatar} alt={comment.profile.name} />
-            {comment.profile.name}
+          <Link to={`/${comment.profile_id.id}`}>
+            <img src={comment.avatar} alt={comment.name} />
+            {comment.name}
           </Link>
           <p>{comment.comment}</p>
           <time>{comment.created_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}</time>

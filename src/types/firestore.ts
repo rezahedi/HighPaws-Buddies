@@ -50,11 +50,9 @@ export type profileProp = newProfileProp & {
 export type newCommentProp = {
   comment: string;
   created_at: Timestamp;
-  profile: {
-    id: DocumentReference;
-    avatar: string;
-    name: string;
-  },
+  profile_id: DocumentReference;
+  avatar: string;
+  name: string;
 };
 
 export type commentProp = newCommentProp & {
@@ -101,10 +99,8 @@ export function returnCommentProp(doc: DocumentSnapshot): commentProp {
     id: doc.id,
     comment: doc.data().comment,
     created_at: doc.data().created_at,
-    profile: {
-      id: doc.data().profile.id,
-      avatar: doc.data().profile.avatar,
-      name: doc.data().profile.name,
-    },
+    profile_id: doc.data().profile_id,
+    avatar: doc.data().avatar,
+    name: doc.data().name,
   }
 }
