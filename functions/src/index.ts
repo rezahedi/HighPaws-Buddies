@@ -296,6 +296,12 @@ export const initNotificationsStatsDoc = onDocumentCreated(`profiles/{profileId}
 
 // Increase notifications stats for created new notifications
 export const notificationsStats = onDocumentCreated(`profiles/{profileId}/notifications/{notificationId}`, (event) => {
+  const notificationDoc = event.data;
+  if (!notificationDoc) return
+
+  const notificationId = event.params.notificationId;
+  if (notificationId === "stats") return
+
   const profileId = event.params.profileId;
   const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
   notificationStatsRef.update({
@@ -307,6 +313,9 @@ export const notificationsStats = onDocumentCreated(`profiles/{profileId}/notifi
 export const markNotificationAsSeen = onDocumentUpdated(`profiles/{profileId}/notifications/{notificationId}`, (event) => {
   const notificationDoc = event.data;
   if (!notificationDoc) return
+
+  const notificationId = event.params.notificationId;
+  if (notificationId === "stats") return
 
   // Unseen decrease
   const profileId = event.params.profileId;
