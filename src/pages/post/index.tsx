@@ -3,7 +3,7 @@ import { db } from '@/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from "react";
 import { postProp, returnPostProp } from "@/types/firestore";
-import { Post } from "@/components";
+import { Header, Post } from "@/components";
 
 export function PostPage() {
   const { userHandler, postId } = useParams()
@@ -28,6 +28,7 @@ export function PostPage() {
 
   return (
     <>
+      <Header />
       {dataLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {post && <Post post={post} showComment />}
