@@ -38,6 +38,11 @@ export default function Post({ post }: { post: postProp }) {
 
     (async () => {
       // TODO: Like/Unlike the post
+
+      // TODO: It's better to increment feed/:postId stats.likes here for better user experience
+      // If I'm going to update post.stats every 1 hour, then I should increment feed/:postId stats.likes
+      // TODO: Dont forget that this component used for user /feed and user profile feed or posts too
+
       const originalDocRef = doc(db, `profiles/${post.profile_id.id}/posts/${post.id}/likes/${profile.id}`)
       const feedDocRef = doc(db, `profiles/${profile.id}/feed/${post.id}`)
       if( liked === 1 ) {
