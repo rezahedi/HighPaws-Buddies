@@ -100,7 +100,7 @@ export default function Post({ post, showComment = false }: { post: postProp, sh
         </figure>
       </div>
       <footer>
-        {liked} {post.liked && `🩷`} <a href='#'>{post.stats.likes} likes</a>
+        {post.liked && `🩷`} <a href='#'>{post.stats.likes} likes</a>
         <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
       </footer>
       {showComments &&
