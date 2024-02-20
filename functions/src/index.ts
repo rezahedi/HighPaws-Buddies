@@ -210,3 +210,98 @@ export const decreasePostLikeStat = onDocumentDeleted(`profiles/{profileId}/post
     "stats.likes": FieldValue.increment(-1),
   });
 })
+
+
+/**
+ * Notifications
+ */
+// Notify post's owner for each new comments added
+export const notifyOwnerNewComment = onDocumentCreated(`profiles/{profileId}/posts/{postId}/comments/{commentId}`, (event) => {
+  const commentDoc = event.data;
+  if (!commentDoc) return
+
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+
+  const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
+  const notification = {
+    message: `${profileId} comment on your post`,
+    link: `/${profileId}/${postId}#${commentDoc.id}`,
+    seen: false,
+    archived: false,
+    published_at: FieldValue.serverTimestamp(),
+  }
+  return notificationsCollectionRef.add(notification);
+})
+
+// Notify post's owner for each new like added
+export const notifyOwnerNewLike = onDocumentCreated(`profiles/{profileId}/posts/{postId}/likes/{likeId}`, (event) => {
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+
+  const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
+  const notification = {
+    message: `${profileId} liked your post`,
+    link: `/${profileId}/${postId}`,
+    seen: false,
+    archived: false,
+    published_at: FieldValue.serverTimestamp(),
+  }
+  return notificationsCollectionRef.add(notification);
+})
+
+// Notify user for each new follower
+export const notifyUserNewFollower = onDocumentCreated(`profiles/{profileId}/followers/{followerId}`, (event) => {
+  const profileId = event.params.profileId;
+  const followerId = event.params.followerId;
+
+  const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
+  const notification = {
+    message: `${followerId} started following you`,
+    link: `/${followerId}`,
+    seen: false,
+    archived: false,
+    published_at: FieldValue.serverTimestamp(),
+  }
+  return notificationsCollectionRef.add(notification);
+})
+
+// Notifications initial over profile creation
+export const initNotificationsStatsDoc = onDocumentCreated(`profiles/{profileId}`, (event) => {
+  const profileId = event.params.profileId;
+  const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
+  notificationStatsRef.set({
+    "unseen": 0,
+    "archived": 0,
+  });
+})
+
+// Increase notifications stats for created new notifications
+export const notificationsStats = onDocumentCreated(`profiles/{profileId}/notifications/{notificationId}`, (event) => {
+  const profileId = event.params.profileId;
+  const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
+  notificationStatsRef.update({
+    "unseen": FieldValue.increment(1),
+  });
+})
+
+// Handle notification's stats as notifications marked for seen or archived
+export const markNotificationAsSeen = onDocumentUpdated(`profiles/{profileId}/notifications/{notificationId}`, (event) => {
+  const notificationDoc = event.data;
+  if (!notificationDoc) return
+
+  const profileId = event.params.profileId;
+  if ( notificationDoc.after.data().seen === true && notificationDoc.before.data().seen === false ) {
+    const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
+    notificationStatsRef.update({
+      "unseen": FieldValue.increment(-1),
+    });
+  }
+
+  if ( notificationDoc.after.data().archived === true && notificationDoc.before.data().archived === false ){
+    const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
+    notificationStatsRef.update({
+      "archived": FieldValue.increment(1),
+    });
+  }
+})
