@@ -28,3 +28,4 @@ dist-ssr
 # Firebase
 .firebaserc
 firestore.rules
+firebase-export
