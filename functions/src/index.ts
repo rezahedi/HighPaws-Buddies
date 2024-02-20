@@ -1,19 +1,62 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+// See a full list of supported triggers at https://firebase.google.com/docs/functions
+import {
+  // onDocumentWritten,
+  onDocumentCreated,
+  // onDocumentUpdated,
+  onDocumentDeleted,
+  // Change,
+  // FirestoreEvent
+} from "firebase-functions/v2/firestore";
+import * as admin from "firebase-admin";
 
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+admin.initializeApp();
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+const db = admin.firestore();
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const increaseFollowingStat =
+  onDocumentCreated("profiles/{profileId}/following/{secondProfileId}", (event) => {
+    const profileId = event.params.profileId;
+    // const secondProfileId = event.params.secondProfileId;
+
+    // Increase stats profiles/:profileId stats.following by 1
+    const profileRef = db.doc(`profiles/${profileId}`);
+    profileRef.update({
+      "stats.following": admin.firestore.FieldValue.increment(1),
+    });
+  });
+
+export const increaseFollowerStat =
+  onDocumentCreated("profiles/{profileId}/followers/{secondProfileId}", (event) => {
+    const profileId = event.params.profileId;
+    // const secondProfileId = event.params.secondProfileId;
+
+    // Increase stats profiles/:profileId stats.following by 1
+    const profileRef = db.doc(`profiles/${profileId}`);
+    profileRef.update({
+      "stats.followers": admin.firestore.FieldValue.increment(1),
+    });
+  });
+
+export const decreaseFollowingStat =
+  onDocumentDeleted("profiles/{profileId}/following/{secondProfileId}", (event) => {
+    const profileId = event.params.profileId;
+    // const secondProfileId = event.params.secondProfileId;
+
+    // Decrease stats profiles/:profileId stats.following by 1
+    const profileRef = db.doc(`profiles/${profileId}`);
+    profileRef.update({
+      "stats.following": admin.firestore.FieldValue.increment(-1),
+    });
+  });
+
+export const decreaseFollowerStat =
+  onDocumentDeleted("profiles/{profileId}/followers/{secondProfileId}", (event) => {
+    const profileId = event.params.profileId;
+    // const secondProfileId = event.params.secondProfileId;
+
+    // Decrease stats profiles/:profileId stats.following by 1
+    const profileRef = db.doc(`profiles/${profileId}`);
+    profileRef.update({
+      "stats.followers": admin.firestore.FieldValue.increment(-1),
+    });
+  });
