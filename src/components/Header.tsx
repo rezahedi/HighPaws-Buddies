@@ -29,7 +29,7 @@ export default function Header() {
   }
 
   return (
-    <header>
+    <header className='nav'>
       <h1><Link to='/'>HighPaws</Link></h1>
       {authUser && <Link to="/new">New Post</Link>}
       <div>
