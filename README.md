@@ -33,9 +33,11 @@ export default {
 - [x] Create NewPost page or component, so I can add fake data
 - [ ] Use Firebase Storage to upload Images and Videos
 - [x] Implement Firebase authentication
-- [ ] Use Firebase Functions to fanout data
+- [x] Use Firebase Functions to fanout data
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
-- [ ] Create a modal dialog to show followers, following, or who likes
+- [x] Create a modal dialog to show followers, following
+- [ ] Figure out like logic
+- [ ] Notifications subcollection /profiles/{profileId}/notifications/ for likes, comments, and follows or for specified followed users
 
 ## Firebase Emulators for local development
 
