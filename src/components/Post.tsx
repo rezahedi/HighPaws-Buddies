@@ -9,10 +9,10 @@ import { useAuth } from '@/providers/auth';
 // TODO: Lazy load the Comments component when user clicks to show comments
 import { Comments } from '@/components'
 
-export default function Post({ post }: { post: postProp }) {
+export default function Post({ post, showComment = false }: { post: postProp, showComment?: boolean}) {
   const { profile } = useAuth()
   const [liked, setLiked] = useState<number>(0)
-  const [showComments, setShowComments] = useState<boolean>(false)
+  const [showComments, setShowComments] = useState<boolean>(showComment)
 
   useEffect(() => {
     // TODO: check if loggedin user has liked the post
@@ -89,7 +89,11 @@ export default function Post({ post }: { post: postProp }) {
       <div>
         <figure>
           <div>
-            <p>{post.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}</p>
+            <p>
+              <Link to={`/${post.profile_id.id}/${post.id}`}>
+                {post.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+              </Link>
+            </p>
             <p>{post.location}</p>
           </div>
           <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} />

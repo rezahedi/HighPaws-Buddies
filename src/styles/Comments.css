@@ -26,3 +26,11 @@
   font-size: x-small;
   color: #666;
 }
+
+.highlight{
+  animation: highlight 1s;
+}
+@keyframes highlight {
+  0% { background-color: #ff0; }
+  100% { background-color: #fff; }
+}

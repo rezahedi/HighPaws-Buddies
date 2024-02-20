@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { db } from '@/firebase';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { commentProp, returnCommentProp } from '@/types/firestore'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import '@/styles/Comments.css'
 import { NewComment } from '@/components';
 
@@ -10,6 +10,8 @@ export default function Comments({postId, profileId}: {postId: string, profileId
 
   const [comments, setComments] = useState<commentProp[]>([])
   const [loading, setLoading] = useState(true);
+  const location = useLocation()
+  const commentFragmentIdentifier = location.hash
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -27,17 +29,29 @@ export default function Comments({postId, profileId}: {postId: string, profileId
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if( commentFragmentIdentifier === '' ) return
+    const comment = document.getElementById(commentFragmentIdentifier.substring(1))
+    if( comment === null ) return
+    comment.scrollIntoView({behavior: "smooth"})
+    comment.classList.add('highlight')
+  }, [comments])
+
   return (
     <>
       {loading && <p>Fetching comments ...</p>}
       {comments.map((comment, index) =>
-        <div key={index} className='comment'>
+        <div key={index} className='comment' id={comment.id}>
           <Link to={`/${comment.profile_id.id}`}>
             <img src={comment.avatar} alt={comment.name} />
             {comment.name}
           </Link>
           <p>{comment.comment}</p>
-          <time>{comment.created_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}</time>
+          <time>
+            <a href={`#${comment.id}`}>
+              {comment.created_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+            </a>
+          </time>
         </div>
       )}
       {!loading &&
