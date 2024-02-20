@@ -40,6 +40,7 @@ export default function New() {
         likes: 0,
         comments: 0
       },
+      liked: false,
       private: false
     }
 

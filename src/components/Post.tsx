@@ -2,24 +2,24 @@ import '@/styles/Post.css'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { postProp } from '@/types/firestore'
+import { db } from '@/firebase';
+import { doc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { useAuth } from '@/providers/auth';
 
 // TODO: Lazy load the Comments component when user clicks to show comments
 import { Comments } from '@/components'
 
 export default function Post({ post }: { post: postProp }) {
+  const { profile } = useAuth()
   const [liked, setLiked] = useState<number>(0)
   const [showComments, setShowComments] = useState<boolean>(false)
 
-  // TODO: Get user id from auth context
-  const user = {
-    id:     '8gx3nLgpa75dVxo8q6dy',
-    avatar: 'https://fakeimg.pl/50x50/FFD3E0?text=Max',
-    name:   'Bjorn'
-  }
-
   useEffect(() => {
     // TODO: check if loggedin user has liked the post
-    // But this way with each post, it will make a request to check if user has liked the post
+    if (post.liked) setLiked(1)
+
+    // Actually, We can save liked state in the posts in the feed subcollection for each user
+    // ex: /profiles/:profileId/feed/:postId { liked: true/false } means :profileId has liked the post or not
   }, [])
 
   // TODO: Pass the profile details that I have from the post
@@ -28,9 +28,32 @@ export default function Post({ post }: { post: postProp }) {
   // const passingProfileState = { ...post, profile_id: post.profile_id.path }
 
   useEffect(() => {
+    if (profile === null) return
     if (liked === 0) return
+    // To prevent running liking logic if post liked before: post:{liked: true}
+    if (liked === 1 && post.liked) return
+    
+    // TODO: Should prevent below code from running if liked state set by post.liked value
+    // TODO: Following code should run only if user clicks like/unlike button
 
-    // TODO: Send a request to like/unlike the post
+    (async () => {
+      // TODO: Like/Unlike the post
+      const originalDocRef = doc(db, `profiles/${post.profile_id.id}/posts/${post.id}/likes/${profile.id}`)
+      const feedDocRef = doc(db, `profiles/${profile.id}/feed/${post.id}`)
+      if( liked === 1 ) {
+        const newLike = {
+          avatar: profile.avatars.buddy,
+          name: profile.name,
+          id: doc(db, `profiles/${profile.id}`)
+        }
+        await setDoc(originalDocRef, newLike)
+        // Update /profiles/:currentUserId/feed/:postId { liked: true }
+        await updateDoc(feedDocRef, { liked: true })
+      } else {
+        await deleteDoc(originalDocRef)
+        await updateDoc(feedDocRef, { liked: false })
+      }
+    })()
   }, [liked])
 
   const handleLike = () => {
@@ -64,11 +87,11 @@ export default function Post({ post }: { post: postProp }) {
             <p>{post.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}</p>
             <p>{post.location}</p>
           </div>
-          <img src={post.media_url} alt={post.title} onClick={handleLike} />
+          <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} />
         </figure>
       </div>
       <footer>
-        <a href='#'>{post.stats.likes} likes</a>
+        {liked} {post.liked && `🩷`} <a href='#'>{post.stats.likes} likes</a>
         <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
       </footer>
       {showComments &&

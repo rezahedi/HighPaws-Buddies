@@ -15,6 +15,7 @@ export type newPostProp = {
     likes: number;
     comments: number;
   }
+  liked: boolean;
 };
 
 export type postProp = newPostProp & {
@@ -72,6 +73,7 @@ export function returnPostProp(doc: DocumentSnapshot): postProp {
     profile_id: doc.data().profile_id,
     published_at: doc.data().published_at,
     stats: doc.data().stats,
+    liked: doc.data().liked,
   }
 }
 
