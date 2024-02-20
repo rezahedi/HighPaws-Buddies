@@ -92,6 +92,8 @@ export const fanoutPost = onDocumentCreated(`profiles/{profileId}/posts/{postId}
   // TODO: Add a limit in getting followers id, to make fanout in small batches like 500 followers at a time
   // And keep track of the followers batches in a separate collection like profiles/:profileId/followersBatches
 
+  // TODO: Should I add current user's posts to their feed too? along with their followers posts?
+
   // Get list of followers id from profiles/:profileId/followers and fanout created post to their feed
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
