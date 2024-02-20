@@ -25,6 +25,7 @@ export default function Header() {
   }, [profile, authUser])
 
   const handleNotifications = () => {
+    if (notificationStats == 0) return
     setShowNotifications(!showNotifications)
   }
 
