@@ -132,6 +132,9 @@ export const unfanoutPost = onDocumentDeleted(`profiles/{profileId}/posts/{postI
   });
 })
 
+// TODO: What if fanout stats update every 1 hours, instead of real-time update?
+// To reduce the number of writes to the database!
+
 // fanout post's stats fields update only to followers feed
 export const updateFanoutPost = onDocumentUpdated(`profiles/{profileId}/posts/{postId}`, (event) => {
   const postDoc = event.data;
@@ -185,5 +188,25 @@ export const decreasePostCommentStat = onDocumentDeleted(`profiles/{profileId}/p
   const profileRef = db.doc(`profiles/${profileId}/posts/${postId}`);
   profileRef.update({
     "stats.comments": FieldValue.increment(-1),
+  });
+})
+
+// Update post stats when a new like is added
+export const increasePostLikeStat = onDocumentCreated(`profiles/{profileId}/posts/{postId}/likes/{likeId}`, (event) => {
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+  const profileRef = db.doc(`profiles/${profileId}/posts/${postId}`);
+  profileRef.update({
+    "stats.likes": FieldValue.increment(1),
+  });
+})
+
+// Update post stats when a like is deleted
+export const decreasePostLikeStat = onDocumentDeleted(`profiles/{profileId}/posts/{postId}/likes/{likeId}`, (event) => {
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+  const profileRef = db.doc(`profiles/${profileId}/posts/${postId}`);
+  profileRef.update({
+    "stats.likes": FieldValue.increment(-1),
   });
 })
