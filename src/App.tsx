@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Public, Profile, New } from "@/pages"
+import { Feed, Profile, New } from "@/pages"
 import { AuthProvider } from "@/providers"
 // TODO: Should be Lazy Loaded (Except main component all should be lazy loaded)
 import { Signup, Login, ForgotPassword } from "@/pages/auth"
@@ -13,7 +13,8 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Public />} />
+          {/* <Route path="/" element={<Public />} /> */}
+          <Route path="/" element={<Feed />} />
           <Route path="/:userHandler" element={<Profile />} />
           <Route path="/new" element={<New />} />
           <Route path="/signup" element={<Signup />} />
