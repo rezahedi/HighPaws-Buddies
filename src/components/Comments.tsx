@@ -48,9 +48,9 @@ export default function Comments({postId, profileId}: {postId: string, profileId
           </Link>
           <p>{comment.comment}</p>
           <time>
-            <a href={`#${comment.id}`}>
+            <Link to={`/${profileId}/${postId}#${comment.id}`}>
               {comment.created_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
-            </a>
+            </Link>
           </time>
         </div>
       )}
