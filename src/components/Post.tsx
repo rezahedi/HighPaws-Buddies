@@ -72,7 +72,7 @@ export default function Post({ post }: { post: postProp }) {
         <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
       </footer>
       {showComments &&
-        <Comments postId={post.id} />
+        <Comments postId={post.id} profileId={post.profile_id.id} />
       }
     </article>
   )

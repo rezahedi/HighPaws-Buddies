@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import '@/styles/Comments.css'
 import { NewComment } from '@/components';
 
-export default function Comments({postId}: {postId: string}) {
+export default function Comments({postId, profileId}: {postId: string, profileId: string}) {
 
   const [comments, setComments] = useState<commentProp[]>([])
   const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ export default function Comments({postId}: {postId: string}) {
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
-        collection(db, `posts/${postId}/comments`),
+        collection(db, `profiles/${profileId}/posts/${postId}/comments`),
         orderBy('created_at', 'desc'),
         limit(10)
       ),
@@ -41,7 +41,7 @@ export default function Comments({postId}: {postId: string}) {
         </div>
       )}
       {!loading &&
-        <NewComment postId={postId} />
+        <NewComment postId={postId} profileId={profileId} />
       }
     </>
   )

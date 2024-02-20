@@ -5,7 +5,7 @@ import '@/styles/NewComment.css'
 import { useRef } from 'react'
 import { useAuth } from '@/providers/auth';
 
-export default function NewComment({postId}: {postId: string}) {
+export default function NewComment({postId, profileId}: {postId: string, profileId: string}) {
   const formRef = useRef<HTMLFormElement>(null)
 
   // TODO: Add comments only to public posts or to following only!
@@ -28,7 +28,7 @@ export default function NewComment({postId}: {postId: string}) {
       created_at: Timestamp.fromDate( new Date() )
     }
 
-    const docRef = await addDoc(collection(db, `posts/${postId}/comments`), newComment)
+    const docRef = await addDoc(collection(db, `profiles/${profileId}/posts/${postId}/comments`), newComment)
 
     if( !docRef.id ) {
       // TODO: Handle error show toast message to try agaim!
@@ -37,7 +37,7 @@ export default function NewComment({postId}: {postId: string}) {
 
     // TODO: if comment added or removed, +1 or -1 to post.stats.comments count
     // TODO: +1 or -1 is easier to do on the cloud function that listens to the comments collection for add or remove doc
-    const postRef = doc(db, `posts/${postId}`)
+    const postRef = doc(db, `profiles/${profileId}/posts/${postId}`)
     await updateDoc(postRef, { "stats.comments": increment(1) })
 
     formRef.current!.reset()
