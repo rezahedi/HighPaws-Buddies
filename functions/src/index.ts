@@ -92,11 +92,15 @@ export const fanoutPost = onDocumentCreated(`profiles/{profileId}/posts/{postId}
   // TODO: Add a limit in getting followers id, to make fanout in small batches like 500 followers at a time
   // And keep track of the followers batches in a separate collection like profiles/:profileId/followersBatches
 
-  // TODO: Should I add current user's posts to their feed too? along with their followers posts?
-
   // Get list of followers id from profiles/:profileId/followers and fanout created post to their feed
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
+
+    // Write to user's self feed first!
+    const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
+    bulkWriter.set(selfFeedRef, postDoc.data());
+
+    // Write to followers feed
     querySnapshot.forEach((doc) => {
       const followerId = doc.id;
       const followerFeedRef = db.doc(`profiles/${followerId}/feed/${postId}`);
@@ -113,6 +117,12 @@ export const unfanoutPost = onDocumentDeleted(`profiles/{profileId}/posts/{postI
   const followersRef = db.collection(`profiles/${profileId}/followers`);
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
+
+    // Delete from user's self feed first!
+    const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
+    bulkWriter.delete(selfFeedRef);
+
+    // Delete from followers feed
     querySnapshot.forEach((doc) => {
       const followerId = doc.id;
       const followerFeedRef = db.doc(`profiles/${followerId}/feed/${postId}`);
@@ -138,6 +148,14 @@ export const updateFanoutPost = onDocumentUpdated(`profiles/{profileId}/posts/{p
   const followersRef = db.collection(`profiles/${profileId}/followers`);
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
+
+    // Update user's self feed first!
+    const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
+    bulkWriter.update(selfFeedRef, {
+      "stats": afterData.stats
+    });
+
+    // Update followers feed
     querySnapshot.forEach((doc) => {
       const followerId = doc.id;
       const followerFeedRef = db.doc(`profiles/${followerId}/feed/${postId}`);
