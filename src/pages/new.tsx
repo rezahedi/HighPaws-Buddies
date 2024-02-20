@@ -43,7 +43,7 @@ export default function New() {
       private: false
     }
 
-    const docRef = await addDoc(collection(db, 'posts'), newPost)
+    const docRef = await addDoc(collection(db, `profiles/${profile.id}/posts`), newPost)
     console.log( "post created:", docRef )
     navigate('/')
   }
