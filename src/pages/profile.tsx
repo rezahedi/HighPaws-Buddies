@@ -6,13 +6,14 @@ import { db } from '@/firebase';
 import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
 import { Followers, Following, FollowRequest } from '@/components/profile';
+import { useAuth } from '@/providers/auth';
 
 export default function Profile() {
   
   // TODO: Get state passed by Link to make a profile page until profile's data is fetched
   // const { state } = useLocation() or
   // const { state } = props.location
-
+  const { profile: loggedInProfile } = useAuth()
   const [profile, setProfile] = useState<profileProp | null>(null)
   const [posts, setPosts] = useState<postProp[]>([])
   const [profileLoading, setProfileLoading] = useState<boolean>(true)
@@ -76,7 +77,7 @@ export default function Profile() {
             <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
           </figure>
           <h2>{profile.name}</h2>
-          <FollowRequest to={profile} />
+          {loggedInProfile && loggedInProfile.id !== profile.id && <FollowRequest to={profile} />}
         </section>
         <section className="stats">
           <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
