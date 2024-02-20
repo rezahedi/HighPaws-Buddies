@@ -1,12 +1,35 @@
 import { useAuth } from '@/providers/auth';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { db } from '@/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { Notifications } from '@/components';
+import '@/styles/Header.css'
 
 export default function Header() {
 
   const { authUser, profile, error, loading, logout } = useAuth()
+  const [notificationStats, setNotificationStats] = useState<number>(0)
+  const [showNotifications, setShowNotifications] = useState<boolean>(false)
+
+  useEffect(() => {
+    if( !authUser || !profile ) return
+
+    const notificationStatsDocRef = doc(db, `profiles/${profile.id}/notifications/stats`)
+    const unsubscribe = onSnapshot(notificationStatsDocRef, (doc) => {
+      // get notification stats { unseen: number }
+      if( !doc.exists() ) return setNotificationStats(0)
+      setNotificationStats( doc.data().unseen || 0 )
+    })
+    return () => unsubscribe()
+  }, [profile, authUser])
+
+  const handleNotifications = () => {
+    setShowNotifications(!showNotifications)
+  }
 
   return (
-    <div style={{border:'1px solid #666', padding:'20px', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+    <header>
       <h1><Link to='/'>HighPaws</Link></h1>
       {authUser && <Link to="/new">New Post</Link>}
       <div>
@@ -16,6 +39,12 @@ export default function Header() {
             {error && <p>{error}</p>}
             {profile && <>
               <Link to={`/${profile.id}`}>{profile.name}</Link><br />
+              <div className='notification'>
+                <button onClick={handleNotifications}>
+                  Notifications <sup>{notificationStats}</sup>
+                </button>
+                {showNotifications && <Notifications profileId={profile.id} />}
+              </div>
               {authUser?.email}<br />
               <button onClick={logout}>Logout</button>
             </>}
@@ -27,6 +56,6 @@ export default function Header() {
           </>
         }
       </div>
-    </div>
+    </header>
   )
 }

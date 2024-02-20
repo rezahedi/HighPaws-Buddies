@@ -104,3 +104,30 @@ export function returnCommentProp(doc: DocumentSnapshot): commentProp {
     name: doc.data().name,
   }
 }
+
+/**
+ * Notifications
+ */
+export type newNotificationProp = {
+  message: string;
+  link: string;
+  published_at: Timestamp;
+  seen: boolean;
+  archived: boolean;
+};
+
+export type notificationProp = newNotificationProp & {
+  id: string;
+}
+
+export function returnNotificationProp(doc: DocumentSnapshot): notificationProp {
+  if( !doc.exists() ) return {} as notificationProp
+  return {
+    id: doc.id,
+    message: doc.data().message,
+    link: doc.data().link,
+    published_at: doc.data().published_at,
+    seen: doc.data().seen,
+    archived: doc.data().archive,
+  }
+}

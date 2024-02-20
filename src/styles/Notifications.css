@@ -1,0 +1,42 @@
+.notificationsList{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.notificationsList>div{
+  border: 1px solid #666;
+  padding: 20px;
+}
+.notificationsList .item{
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+  align-items: center;
+}
+.notificationsList .item p{
+  font-weight: bold;
+  font-size: 1rem;
+  color: #000;
+  margin: 0;
+}
+.notificationsList .item>div:hover p{
+  color: #007bff;
+  text-decoration: underline;
+}
+.notificationsList .item time{
+  font-size: 0.8rem;
+  color: #666;
+}
+.notificationsList .item>div{
+  cursor: pointer;
+}
+
+.notificationsList .seen{
+  background-color: transparent;
+}
+.notificationsList .seen p{
+  font-weight: normal;
+}
