@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import '@/styles/Profile.css'
 import { Header, Post } from "@/components"
 import { db } from '@/firebase';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
 import { Followers, Following, FollowRequest } from '@/components/profile';
 
@@ -37,7 +37,11 @@ export default function Profile() {
   // Get user posts from /profiles/:userHandler/posts
   useEffect(() => {
     // get user posts from /profiles/:userHandler/posts
-    const unsubscribe = onSnapshot(collection(db, `profiles/${userHandler}/posts`), (snapshot) => {
+    const unsubscribe = onSnapshot(query(
+      collection(db, `profiles/${userHandler}/posts`),
+      orderBy('published_at', 'desc'),
+      limit(10)
+    ), (snapshot) => {
       const docs: postProp[] = snapshot.docs.map( doc => returnPostProp(doc) )
       setPosts(docs)
       setPostsLoading(false)
