@@ -222,11 +222,15 @@ export const notifyOwnerNewComment = onDocumentCreated(`profiles/{profileId}/pos
 
   const profileId = event.params.profileId;
   const postId = event.params.postId;
+  const commentData = commentDoc.data();
 
   const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
   const notification = {
-    message: `${profileId} comment on your post`,
+    message: `${commentData.name} commented on your post`,
     link: `/${profileId}/${postId}#${commentDoc.id}`,
+    profile_id: commentData.profile_id,
+    avatar: commentData.avatar,
+    name: commentData.name,
     seen: false,
     archived: false,
     published_at: FieldValue.serverTimestamp(),
@@ -236,13 +240,20 @@ export const notifyOwnerNewComment = onDocumentCreated(`profiles/{profileId}/pos
 
 // Notify post's owner for each new like added
 export const notifyOwnerNewLike = onDocumentCreated(`profiles/{profileId}/posts/{postId}/likes/{likeId}`, (event) => {
+  const likeDoc = event.data;
+  if (!likeDoc) return
+
   const profileId = event.params.profileId;
   const postId = event.params.postId;
+  const likeData = likeDoc.data();
 
   const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
   const notification = {
-    message: `${profileId} liked your post`,
+    message: `${likeData.name} liked your post`,
     link: `/${profileId}/${postId}`,
+    profile_id: likeData.id,
+    avatar: likeData.avatar,
+    name: likeData.name,
     seen: false,
     archived: false,
     published_at: FieldValue.serverTimestamp(),
@@ -252,13 +263,20 @@ export const notifyOwnerNewLike = onDocumentCreated(`profiles/{profileId}/posts/
 
 // Notify user for each new follower
 export const notifyUserNewFollower = onDocumentCreated(`profiles/{profileId}/followers/{followerId}`, (event) => {
+  const followerDoc = event.data;
+  if (!followerDoc) return
+
   const profileId = event.params.profileId;
   const followerId = event.params.followerId;
+  const followerData = followerDoc.data();
 
   const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
   const notification = {
-    message: `${followerId} started following you`,
+    message: `${followerData.name} started following you`,
     link: `/${followerId}`,
+    profile_id: followerDoc.id,
+    avatar: followerData.avatar,
+    name: followerData.name,
     seen: false,
     archived: false,
     published_at: FieldValue.serverTimestamp(),
@@ -290,6 +308,7 @@ export const markNotificationAsSeen = onDocumentUpdated(`profiles/{profileId}/no
   const notificationDoc = event.data;
   if (!notificationDoc) return
 
+  // Unseen decrease
   const profileId = event.params.profileId;
   if ( notificationDoc.after.data().seen === true && notificationDoc.before.data().seen === false ) {
     const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
@@ -298,6 +317,7 @@ export const markNotificationAsSeen = onDocumentUpdated(`profiles/{profileId}/no
     });
   }
 
+  // Archived increase
   if ( notificationDoc.after.data().archived === true && notificationDoc.before.data().archived === false ){
     const notificationStatsRef = db.doc(`profiles/${profileId}/notifications/stats`);
     notificationStatsRef.update({
