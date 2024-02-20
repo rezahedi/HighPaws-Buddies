@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "@/providers/auth"
 import { db } from "@/firebase"
-import { onSnapshot, doc, updateDoc, increment, setDoc, deleteDoc } from 'firebase/firestore';
+import { onSnapshot, doc, writeBatch } from 'firebase/firestore';
 import { profileProp } from "@/types/firestore";
 
 export default function FollowRequest( {to}: {to: profileProp} ) {
@@ -9,6 +9,8 @@ export default function FollowRequest( {to}: {to: profileProp} ) {
   const [loading, setLoading] = useState<boolean>(false)
   const [followed, setFollowed] = useState<boolean>(false)
   const { profile } = useAuth()
+
+  // TODO: Check if open profile is the same as the logged in user
 
   // TODO: Check if following already, if so, show unfollow button
   useEffect(() => {
@@ -36,22 +38,18 @@ export default function FollowRequest( {to}: {to: profileProp} ) {
     console.log(`Send follow request from ${profile.name} to ${to.name}`)
 
     // TODO: This following write/updates should be in a cloud function
-    // TODO: Or in a transaction or batch writes to avoid partial writes
-    // create new document in /profiles/:profile.id/following/:to.id
-    await setDoc(doc(db, `profiles/${profile.id}/following/${to.id}`), {
+    const batch = writeBatch(db)
+    // Add followed user to currentUser's following list
+    batch.set( doc(db, `profiles/${profile.id}/following/${to.id}`), {
       name: to.name,
       avatar: to.avatars.buddy,
-    }).then( async () => {
-      // create new document in /profiles/:to.id/followers/:profile.id
-      await setDoc(doc(db, `profiles/${to.id}/followers/${profile.id}`), {
-        name: profile.name,
-        avatar: profile.avatars.buddy,
-      }).then( async () => {
-        // Increase stats followers/following count
-        await updateDoc( doc(db, `profiles/${to.id}`), { "stats.followers": increment(1) } )
-        await updateDoc( doc(db, `profiles/${profile.id}`), { "stats.following": increment(1) } )
-      })
     })
+    // Add currentUser to user's followers list
+    batch.set( doc(db, `profiles/${to.id}/followers/${profile.id}`), {
+      name: profile.name,
+      avatar: profile.avatars.buddy,
+    })
+    await batch.commit()
 
     setLoading(false)
   }
@@ -61,16 +59,12 @@ export default function FollowRequest( {to}: {to: profileProp} ) {
     setLoading(true)
 
     // TODO: This following write/updates should be in a cloud function
-    // TODO: Or in a transaction or batch writes to avoid partial writes
-    // Delete document in /profiles/:profile.id/following/:to.id
-    await deleteDoc( doc(db, `profiles/${profile.id}/following/${to.id}`) ).then( async () => {
-      // Delete document in /profiles/:to.id/followers/:profile.id
-      await deleteDoc( doc(db, `profiles/${to.id}/followers/${profile.id}`) ).then( async () => {
-        // Decrease stats followers/following count
-        await updateDoc( doc(db, `profiles/${to.id}`), { "stats.followers": increment(-1) } )
-        await updateDoc( doc(db, `profiles/${profile.id}`), { "stats.following": increment(-1) } )
-      })
-    })
+    const batch = writeBatch(db)
+    // Delete user from currentUser's following list
+    batch.delete( doc(db, `profiles/${profile.id}/following/${to.id}`) )
+    // Delete from user's followers list
+    batch.delete( doc(db, `profiles/${to.id}/followers/${profile.id}`) )
+    await batch.commit()
     
     setLoading(false)
   }
