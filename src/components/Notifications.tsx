@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { db } from '@/firebase';
 import { collection, doc, orderBy, limit, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { notificationProp, returnNotificationProp } from '@/types/firestore';
@@ -44,6 +44,12 @@ export default function Notifications( { profileId }: { profileId: string } ) {
         {loading && <p>Loading notifications ...</p>}
         {notifications.map((notification, index) =>
           <div key={index} className={`item ${notification.seen ? `seen` : ``}`}>
+            <div>
+              <Link to={`/${notification.profile_id.id}`} className='avatar'>
+                <img src={notification.avatar} alt={notification.name} />
+                {notification.name}
+              </Link>
+            </div>
             <div onClick={()=>handleSeenAction(notification)}>
               <p>{notification.message}</p>
               <time>

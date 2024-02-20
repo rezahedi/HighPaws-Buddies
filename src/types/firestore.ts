@@ -111,6 +111,9 @@ export function returnCommentProp(doc: DocumentSnapshot): commentProp {
 export type newNotificationProp = {
   message: string;
   link: string;
+  profile_id: DocumentReference;
+  avatar: string;
+  name: string;
   published_at: Timestamp;
   seen: boolean;
   archived: boolean;
@@ -126,6 +129,9 @@ export function returnNotificationProp(doc: DocumentSnapshot): notificationProp 
     id: doc.id,
     message: doc.data().message,
     link: doc.data().link,
+    profile_id: doc.data().profile_id,
+    avatar: doc.data().avatar,
+    name: doc.data().name,
     published_at: doc.data().published_at,
     seen: doc.data().seen,
     archived: doc.data().archive,
