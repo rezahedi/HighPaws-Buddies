@@ -29,15 +29,19 @@ export default {
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
+
 ## Roadmap
+
 - [x] Create NewPost page or component, so I can add fake data
 - [ ] Use Firebase Storage to upload Images and Videos
 - [x] Implement Firebase authentication
 - [x] Use Firebase Functions to fanout data
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
 - [x] Create a modal dialog to show followers, following
-- [ ] Figure out like logic
+- [x] Figure out `like/unlike` logic
 - [ ] Notifications subcollection /profiles/{profileId}/notifications/ for likes, comments, and follows or for specified followed users
+- [ ] Find a way to optimize stats fanout to scale, maybe throttling the fanout!
+
 
 ## Firebase Emulators for local development
 
