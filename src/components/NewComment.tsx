@@ -35,11 +35,6 @@ export default function NewComment({postId, profileId}: {postId: string, profile
       return console.error('Error adding document: ', docRef.id)
     }
 
-    // TODO: if comment added or removed, +1 or -1 to post.stats.comments count
-    // TODO: +1 or -1 is easier to do on the cloud function that listens to the comments collection for add or remove doc
-    const postRef = doc(db, `profiles/${profileId}/posts/${postId}`)
-    await updateDoc(postRef, { "stats.comments": increment(1) })
-
     formRef.current!.reset()
   }
 

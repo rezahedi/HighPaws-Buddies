@@ -2,7 +2,7 @@
 import {
   // onDocumentWritten,
   onDocumentCreated,
-  // onDocumentUpdated,
+  onDocumentUpdated,
   onDocumentDeleted,
   // Change,
   // FirestoreEvent,
@@ -119,5 +119,53 @@ export const unfanoutPost = onDocumentDeleted(`profiles/{profileId}/posts/{postI
       bulkWriter.delete(followerFeedRef);
     });
     bulkWriter.close();
+  });
+})
+
+// fanout post's stats fields update only to followers feed
+export const updateFanoutPost = onDocumentUpdated(`profiles/{profileId}/posts/{postId}`, (event) => {
+  const postDoc = event.data;
+  if (!postDoc) return
+
+  const beforeData = postDoc.before.data();
+  const afterData = postDoc.after.data();
+  if (beforeData === undefined || afterData === undefined) return
+
+  if(beforeData.stats.likes === afterData.stats.likes && beforeData.stats.comments === afterData.stats.comments) return
+
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+  const followersRef = db.collection(`profiles/${profileId}/followers`);
+  followersRef.get().then((querySnapshot) => {
+    const bulkWriter = db.bulkWriter()
+    querySnapshot.forEach((doc) => {
+      const followerId = doc.id;
+      const followerFeedRef = db.doc(`profiles/${followerId}/feed/${postId}`);
+      bulkWriter.update(followerFeedRef, {
+        "stats": afterData.stats
+      });
+    });
+    bulkWriter.close();
+  });
+})
+
+
+// Update post stats when a new comment is added
+export const increasePostCommentStat = onDocumentCreated(`profiles/{profileId}/posts/{postId}/comments/{commentId}`, (event) => {
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+  const profileRef = db.doc(`profiles/${profileId}/posts/${postId}`);
+  profileRef.update({
+    "stats.comments": FieldValue.increment(1),
+  });
+})
+
+// Update post stats when a comment is deleted
+export const decreasePostCommentStat = onDocumentDeleted(`profiles/{profileId}/posts/{postId}/comments/{commentId}`, (event) => {
+  const profileId = event.params.profileId;
+  const postId = event.params.postId;
+  const profileRef = db.doc(`profiles/${profileId}/posts/${postId}`);
+  profileRef.update({
+    "stats.comments": FieldValue.increment(-1),
   });
 })
