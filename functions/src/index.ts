@@ -224,6 +224,9 @@ export const notifyOwnerNewComment = onDocumentCreated(`profiles/{profileId}/pos
   const postId = event.params.postId;
   const commentData = commentDoc.data();
 
+  // Do nothing if comment is from the post's owner
+  if (commentData.profile_id.id === profileId) return
+
   const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
   const notification = {
     message: `${commentData.name} commented on your post`,
@@ -246,6 +249,9 @@ export const notifyOwnerNewLike = onDocumentCreated(`profiles/{profileId}/posts/
   const profileId = event.params.profileId;
   const postId = event.params.postId;
   const likeData = likeDoc.data();
+  
+  // Do nothing if like is from the post's owner
+  if (likeData.id.id === profileId) return
 
   const notificationsCollectionRef = db.collection(`profiles/${profileId}/notifications`);
   const notification = {
