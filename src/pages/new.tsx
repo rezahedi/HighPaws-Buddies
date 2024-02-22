@@ -4,31 +4,55 @@
 
 import { newPostProp } from "@/types/firestore"
 import { doc, addDoc, collection, Timestamp } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { db, storage } from '@/firebase'
+import { ref, uploadBytes, uploadString, getDownloadURL } from 'firebase/storage'
 import '@/styles/New.css'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
 import { Header } from "@/components"
-import { useEffect } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 export default function New() {
 
   const navigate = useNavigate()
   const { profile } = useAuth()
+  const [image, setImage] = useState<{name: string, blob: string} | undefined>()
+  const maxSize2MB = 2097152
 
   useEffect(() => {
     if( profile === null ) return navigate('/login')
   }, [profile])
 
+  useEffect(() => {
+    console.log("image:", image)
+  }, [image])
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if( profile === null ) return null
 
-    // TODO: Sanitize data
     const formData: FormData = new FormData(e.currentTarget)
+    let imageURL = ''
+
+    // TODO: Handle image resize and compression in the client
+
+    // Handle image upload to Firebase Storage
+    if ( image !== undefined ){
+      // TODO: Upload image blob `image` to Firebase Storage with a randon hash as filename
+      const storageRef = ref(storage, 'images/' + image.name)
+      // const snapshot = await uploadBytes(storageRef, Buffer.from(image.blob))
+      const snapshot = await uploadString(storageRef, image.blob, 'data_url')
+      
+      await getDownloadURL(snapshot.ref).then((downloadURL) => {
+        console.log('File available at', downloadURL);
+        imageURL = downloadURL
+      });
+    }
+
+    // TODO: Sanitize data
     const newPost: newPostProp = {
       title: formData.get('title') as string,
-      media_url: formData.get('media_url') as string,
+      media_url: imageURL,
       location: formData.get('location') as string,
       profile_detail: {
         avatar_url: profile.avatars.buddy ?? '',
@@ -49,6 +73,28 @@ export default function New() {
     navigate('/')
   }
 
+  const onDrop = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const acceptedFiles = e.target.files
+
+    if(acceptedFiles && acceptedFiles.length > 0) {
+      let file = acceptedFiles[0]
+      if( !file ) return
+
+      if ( file.size > maxSize2MB ) {
+        console.error("File size too big (max 2MB)");
+      } else {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setImage({
+            name: file.name,
+            blob: event.target?.result as string
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }, [])
+
   return (
     <>
       <Header />
@@ -59,8 +105,8 @@ export default function New() {
           <input name="title" type="text" placeholder="Title" />
         </label>
         <label>
-          <div>Media URL:</div>
-          <input name="media_url" type="text" defaultValue={`https://fakeimg.pl/400x250/C4B8E4?text=${profile.name}`} />
+          <div>File Upload:</div>
+          <input type="file" onChange={(e) => onDrop(e)} />
         </label>
         <label>
           <div>Location:</div>
