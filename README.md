@@ -1,36 +1,13 @@
-# React + TypeScript + Vite
+# A cool project about our furry buddies!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I'm going to build a social media app for our lovely buddies 🐕‍🦺, our dogs. It comes to my mind when I was walking puppy Bjørn to the dog park for a playdate. I was wondering are there bigger dogs in the park, or is it allowed for off-leash play? I thought it would be cool to have an app where I can check the dog parks, see other dogs, and any useful information related to our friends. I'm going to build this app and share the journey with you. I hope it come out as I imagine it. 😀🤞
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+I'm using Vite, React, TypeScript, and Firebase tech stacks for Auth, database and CDN.
 
 
 ## Roadmap
+
+I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm going to update this section as I go. Here are some of the things I'm going to do:
 
 - [x] Create NewPost page or component, so I can add fake data
 - [ ] Use Firebase Storage to upload Images and Videos
@@ -41,11 +18,13 @@ export default {
 - [x] Figure out `like/unlike` logic
 - [ ] Notifications subcollection /profiles/{profileId}/notifications/ for likes, comments, and follows or for specified followed users
 - [ ] Find a way to optimize stats fanout to scale, maybe throttling the fanout!
+- [ ] Code splitting and lazy loading components for better performance
+- [ ] Security: Firebase Rules, Forms validation, and error handling
 
 
 ## Firebase Emulators for local development
 
-Used Firebase emulators for local development and to persist data in the Firestore and Auth emulators I used export import approuch.
+Used Firebase emulators for local development and to persist data in the Firestore, Auth & Storage emulators I used export import approuch.
 
 To export/import data in `/firebase-export` I used the following commands and added them to the `package.json` scripts section for easy access.
 
@@ -56,3 +35,5 @@ To export/import data in `/firebase-export` I used the following commands and ad
   }
 }
 ```
+
+Any contributions are welcome! 🙏
