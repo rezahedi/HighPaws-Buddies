@@ -72,6 +72,9 @@ export default function New() {
       });
     }
 
+    if( !imageUploadedURL )
+      return console.error("Error uploading image, try again.")
+
     // TODO: Sanitize data
     const newPost: newPostProp = {
       title: formData.get('title') as string,
