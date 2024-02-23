@@ -37,7 +37,7 @@ export default function NewComment({postId, profileId}: {postId: string, profile
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)} ref={formRef}>
+    <form onSubmit={(e) => handleSubmit(e)} ref={formRef} className='newComment'>
       <div>
         <img src={profile.avatars.buddy} alt={profile.name} />
         {profile.name}
