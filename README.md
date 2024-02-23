@@ -20,7 +20,13 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Find a way to optimize stats fanout to scale, maybe throttling the fanout!
 - [ ] Code splitting and lazy loading components for better performance
 - [ ] Security: Firebase Rules, Forms validation, and error handling
-
+- [ ] Reply to comments, or nested comments, notifications
+- [ ] Multiple images upload, and carousel for the post
+- [ ] Video upload and play in the post
+- [ ] Post types: Lost and Found, Adoption, Playdate, Poll, and General
+- [ ] Groups [Packs]
+- [ ] Chat
+- [ ] Places and Businesses with geo queries
 
 ## Firebase Emulators for local development
 
