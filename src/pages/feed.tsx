@@ -37,8 +37,8 @@ export default function Feed() {
     <>
       <Header />
       {loading && <p>Loading...</p>}
-      {posts.map((post, index) =>
-        <Post key={index} post={post} />
+      {posts.map((post) =>
+        <Post key={post.id} post={post} />
       )}
     </>
   )

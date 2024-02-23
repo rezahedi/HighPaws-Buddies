@@ -100,8 +100,8 @@ export default function Profile() {
         </>
         }
         {postsLoading && <p>Loading posts skeleton ...</p>}
-        {posts && posts.map((post, index) => (
-          <Post key={index} post={post} />
+        {posts && posts.map((post) => (
+          <Post key={post.id} post={post} />
         ))}
       </div>
     </>
