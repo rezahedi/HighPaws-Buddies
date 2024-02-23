@@ -9,17 +9,27 @@ import { useAuth } from '@/providers/auth';
 // TODO: Lazy load the Comments component when user clicks to show comments
 import { Comments } from '@/components'
 
-export default function Post({ post, showComment = false }: { post: postProp, showComment?: boolean}) {
+export default function Post(
+  { post, showComment = false, onDelete }:
+  { post: postProp, showComment?: boolean, onDelete?: (postId: string) => void}
+) {
   const { profile } = useAuth()
   const [liked, setLiked] = useState<number>(0)
   const [showComments, setShowComments] = useState<boolean>(showComment)
+  const [deletable, setDeletable] = useState<boolean>(false)
+  const [deleting, setDeleting] = useState<boolean>(false)
 
   useEffect(() => {
-    // TODO: check if loggedin user has liked the post
+    if (profile === null) return
+
     if (post.liked) setLiked(1)
 
-    // Actually, We can save liked state in the posts in the feed subcollection for each user
-    // ex: /profiles/:profileId/feed/:postId { liked: true/false } means :profileId has liked the post or not
+    // TODO: check if loggedin user has liked the post
+    // TODO: Liked posts other than in user's feed, should get the liked status from the post's likes subcollection
+    // But to check each post's likes subcollection for each post in the feed is not efficient
+
+    // Check if the post is loggedin user's post and mark it as deletable
+    if (post.profile_id.id === profile.id) setDeletable(true)
   }, [])
 
   // TODO: Pass the profile details that I have from the post
@@ -75,6 +85,17 @@ export default function Post({ post, showComment = false }: { post: postProp, sh
     setShowComments(true)
   }
 
+  const handleDeleteAction = async () => {
+    if (!deletable) return;
+    if ( profile === null ) return;
+    if ( profile.id !== post.profile_id.id ) return;
+
+    setDeleting(true)
+    if( onDelete ) onDelete(post.id)
+    const docRef = doc(db, `profiles/${profile.id}/posts/${post.id}`)
+    await deleteDoc(docRef)
+  }
+
   return (
     <article className={`post ${addLikeClass()}`}>
       <header>
@@ -85,6 +106,8 @@ export default function Post({ post, showComment = false }: { post: postProp, sh
           </Link>
         }
         <h3>{post.title}</h3>
+        {deletable && !deleting && <button onClick={handleDeleteAction} className='deleteBtn'>Delete</button>}
+        {deleting && <p>Deleting...</p>}
       </header>
       <div>
         <figure>
