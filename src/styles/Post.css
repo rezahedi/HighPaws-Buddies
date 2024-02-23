@@ -31,6 +31,9 @@
   gap: 20px;
   align-items: center;
 }
+.post header h3{
+  flex-grow: 1;
+}
 .user{
   display: flex;
   flex-direction: column;
