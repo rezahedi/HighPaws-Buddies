@@ -1,8 +1,46 @@
-.newpost{
+.newPost{
+  width: 600px;
+  padding: 10px;
+  margin: 10px auto;
+}
+.newPost form{
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 600px;
+  align-items: end;
+}
+.newPost main{
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.newPost form>button{
+  padding: 8px 20px;
+  cursor: pointer;
+}
+.newPost .text{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: start;
+}
+.text .avatar{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.text textarea{
+  padding: 10px;
+  resize: none;
+  width: 100%;
+  height: auto;
+  font-size: 1rem;
+  border:none
 }
 .newpost label{
   display: flex;
@@ -15,4 +53,35 @@
   border-radius: 5px;
   border: 1px solid #ccc;
   flex-grow: 1;
+}
+.dragArea{
+  width: 100%;
+  aspect-ratio: 10/3;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.dragEnter{
+  border-color:#000;
+}
+.cropArea{
+  position:relative;
+}
+.cropArea .remove{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.cropArea .location{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
 }
