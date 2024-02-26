@@ -10,7 +10,7 @@ I'm using Vite, React, TypeScript, and Firebase tech stacks for Auth, database a
 I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm going to update this section as I go. Here are some of the things I'm going to do:
 
 - [x] Create NewPost page or component, so I can add fake data
-- [ ] Use Firebase Storage to upload Images and Videos
+- [x] Use Firebase Storage to upload Images and Videos
 - [x] Implement Firebase authentication
 - [x] Use Firebase Functions to fanout data
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
