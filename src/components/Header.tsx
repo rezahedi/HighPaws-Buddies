@@ -31,7 +31,12 @@ export default function Header() {
 
   return (
     <header className='nav'>
-      <h1><Link to='/'>HighPaws</Link></h1>
+      <h1>
+        <Link to='/' className='flex items-center gap-2 text-2xl font-bold'>
+          <img src="./logo.png" alt="HighPaws Logo" width="50" height="50" />
+          HighPaws
+        </Link>
+      </h1>
       {authUser && <Link to="/new">New Post</Link>}
       <div>
         {loading && <p>Loading...</p>}
