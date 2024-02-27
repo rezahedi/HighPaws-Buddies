@@ -126,24 +126,34 @@ export default function Signup() {
   }
 
   return (
-    <main>
-      <div className='step'>{currentStepIndex + 1} / {steps.length}</div>
-      <form onSubmit={signupWithEmailPassword}>
-        {isLastStep &&
-        <>
-          <button onClick={signupWithGoogleAccount} disabled={loading}>Sign Up With Google</button>
-          <p>or</p>
-        </>}
-        {step}
-        <div className='actions'>
-          <button type='button' onClick={resetForm}>Reset</button>
-          {!isFirstStep && <button type='button' onClick={previous}>Previous</button>}
-          <button type='submit' disabled={loading}>{isLastStep ? `Signup` : `Next`}</button>
+    <div className="signup">
+      <div className="left">
+        <div className="header">
+          <Link to="/">
+            <img src="./logo.png" alt="HighPaws Logo" loading="lazy" width="80" height="80" decoding="async" />
+          </Link>
+          <h3>Sign in to HighPaws</h3>
+          <p>Start your journey with us</p>
         </div>
-      </form>
-      <div>
-        Already have an account? <Link to="/login">Log In</Link>
+        <form onSubmit={signupWithEmailPassword}>
+          <div className='step'>{currentStepIndex + 1} / {steps.length}</div>
+          {isLastStep &&
+          <>
+            <button onClick={signupWithGoogleAccount} disabled={loading} className="google primary">Sign Up With Google</button>
+            <p>or</p>
+          </>}
+          {step}
+          <div className='actions'>
+            <button type='button' onClick={resetForm}>Reset</button>
+            {!isFirstStep && <button type='button' onClick={previous}>Previous</button>}
+            <button type='submit' className="primary">{!isLastStep ? `Next` : `Signup`}</button>
+          </div>
+          <p>Already have an account? <Link to="/login">Log In</Link></p>
+        </form>
       </div>
-    </main>
+      <div className="banner">
+        <p>Photo by <a href="https://unsplash.com/@dynamicwang?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Dynamic Wang</a></p>
+      </div>
+    </div>
   );
 }

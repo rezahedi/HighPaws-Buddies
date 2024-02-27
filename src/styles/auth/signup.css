@@ -1,20 +1,45 @@
 .signup{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #000;
-  border-radius: 5px;
+  @apply my-[calc(10vh)] h-fit min-h-96 w-full sm:max-w-4xl overflow-hidden border-y border-gray-200 sm:rounded-2xl sm:border sm:shadow-xl flex mx-auto
 }
-label{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+.signup>div{
+  @apply w-full
 }
-input{
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  flex-grow: 1;
+.signup .banner{
+  @apply hidden sm:flex bg-[url('/signup.jpg')] bg-cover bg-center items-end
+}
+.banner p{
+  @apply text-gray-800 text-xs px-4 py-2
+}
+.header{
+  @apply flex flex-col items-center justify-center space-y-1 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16
+}
+.header img{
+  @apply size-16
+}
+.header h3{
+  @apply text-xl font-semibold
+}
+.header p{
+  @apply text-sm text-gray-500
+}
+.left form{
+  @apply space-y-2 px-16 py-10
+}
+.left label{
+  @apply flex flex-col items-start gap-1 text-sm
+}
+.left label .error{
+  @apply text-red-500 text-xs italic
+}
+.step{
+  @apply flex justify-end gap-1 text-sm text-gray-500
+}
+.actions{
+  @apply py-2 space-x-2 text-end
+}
+.left form p{
+  @apply text-sm text-gray-500 text-center
+}
+.google{
+  @apply border-gray-300 w-full
 }

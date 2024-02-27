@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input, select, textarea{
+  @apply p-2 rounded-md border border-gray-300 w-full;
+}
+
+a:hover{
+  @apply underline;
+}
+
+button{
+  @apply px-6 py-2 rounded-md border border-gray-300 transition-all duration-100;
+}
+button:hover{
+  @apply bg-gray-100 border-gray-400;
+}
+
+button:active{
+  @apply scale-95
+}
+
+button.primary{
+  @apply bg-[#d56a34]/90 text-[#3f170e];
+}
+
+button.primary:hover{
+  @apply bg-[#d56a34];
+}
+
+.feed{
+  @apply w-full sm:max-w-4xl;
+}
