@@ -13,11 +13,11 @@ a:hover{
 button{
   @apply px-6 py-2 rounded-md border border-gray-300 transition-all duration-100;
 }
-button:hover{
+button:hover:not(:disabled){
   @apply bg-gray-100 border-gray-400;
 }
 
-button:active{
+button:active:not(:disabled){
   @apply scale-95
 }
 
@@ -25,7 +25,7 @@ button.primary{
   @apply bg-[#d56a34]/90 text-[#3f170e];
 }
 
-button.primary:hover{
+button.primary:hover:not(:disabled){
   @apply bg-[#d56a34];
 }
 
