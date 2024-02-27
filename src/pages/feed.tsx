@@ -37,9 +37,11 @@ export default function Feed() {
     <>
       <Header />
       {loading && <p>Loading...</p>}
-      {posts.map((post) =>
-        <Post key={post.id} post={post} />
-      )}
+      <div className='feed'>
+        {posts.map((post) =>
+          <Post key={post.id} post={post} />
+        )}
+      </div>
     </>
   )
 }

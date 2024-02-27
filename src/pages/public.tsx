@@ -31,9 +31,11 @@ export default function Public() {
     <>
       <Header />
       {loading && <p>Loading...</p>}
-      {posts.map((post, index) =>
-        <Post key={index} post={post} />
-      )}
+      <div className='feed'>
+        {posts.map((post, index) =>
+          <Post key={index} post={post} />
+        )}
+      </div>
     </>
   )
 }
