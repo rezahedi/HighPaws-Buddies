@@ -25,7 +25,7 @@ button:active:not(:disabled){
 }
 
 button.primary{
-  @apply bg-[#d56a34]/90 text-[#3f170e];
+  @apply bg-[#d56a34]/90 border-none text-[#3f170e];
 }
 
 button.primary:hover:not(:disabled){
@@ -33,5 +33,78 @@ button.primary:hover:not(:disabled){
 }
 
 .feed{
-  @apply w-full sm:max-w-4xl;
+  @apply w-full sm:max-w-2xl mx-auto border-l border-r border-gray-300 divide-y divide-gray-300;
+}
+
+.post{
+  @apply p-5 bg-white flex flex-col gap-5;
+}
+.post figure{
+  @apply m-0 p-0;
+}
+.post figure img{
+  @apply w-full rounded-md cursor-pointer
+}
+.post figure div{
+  display: flex;
+  justify-content: space-between;
+}
+.post figure p{
+  margin: 0;
+  padding: 0;
+  font-size: small;
+  font-style: italic;
+}
+.post header{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.post header h3{
+  flex-grow: 1;
+}
+.user{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.post footer{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.post.liked figure img{
+  animation: like 0.3s;
+}
+.post.unliked figure img{
+  animation: unlike 0.3s;
+}
+
+@keyframes like{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+@keyframes unlike{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(0.9);
+  }
+  100%{
+    transform: scale(1);
+  }
 }

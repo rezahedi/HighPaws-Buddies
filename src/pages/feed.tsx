@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Header, Post } from '@/components';
+import { Header, Post, SidebarNav, SidebarBanners } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
+import { NewPost } from '@/components';
 
 export default function Feed() {
 
   const navigate = useNavigate()
-  const { profile } = useAuth()
+  const { profile, loading: authLoading } = useAuth()
   const [posts, setPosts] = useState<postProp[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if( authLoading ) return
     if( profile === null ) return navigate('/login')
 
     // snapshot listener to get real-time updates from the firestore posts collection with where filter for public posts
@@ -33,14 +35,21 @@ export default function Feed() {
     return () => unsubscribe();
   }, [profile]);
 
+  if( profile === null ) return navigate('/login')
+
   return (
     <>
       <Header />
-      {loading && <p>Loading...</p>}
-      <div className='feed'>
-        {posts.map((post) =>
-          <Post key={post.id} post={post} />
-        )}
+      <div className='container max-w-7xl flex'>
+        <SidebarNav />
+        <div className='feed'>
+          <NewPost profile={profile} />
+          {loading && <p>Loading...</p>}
+          {posts.map((post) =>
+            <Post key={post.id} post={post} />
+          )}
+        </div>
+        <SidebarBanners />
       </div>
     </>
   )

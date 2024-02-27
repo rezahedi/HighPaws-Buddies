@@ -99,8 +99,8 @@ export default function Profile() {
         </section>
         </>
         }
-        {postsLoading && <p>Loading posts skeleton ...</p>}
         <div className='feed'>
+          {postsLoading && <p>Loading posts skeleton ...</p>}
           {posts && posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}

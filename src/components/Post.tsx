@@ -1,4 +1,3 @@
-import '@/styles/Post.css'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { postProp } from '@/types/firestore'
