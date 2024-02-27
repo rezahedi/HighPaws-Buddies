@@ -1,5 +1,5 @@
 .authCard{
-  @apply my-[calc(10vh)] w-full overflow-hidden border-y border-gray-200 sm:rounded-2xl sm:border sm:shadow-xl flex mx-auto
+  @apply bg-white my-[calc(10vh)] w-full overflow-hidden border-y border-gray-200 sm:rounded-2xl sm:border sm:shadow-xl flex mx-auto
 }
 .signup{
   @apply min-h-[790px] sm:max-w-4xl
@@ -17,7 +17,7 @@
   @apply text-gray-800 text-xs px-4 py-2
 }
 .header{
-  @apply flex flex-col items-center justify-center space-y-1 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16
+  @apply flex flex-col items-center justify-center space-y-1 border-b border-gray-200 px-4 py-6 pt-8 text-center sm:px-16
 }
 .header img{
   @apply size-16
