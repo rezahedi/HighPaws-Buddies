@@ -1,6 +1,7 @@
 import { useAuth } from '@/providers/auth'
 import { useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import '@/styles/auth/global.css'
 
 export default function Login() {
 	const emailRef = useRef<HTMLInputElement | null>(null)
@@ -22,29 +23,35 @@ export default function Login() {
 	}
 
   return (
-    <div className='login'>
-      <h2>Log In</h2>
-      {error && <p>{error}</p>}
-      {loading && <p>Loading...</p>}
-      <button onClick={loginWithGoogle} disabled={loading}>Sign In With Google</button>
-      <p>or</p>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input type='email' ref={emailRef} required />
-        </label>
-        <label>
-          Password
-          <input type='password' ref={passwordRef} required />
-        </label>
-        <button disabled={loading} type='submit'>
-          Log In
-        </button>
-      </form>
-      <Link to="/forgot-password">Forgot Password?</Link>
-			<div>
-				Need an account? <Link to="/signup">Sign Up</Link>
-			</div>
+    <div className='login authCard'>
+      <div className='main'>
+        <div className="header">
+          <Link to="/">
+            <img src="./logo.png" alt="HighPaws Logo" loading="lazy" width="80" height="80" decoding="async" />
+          </Link>
+          <h3>Login to HighPaws</h3>
+          <p>Check out what your friends are up to</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          {error && <p>{error}</p>}
+          {loading && <p>Loading...</p>}
+          <button onClick={loginWithGoogle} disabled={loading} className='google primary'>Sign In With Google</button>
+          <p>or</p>
+          <label>
+            Email:
+            <input type='email' ref={emailRef} required />
+          </label>
+          <label>
+            Password:
+            <input type='password' ref={passwordRef} required />
+          </label>
+          <div className='actions'>
+            <Link to="/forgot-password">Forgot Password?</Link>
+            <button disabled={loading} type='submit' className='primary'>Log In</button>
+          </div>
+          <p>Need an account? <Link to="/signup">Sign Up</Link></p>
+        </form>
+      </div>
     </div>
   )
 }

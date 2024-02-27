@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useAuth } from "@/providers/auth"
 import { Link, useNavigate } from "react-router-dom"
-import '@/styles/auth/signup.css'
+import '@/styles/auth/global.css'
 import { newProfileProp } from "@/types/firestore"
 import { useMultiStepForm } from "@/utils"
 import { Buddy, Owner } from "@/pages/auth/signup"
@@ -126,8 +126,8 @@ export default function Signup() {
   }
 
   return (
-    <div className="signup">
-      <div className="left">
+    <div className="authCard signup">
+      <div className="main">
         <div className="header">
           <Link to="/">
             <img src="./logo.png" alt="HighPaws Logo" loading="lazy" width="80" height="80" decoding="async" />
@@ -137,6 +137,8 @@ export default function Signup() {
         </div>
         <form onSubmit={signupWithEmailPassword}>
           <div className='step'>{currentStepIndex + 1} / {steps.length}</div>
+          {loading && <p>Loading...</p>}
+          {error && <p>{error}</p>}
           {isLastStep &&
           <>
             <button onClick={signupWithGoogleAccount} disabled={loading} className="google primary">Sign Up With Google</button>
