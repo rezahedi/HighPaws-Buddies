@@ -47,14 +47,12 @@ export default function Header() {
               {profile.name}
               <img src={profile.avatars.buddy} alt={profile.name} className='size-9 rounded-full' width={36} height={36} />
             </Link>
-            {/* <div className='notification'>
-              <button onClick={handleNotifications}>
-                Notifications <sup>{notificationStats}</sup>
-              </button>
-              {showNotifications && <Notifications profileId={profile.id} onClose={()=>setShowNotifications(false)} />}
-            </div>
-            {authUser?.email}<br />
-            <button onClick={logout}>Logout</button> */}
+            {notificationStats > 0 && 
+              <>
+                <button onClick={handleNotifications}>{notificationStats}</button>
+                {showNotifications && <Notifications profileId={profile.id} onClose={()=>setShowNotifications(false)} />}
+              </>}
+            <button onClick={logout}>Logout</button>
           </>}
           {!profile && 
           <>

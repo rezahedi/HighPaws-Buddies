@@ -3,22 +3,6 @@ header.nav .container{
   justify-content:space-between;
   align-items:center;
 }
-.notification{
-  position: relative;
-  width:fit-content
-}
-.notification button{
-  cursor: pointer;
-}
-.notification sup{
-  background-color:red;
-  color:white;
-  border-radius:50%;
-  padding:0 5px;
-  position:absolute;
-  top:-10px;
-  right:-10px;
-}
 .nav .user{
   @apply flex flex-row gap-1 items-center;
 }
