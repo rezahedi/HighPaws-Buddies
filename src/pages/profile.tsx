@@ -83,8 +83,8 @@ export default function Profile() {
           <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
           <a href="#" onClick={handleFollowing}>{profile.stats.following} following</a>
           <a href="#">{profile.stats.posts} posts</a>
-          {showFollowers && <Followers profileId={profile.id} />}
-          {showFollowing && <Following profileId={profile.id} />}
+          {showFollowers && <Followers profileId={profile.id} onClose={()=>setShowFollowers(false)} />}
+          {showFollowing && <Following profileId={profile.id} onClose={()=>setShowFollowing(false)} />}
         </section>
         <section className="detail">
           <div>🎂 {profile.age}</div>

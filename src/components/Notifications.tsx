@@ -6,7 +6,7 @@ import { notificationProp, returnNotificationProp } from '@/types/firestore';
 import { Modal } from '@/components';
 import '@/styles/Notifications.css';
 
-export default function Notifications( { profileId }: { profileId: string } ) {
+export default function Notifications( { profileId, onClose }: { profileId: string, onClose: () => void } ) {
 
   const [notifications, setNotifications] = useState<notificationProp[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,7 +39,7 @@ export default function Notifications( { profileId }: { profileId: string } ) {
   }
 
   return (
-    <Modal>
+    <Modal onClose={onClose}>
       <div className='notificationsList'>
         {loading && <p>Loading notifications ...</p>}
         {notifications.map((notification, index) =>

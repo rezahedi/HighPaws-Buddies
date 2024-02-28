@@ -11,7 +11,7 @@ type followerProp = {
   avatar: string
 }
 
-export default function Following({profileId}: {profileId: string}) {
+export default function Following({profileId, onClose}: {profileId: string, onClose: () => void}) {
   const { profile } = useAuth()
   const [followers, setFollowers] = useState<followerProp[]>([])
   const [loading, setLoading] = useState(true)
@@ -41,12 +41,14 @@ export default function Following({profileId}: {profileId: string}) {
   }, [profile])
 
   return (
-    <Modal>
-      <h3>Following</h3>
-      {loading && <p>Loading...</p>}
-      {followers.map((follower, index) =>
-        <Item key={index} user={follower} />
-      )}
+    <Modal onClose={onClose} className="w-full sm:w-96 space-y-2">
+      <h3 className="text-lg font-semibold text-center">Following</h3>
+      <div className="space-y-2">
+        {loading && <p>Loading...</p>}
+        {followers.map((follower, index) =>
+          <Item key={index} user={follower} />
+        )}
+      </div>
     </Modal>
   )
 }

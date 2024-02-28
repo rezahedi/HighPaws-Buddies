@@ -30,37 +30,38 @@ export default function Header() {
   }
 
   return (
-    <header className='nav'>
-      <h1>
-        <Link to='/' className='flex items-center gap-2 text-2xl font-bold text-[#d56a34]'>
-          <img src="./logo.png" alt="HighPaws Logo" width="50" height="50" />
-          HighPaws
-        </Link>
-      </h1>
-      {authUser && <Link to="/new">New Post</Link>}
-      <div>
-        {loading && <p>Loading...</p>}
-        {!loading &&
+    <header className='nav bg-gray-100 p-1 border-b border-b-gray-300'>
+      <div className='container w-full sm:max-w-7xl'>
+        <h1>
+          <Link to='/' className='flex items-center gap-2 text-2xl font-bold text-[#d56a34]'>
+            <img src="./logo.png" alt="HighPaws Logo" width="50" height="50" />
+            HighPaws
+          </Link>
+        </h1>
+        Something Here
+        <div className='user'>
+          {loading && <p>Loading...</p>}
+          {profile &&
           <>
-            {error && <p>{error}</p>}
-            {profile && <>
-              <Link to={`/${profile.id}`}>{profile.name}</Link><br />
-              <div className='notification'>
-                <button onClick={handleNotifications}>
-                  Notifications <sup>{notificationStats}</sup>
-                </button>
-                {showNotifications && <Notifications profileId={profile.id} />}
-              </div>
-              {authUser?.email}<br />
-              <button onClick={logout}>Logout</button>
-            </>}
-            {!authUser && 
-            <>
-              <Link to="/login">Login</Link>{' '}
-              <Link to="/signup">Signup</Link>
-            </>}
-          </>
-        }
+            <Link to={`/${profile.id}`} className='flex gap-2 items-center'>
+              {profile.name}
+              <img src={profile.avatars.buddy} alt={profile.name} className='size-9 rounded-full' width={36} height={36} />
+            </Link>
+            {/* <div className='notification'>
+              <button onClick={handleNotifications}>
+                Notifications <sup>{notificationStats}</sup>
+              </button>
+              {showNotifications && <Notifications profileId={profile.id} onClose={()=>setShowNotifications(false)} />}
+            </div>
+            {authUser?.email}<br />
+            <button onClick={logout}>Logout</button> */}
+          </>}
+          {!profile && 
+          <>
+            <Link to="/login">Login</Link>{' '}
+            <Link to="/signup">Signup</Link>
+          </>}
+        </div>
       </div>
     </header>
   )
