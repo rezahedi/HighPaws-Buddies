@@ -5,7 +5,7 @@ import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/f
 import { postProp, returnPostProp } from '@/types/firestore';
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
-import { NewPost } from '@/components';
+import { NewPostBlock } from '@/components/feed';
 
 export default function Feed() {
 
@@ -43,7 +43,7 @@ export default function Feed() {
       <div className='container max-w-7xl flex'>
         <SidebarNav />
         <div className='feed'>
-          <NewPost profile={profile} />
+          <NewPostBlock profile={profile} />
           {loading && <p>Loading...</p>}
           {posts.map((post) =>
             <Post key={post.id} post={post} />
