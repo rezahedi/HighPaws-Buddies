@@ -47,7 +47,7 @@ export default function Likes({post, onClose}: {post: postProp, onClose: () => v
           <div key={like.id.id} className='item'>
             <Link to={`/${like.id.id}`}>
               <img src={like.avatar} alt={like.name} width="36" height="36" loading='lazy' />
-              <span>{like.name}</span>
+              {like.name}
             </Link>
             <button>Some Action</button>
           </div>
