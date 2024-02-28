@@ -40,7 +40,7 @@ export default function Feed() {
   return (
     <>
       <Header />
-      <div className='container max-w-7xl flex'>
+      <div className='main'>
         <SidebarNav />
         <main className='wall'>
           <NewPostBlock profile={profile} />

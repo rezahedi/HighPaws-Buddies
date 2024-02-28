@@ -31,7 +31,9 @@ button.primary{
 button.primary:hover:not(:disabled){
   @apply bg-[#d56a34];
 }
-
+.main{
+  @apply container max-w-7xl flex gap-4
+}
 .wall{
   @apply w-full sm:max-w-2xl mx-auto border-l border-r border-gray-300 divide-y divide-gray-300;
 }

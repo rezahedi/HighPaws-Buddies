@@ -67,7 +67,7 @@ export default function Profile() {
   return (
     <>
       <Header />
-      <div className='container max-w-7xl flex'>
+      <div className='main'>
         <SidebarNav />
         <main className="wall">
           <div className='profile'>

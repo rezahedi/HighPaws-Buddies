@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Header, Post } from '@/components';
+import { Header, Post, SidebarBanners, SidebarNav } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
@@ -30,11 +30,15 @@ export default function Public() {
   return (
     <>
       <Header />
-      {loading && <p>Loading...</p>}
-      <div className='feed'>
-        {posts.map((post, index) =>
-          <Post key={index} post={post} />
-        )}
+      <div className='main'>
+        <SidebarNav />
+        <main className='wall'>
+          {loading && <p>Loading...</p>}
+          {posts.map((post, index) =>
+            <Post key={index} post={post} />
+          )}
+        </main>
+        <SidebarBanners />
       </div>
     </>
   )
