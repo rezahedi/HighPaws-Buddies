@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { postProp, returnPostProp } from "@/types/firestore";
 import { Header, Post } from "@/components";
 
-export function PostPage() {
+export default function PostPage() {
   const { userHandler, postId } = useParams()
   const [post, setPost] = useState<postProp | null>(null)
   const [dataLoading, setDataLoading] = useState<boolean>(true)

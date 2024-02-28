@@ -1,10 +1,17 @@
+import { lazy, Suspense } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Feed, Profile, New } from "@/pages"
-import { PostPage } from "@/pages/post"
 import { AuthProvider } from "@/providers"
 // TODO: Should be Lazy Loaded (Except main component all should be lazy loaded)
-import { Signup, Login, ForgotPassword } from "@/pages/auth"
+// import { Login, ForgotPassword } from "@/pages/auth"
 import '@/styles/global.css'
+
+const Feed = lazy(() => import('@/pages/feed'))
+const PostPage = lazy(() => import('@/pages/post'))
+const Profile = lazy(() => import('@/pages/profile'))
+const New = lazy(() => import('@/pages/new'))
+const Signup = lazy(() => import('@/pages/auth/signup/Signup'))
+const Login = lazy(() => import('@/pages/auth/login'))
+const ForgotPassword = lazy(() => import('@/pages/auth/forgotpassword'))
 
 // TODO: Read below article about routing layers to build routes like next.js with layout and hierarchy
 // https://semaphoreci.com/blog/routing-layer-react
@@ -15,14 +22,13 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* <Route path="/" element={<Public />} /> */}
-          <Route path="/" element={<Feed />} />
-          <Route path="/:userHandler/:postId" element={<PostPage />} />
-          <Route path="/:userHandler" element={<Profile />} />
-          <Route path="/new" element={<New />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/" element={<Suspense fallback={<div>Loading</div>}><Feed /></Suspense>} />
+          <Route path="/:userHandler/:postId" element={<Suspense fallback={<div>Loading</div>}><PostPage /></Suspense>} />
+          <Route path="/:userHandler" element={<Suspense fallback={<div>Loading</div>}><Profile /></Suspense>} />
+          <Route path="/new" element={<Suspense fallback={<div>Loading</div>}><New /></Suspense>} />
+          <Route path="/signup" element={<Suspense fallback={<div>Loading</div>}><Signup /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={<div>Loading</div>}><Login /></Suspense>} />
+          <Route path="/forgot-password" element={<Suspense fallback={<div>Loading</div>}><ForgotPassword /></Suspense>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
