@@ -5,7 +5,7 @@
 import { newPostProp } from "@/types/firestore"
 import { collection, doc, setDoc, Timestamp } from 'firebase/firestore'
 import { db, storage } from '@/firebase'
-import { ref, uploadBytes, uploadString, getDownloadURL } from 'firebase/storage'
+import { ref, uploadString, getDownloadURL } from 'firebase/storage'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
 import { useEffect, useState, useRef, useCallback } from "react"
@@ -101,7 +101,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
 
     if(acceptedFiles && acceptedFiles.length > 0) {
-      let file = acceptedFiles[0]
+      const file = acceptedFiles[0]
       if( !file ) return
 
       if ( file.size > maxSize2MB ) {
@@ -111,7 +111,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
         reader.onload = async (event) => {
 
           // Get EXIF data
-          let imageLocation = await exifr.gps(event.target?.result as string)
+          const imageLocation = await exifr.gps(event.target?.result as string)
           if (imageLocation)
             setLocation(`${imageLocation.latitude.toFixed(4)}, ${imageLocation.longitude.toFixed(4)}`)
           // let orientation = await exifr.orientation(file)
@@ -135,7 +135,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
     setShareLocation(!shareLocation)
   }
 
-  const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDragEnter = () => {
     document.getElementsByClassName('dragArea')[0].classList.add('dragEnter')
   }
 

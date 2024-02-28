@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "@/providers/auth"
 import { Link, useNavigate } from "react-router-dom"
 import '@/styles/auth/global.css'

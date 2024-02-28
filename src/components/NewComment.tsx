@@ -1,6 +1,6 @@
 import { db } from '@/firebase';
 import { newCommentProp } from '@/types/firestore';
-import { collection, doc, addDoc, Timestamp, updateDoc, increment } from 'firebase/firestore';
+import { collection, doc, addDoc, Timestamp } from 'firebase/firestore';
 import '@/styles/NewComment.css'
 import { useRef } from 'react'
 import { useAuth } from '@/providers/auth';

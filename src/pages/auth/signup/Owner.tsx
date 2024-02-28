@@ -16,13 +16,6 @@ export default function Owner(
   const [passwordStrength, setPasswordStrength] = useState<boolean>(true)
   const [passwordMatch, setPasswordMatch] = useState<boolean>(true)
 
-  const handlePasswordChange = (
-    field: Partial<Props>
-  ) => {
-
-    updateFields(field)
-  }
-
   useEffect(() => {
     // Check password strength
     if(password.length == 0)

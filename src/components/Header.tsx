@@ -8,7 +8,7 @@ import '@/styles/Header.css'
 
 export default function Header() {
 
-  const { authUser, profile, error, loading, logout } = useAuth()
+  const { authUser, profile, loading, logout } = useAuth()
   const [notificationStats, setNotificationStats] = useState<number>(0)
   const [showNotifications, setShowNotifications] = useState<boolean>(false)
 
