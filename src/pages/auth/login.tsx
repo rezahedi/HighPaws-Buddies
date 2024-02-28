@@ -24,7 +24,7 @@ export default function Login() {
 
   return (
     <div className='login authCard'>
-      <div className='main'>
+      <div className='authMain'>
         <div className="header">
           <Link to="/">
             <img src="./logo.png" alt="HighPaws Logo" loading="lazy" width="80" height="80" decoding="async" />

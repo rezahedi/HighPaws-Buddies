@@ -28,13 +28,13 @@
 .header p{
   @apply text-sm text-gray-500
 }
-.main form{
+.authCard .authMain form{
   @apply space-y-2 px-16 py-10
 }
-.main label{
+.authCard .authMain label{
   @apply flex flex-col items-start gap-1 text-sm
 }
-.main label .error{
+.authCard .authMain label .error{
   @apply text-red-500 text-xs italic
 }
 .step{
@@ -43,7 +43,7 @@
 .actions{
   @apply py-2 space-x-2 text-end
 }
-.main form p{
+.authCard .authMain form p{
   @apply text-sm text-gray-500 text-center
 }
 .google{

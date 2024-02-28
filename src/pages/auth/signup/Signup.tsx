@@ -127,7 +127,7 @@ export default function Signup() {
 
   return (
     <div className="authCard signup">
-      <div className="main">
+      <div className="authMain">
         <div className="header">
           <Link to="/">
             <img src="./logo.png" alt="HighPaws Logo" loading="lazy" width="80" height="80" decoding="async" />
