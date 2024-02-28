@@ -27,6 +27,8 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Groups [Packs]
 - [ ] Chat
 - [ ] Places and Businesses with geo queries
+- [ ] HoverCard for user profile
+- [ ] Dark mode
 
 ## Firebase Emulators for local development
 
