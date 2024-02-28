@@ -42,13 +42,13 @@ export default function Feed() {
       <Header />
       <div className='container max-w-7xl flex'>
         <SidebarNav />
-        <div className='feed'>
+        <main className='wall'>
           <NewPostBlock profile={profile} />
           {loading && <p>Loading...</p>}
           {posts.map((post) =>
             <Post key={post.id} post={post} />
           )}
-        </div>
+        </main>
         <SidebarBanners />
       </div>
     </>

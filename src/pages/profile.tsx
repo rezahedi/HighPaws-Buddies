@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import '@/styles/Profile.css'
-import { Header, Post } from "@/components"
+import { Header, Post, SidebarBanners, SidebarNav } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
@@ -67,44 +67,50 @@ export default function Profile() {
   return (
     <>
       <Header />
-      <div className="profile">
-        {profileLoading && <p>Loading profile skeleton ...</p>}
-        {profile &&
-        <>
-        <section className="avatar">
-          <figure onClick={handleAvatarSwitch} className={switched?`switched`:``}>
-            <img className="pet" src={profile.avatars.buddy} alt={profile.name} />
-            <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
-          </figure>
-          <h2>{profile.name}</h2>
-          {loggedInProfile && loggedInProfile.id !== profile.id && <FollowRequest to={profile} />}
-        </section>
-        <section className="stats">
-          <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
-          <a href="#" onClick={handleFollowing}>{profile.stats.following} following</a>
-          <a href="#">{profile.stats.posts} posts</a>
-          {showFollowers && <Followers profileId={profile.id} onClose={()=>setShowFollowers(false)} />}
-          {showFollowing && <Following profileId={profile.id} onClose={()=>setShowFollowing(false)} />}
-        </section>
-        <section className="detail">
-          <div>🎂 {profile.age}</div>
-          <div>⚖️ {profile.weight}</div>
-          <div>🐶 {profile.breed}</div>
-          <div>📌 {profile.location}</div>
-        </section>
-        <section className="tags">
-          {profile.characteristics.map((element, index) => (
-            <a key={index} href="#">{element}</a>
-          ))}
-        </section>
-        </>
-        }
-        <div className='feed'>
+      <div className='container max-w-7xl flex'>
+        <SidebarNav />
+        <main className="wall">
+          <div className='profile'>
+            {profileLoading && <p>Loading profile skeleton ...</p>}
+            {profile &&
+            <>
+            <section className="avatar">
+              <figure onClick={handleAvatarSwitch} className={switched?`switched`:``}>
+                <img className="pet" src={profile.avatars.buddy} alt={profile.name} />
+                <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
+              </figure>
+              <h2>{profile.name}</h2>
+              {loggedInProfile && loggedInProfile.id !== profile.id && <FollowRequest to={profile} />}
+            </section>
+            <section className="stats">
+              <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
+              <a href="#" onClick={handleFollowing}>{profile.stats.following} following</a>
+              <a href="#">{profile.stats.posts} posts</a>
+              {showFollowers && <Followers profileId={profile.id} onClose={()=>setShowFollowers(false)} />}
+              {showFollowing && <Following profileId={profile.id} onClose={()=>setShowFollowing(false)} />}
+            </section>
+            <section className="detail">
+              <div>🎂 {profile.age}</div>
+              <div>⚖️ {profile.weight}</div>
+              <div>🐶 {profile.breed}</div>
+              <div>📌 {profile.location}</div>
+            </section>
+            {profile.characteristics.length > 0 &&
+              <section className="tags">
+                {profile.characteristics.map((element, index) => (
+                  <a key={index} href="#">{element}</a>
+                ))}
+              </section>
+            }
+            </>
+            }
+          </div>
           {postsLoading && <p>Loading posts skeleton ...</p>}
           {posts && posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}
-        </div>
+        </main>
+        <SidebarBanners />
       </div>
     </>
   )

@@ -1,82 +1,36 @@
 .profile{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  @apply flex flex-col gap-5 items-center justify-center p-4 bg-white
 }
-.avatar{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 0;
+.profile .avatar{
+  @apply flex flex-col items-center m-0 p-0
 }
-.avatar figure{
-  position: relative;
-  width: 100px;
-  height: 100px;
-  cursor: pointer;
+.profile .avatar figure{
+  @apply relative size-24 cursor-pointer
 }
-.pet{
-  position: absolute;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  top: 0;
-  left: 0;
-  transition: all 0.3s;
+.profile .pet{
+  @apply absolute rounded-full size-24 top-0 left-0 transition-all
 }
-.owner{
-  position: absolute;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  top: 70px;
-  left: 70px;
-  transition: all 0.3s;
+.profile .owner{
+  @apply absolute rounded-full size-8 top-16 left-16 transition-all
 }
-.switched .owner{
-  width: 100px;
-  height: 100px;
-  top: 0;
-  left: 0;
+.profile .switched .owner{
+  @apply size-24 top-0 left-0
 }
-.switched .pet{
-  width: 30px;
-  height: 30px;
-  top: 70px;
-  left: 70px;
-  z-index: 1;
+.profile .switched .pet{
+  @apply size-8 top-16 left-16 z-[1]
 }
-.avatar h2{
-  margin: 0;
-  padding: 0;
-  font-size: 1.5em;
+.profile .avatar h2{
+  @apply m-0 p-0 text-2xl
 }
-.stats{
-  display: flex;
-  gap: 20px;
+.profile .stats{
+  @apply flex gap-5
 }
-.detail{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+.profile .detail{
+  @apply flex gap-2 flex-wrap justify-center
 }
-.tags{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin:10px 0;
+.profile .tags{
+  @apply flex gap-3 flex-wrap justify-center my-3 mx-0
 }
-.tags a{
-  text-decoration: none;
-  padding: 5px 15px;
-  border-radius: 10px;
-  border:1px solid #ddd;
+.profile .tags a{
+  @apply px-1 py-4 rounded-md border border-gray-300;
 }
