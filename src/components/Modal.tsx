@@ -1,22 +1,31 @@
+import { useEffect } from "react"
 
-export default function Modal({ children }: { children: React.ReactNode }) {
+export default function Modal({ onClose: closeModal, children }: { onClose: () => void, children: React.ReactNode }) {
+
+  useEffect(() => {
+    const modal = document.querySelector('.modal')
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if( e.key === 'Escape' )
+        closeModal()
+    }
+    const handleClickOutside = (e: MouseEvent) => {
+      if( modal && !modal.contains(e.target as Node) )
+        closeModal()
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   return (
-    <div style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: '#fff',
-      border: '1px solid #666',
-      borderRadius: '5px',
-      boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 100,
-      padding: '20px'
-    }}>
-      {children}
+    <div className='overlay z-10 fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center'>
+      <div className='modal bg-white border border-gray-300 rounded-lg shadow-lg p-4'>
+        {children}
+      </div>
     </div>
   )
 }
