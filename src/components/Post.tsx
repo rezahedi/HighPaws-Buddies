@@ -107,7 +107,7 @@ export default function Post(
       <header>
         {post.profile_detail &&
           <Link className='user' to={`/${post.profile_id.id}`}>
-            <img src={post.profile_detail.avatar_url} alt={post.profile_detail.name} />
+            <img src={post.profile_detail.avatar_url} alt={post.profile_detail.name} loading='lazy' />
             {post.profile_detail.name}
           </Link>
         }
@@ -125,7 +125,7 @@ export default function Post(
             </p>
             <p>{post.location}</p>
           </div>
-          <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} />
+          <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} loading='lazy' />
         </figure>
       </div>
       <footer>
