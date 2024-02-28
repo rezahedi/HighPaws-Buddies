@@ -2,8 +2,8 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/providers/auth"
 import { db } from "@/firebase"
 import { onSnapshot, query, collection, limit, DocumentReference } from "firebase/firestore"
-import { Item } from "@/components/profile"
 import Modal from "@/components/Modal"
+import { Link } from "react-router-dom"
 
 type followerProp = {
   id: DocumentReference
@@ -40,12 +40,18 @@ export default function Following({profileId, onClose}: {profileId: string, onCl
   }, [profile])
 
   return (
-    <Modal onClose={onClose} className="w-full sm:w-96 space-y-2">
-      <h3 className="text-lg font-semibold text-center">Following</h3>
-      <div className="space-y-2">
+    <Modal onClose={onClose} className="ListInModal">
+      <h3>Following</h3>
+      <div>
         {loading && <p>Loading...</p>}
-        {followers.map((follower, index) =>
-          <Item key={index} user={follower} />
+        {followers.map((follower) =>
+          <div key={follower.id.id} className='item'>
+            <Link to={`/${follower.id.id}`}>
+              <img src={follower.avatar} alt={follower.name} width="36" height="36" loading='lazy' />
+              {follower.name}
+            </Link>
+            <button>Some Action</button>
+          </div>
         )}
       </div>
     </Modal>
