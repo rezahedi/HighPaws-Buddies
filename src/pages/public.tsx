@@ -37,6 +37,7 @@ export default function Public() {
           {posts.map((post, index) =>
             <Post key={index} post={post} />
           )}
+          <div className='h-24 bg-white'></div>
         </main>
         <SidebarBanners />
       </div>
