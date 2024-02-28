@@ -33,7 +33,6 @@ export default function Following({profileId, onClose}: {profileId: string, onCl
           }
         });
         setFollowers(docs);
-        console.log(snapshot.docs);
         setLoading(false);
       }
     )
