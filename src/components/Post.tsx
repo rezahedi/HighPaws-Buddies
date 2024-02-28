@@ -7,6 +7,7 @@ import { useAuth } from '@/providers/auth';
 
 // TODO: Lazy load the Comments component when user clicks to show comments
 import { Comments } from '@/components'
+import { Likes } from "@/components/posts"
 
 export default function Post(
   { post, showComment = false, onDelete }:
@@ -14,6 +15,7 @@ export default function Post(
 ) {
   const { profile } = useAuth()
   const [liked, setLiked] = useState<number>(0)
+  const [showLikes, setShowLikes] = useState<boolean>(false)
   const [showComments, setShowComments] = useState<boolean>(showComment)
   const [deletable, setDeletable] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -79,6 +81,11 @@ export default function Post(
     return liked === 1 ? 'liked' : liked === -1 ? 'unliked' : ''
   }
 
+  const handleLikes = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setShowLikes(true)
+  }
+
   const handleComments = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
     setShowComments(true)
@@ -122,7 +129,8 @@ export default function Post(
         </figure>
       </div>
       <footer>
-        {post.liked && `🩷`} <a href='#'>{post.stats.likes} likes</a>
+        {post.liked && `🩷`} <a href='#' onClick={handleLikes}>{post.stats.likes} likes</a>
+        {post.stats.likes > 0 && showLikes && <Likes post={post} onClose={()=>setShowLikes(false)} />}
         <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
       </footer>
       {showComments &&
