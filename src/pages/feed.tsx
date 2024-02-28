@@ -6,6 +6,7 @@ import { postProp, returnPostProp } from '@/types/firestore';
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
 import { NewPostBlock } from '@/components/feed';
+import { PostSkeleton } from '@/components/skeletons';
 
 export default function Feed() {
 
@@ -44,7 +45,7 @@ export default function Feed() {
         <SidebarNav />
         <main className='wall'>
           <NewPostBlock profile={profile} />
-          {loading && <p>Loading...</p>}
+          {loading && <PostSkeleton count={3} />}
           {posts.map((post) =>
             <Post key={post.id} post={post} />
           )}

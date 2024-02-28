@@ -7,6 +7,7 @@ import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/fir
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
 import { Followers, Following, FollowRequest } from '@/components/profile';
 import { useAuth } from '@/providers/auth';
+import { PostSkeleton, ProfileSkeleton } from '@/components/skeletons';
 
 export default function Profile() {
   
@@ -71,7 +72,7 @@ export default function Profile() {
         <SidebarNav />
         <main className="wall">
           <div className='profile'>
-            {profileLoading && <p>Loading profile skeleton ...</p>}
+            {profileLoading && <ProfileSkeleton />}
             {profile &&
             <>
             <section className="avatar">
@@ -105,7 +106,7 @@ export default function Profile() {
             </>
             }
           </div>
-          {postsLoading && <p>Loading posts skeleton ...</p>}
+          {postsLoading && <PostSkeleton count={3} />}
           {posts && posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}

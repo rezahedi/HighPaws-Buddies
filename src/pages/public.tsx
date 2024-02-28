@@ -3,6 +3,7 @@ import { Header, Post, SidebarBanners, SidebarNav } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
+import { PostSkeleton } from '@/components/skeletons';
 
 export default function Public() {
 
@@ -33,7 +34,7 @@ export default function Public() {
       <div className='main'>
         <SidebarNav />
         <main className='wall'>
-          {loading && <p>Loading...</p>}
+          {loading && <PostSkeleton count={3} />}
           {posts.map((post, index) =>
             <Post key={index} post={post} />
           )}
