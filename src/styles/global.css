@@ -110,3 +110,21 @@ button.primary:hover:not(:disabled){
     transform: scale(1);
   }
 }
+.ListInModal{
+  @apply w-full sm:w-96 space-y-4
+}
+.ListInModal h3{
+  @apply text-lg font-semibold text-center
+}
+.ListInModal>div{
+  @apply space-y-3
+}
+.ListInModal .item{
+  @apply flex justify-between
+}
+.ListInModal .item>a{
+  @apply flex gap-2 items-center
+}
+.ListInModal .item img{
+  @apply size-9 rounded-full
+}

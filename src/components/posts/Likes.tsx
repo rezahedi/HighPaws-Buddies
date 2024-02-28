@@ -39,14 +39,14 @@ export default function Likes({post, onClose}: {post: postProp, onClose: () => v
     
 
   return (
-    <Modal onClose={onClose} className="w-full sm:w-96 space-y-4">
-      <h3 className="text-lg font-semibold text-center">Likes</h3>
-      <div className="space-y-3">
+    <Modal onClose={onClose} className="ListInModal">
+      <h3>Likes</h3>
+      <div>
         {loading && <p>Loading...</p>}
         {likes.map(like => (
-          <div key={like.id.id} className='flex justify-between'>
-            <Link to={`/${like.id.id}`} className='flex gap-1 items-center'>
-              <img src={like.avatar} alt={like.name} width="36" height="36" className='size-9 rounded-full' />
+          <div key={like.id.id} className='item'>
+            <Link to={`/${like.id.id}`}>
+              <img src={like.avatar} alt={like.name} width="36" height="36" loading='lazy' />
               <span>{like.name}</span>
             </Link>
             <button>Some Action</button>
