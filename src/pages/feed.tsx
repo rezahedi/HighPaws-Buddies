@@ -36,7 +36,10 @@ export default function Feed() {
     return () => unsubscribe();
   }, [profile]);
 
-  if( profile === null ) return navigate('/login')
+  if( profile === null ){
+    navigate('/login')
+    return null
+  } 
 
   return (
     <>
