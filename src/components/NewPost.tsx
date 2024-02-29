@@ -12,6 +12,7 @@ import { useEffect, useState, useRef, useCallback } from "react"
 import AvatarEditor from 'react-avatar-editor'
 import { useDropzone } from 'react-dropzone'
 import exifr from 'exifr'
+import '@/styles/New.css'
 
 export default function NewPost({onCancel}: {onCancel?: () => void}) {
 
@@ -158,7 +159,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
 
   function adjustTextareaHeight(e: React.FormEvent<HTMLTextAreaElement>) {
     e.currentTarget.style.height = "auto";
-    e.currentTarget.style.height = (e.currentTarget.scrollHeight-20)+'px';
+    e.currentTarget.style.height = (e.currentTarget.scrollHeight)+'px';
   }
 
   if ( profile === null ) return null
