@@ -35,11 +35,11 @@ button.primary:hover:not(:disabled){
   @apply container max-w-7xl flex gap-4
 }
 .wall{
-  @apply w-full sm:max-w-2xl mx-auto border-l border-r border-gray-300 divide-y divide-gray-300;
+  @apply w-full sm:max-w-2xl min-h-screen bg-white mx-auto border-l border-r border-gray-300 divide-y divide-gray-300;
 }
 
 .post{
-  @apply p-5 bg-white flex flex-col gap-5;
+  @apply p-5 flex flex-col gap-5;
 }
 .post figure{
   @apply m-0 p-0;

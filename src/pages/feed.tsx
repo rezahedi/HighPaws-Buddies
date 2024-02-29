@@ -52,7 +52,7 @@ export default function Feed() {
           {posts.map((post) =>
             <Post key={post.id} post={post} />
           )}
-          <div className='h-24 bg-white'></div>
+          <div className='h-24'></div>
         </main>
         <SidebarBanners />
       </div>
