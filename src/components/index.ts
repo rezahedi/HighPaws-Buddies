@@ -7,6 +7,7 @@ import Modal from '@/components/Modal'
 import SidebarNav from '@/components/SidebarNav'
 import SidebarBanners from '@/components/SidebarBanners'
 import NewPost from '@/components/NewPost'
+import EmptyFeed from '@/components/EmptyFeed'
 
 export {
   Post,
@@ -18,4 +19,5 @@ export {
   SidebarNav,
   SidebarBanners,
   NewPost,
+  EmptyFeed,
 }

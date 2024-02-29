@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Header, Post, SidebarBanners, SidebarNav } from '@/components';
+import { EmptyFeed, Header, Post, SidebarBanners, SidebarNav } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
@@ -38,6 +38,7 @@ export default function Public() {
           {posts.map((post, index) =>
             <Post key={index} post={post} />
           )}
+          {posts.length === 0 && !loading && <EmptyFeed />}
           <div className='h-24'></div>
         </main>
         <SidebarBanners />

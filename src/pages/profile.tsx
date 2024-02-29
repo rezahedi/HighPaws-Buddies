@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import '@/styles/Profile.css'
-import { Header, Post, SidebarBanners, SidebarNav } from "@/components"
+import { EmptyFeed, Header, Post, SidebarBanners, SidebarNav } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
@@ -110,6 +110,7 @@ export default function Profile() {
           {posts && posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}
+          {posts.length === 0 && !postsLoading && <EmptyFeed>You haven't post anything yet! 😏</EmptyFeed>}
           <div className='h-24'></div>
         </main>
         <SidebarBanners />
