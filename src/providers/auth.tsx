@@ -6,6 +6,7 @@ import {
 } from "firebase/auth"
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { returnProfileProp, profileProp, newProfileProp } from "@/types/firestore"
+import { getBuddyAvatar, getOwnerAvatar } from "@/utils"
 
 const AuthContext = createContext(
   {} as {
@@ -47,11 +48,15 @@ export default function AuthProvider({children}: {children: React.ReactNode})
       // Check if profile document does not exists create it
       const res = await getDoc( doc(db, 'profiles', userCredential.user.uid) )
       if ( !res.exists() ) {
+        
+        // TODO: For Profile avatars, I should upload a copy of profile image or placeholder image to CDN with a unique name specific to the user id for example if user id is 123, then the avatars should be 123-owner.jpg and 123-buddy.jpg
+        // Or 123/owner.jpg and 123/buddy.jpg then don't need to store avatar urls in the profile document
 
         // Create profile document
         const profileRef = doc(db, 'profiles', userCredential.user.uid)
         profile.owner = userCredential.user.displayName || ''
-        profile.avatars.owner = userCredential.user.photoURL || `https://fakeimg.pl/400x400/282828/?text=${profile.owner}`
+        profile.avatars.owner = userCredential.user.photoURL || getOwnerAvatar()
+        profile.avatars.buddy = getBuddyAvatar()
         await setDoc(profileRef, profile).catch(() => {
           setError("Error creating profile")
           result = false
@@ -83,7 +88,8 @@ export default function AuthProvider({children}: {children: React.ReactNode})
         // Create profile document
         const profileRef = doc(db, 'profiles', userCredential.user.uid)
         profile.owner = userCredential.user.displayName || ''
-        profile.avatars.owner = userCredential.user.photoURL || `https://fakeimg.pl/400x400/282828/?text=${profile.owner}`
+        profile.avatars.owner = userCredential.user.photoURL || getOwnerAvatar()
+        profile.avatars.buddy = getBuddyAvatar()
         await setDoc(profileRef, profile).catch(() => {
           setError("Error creating profile")
           result = false

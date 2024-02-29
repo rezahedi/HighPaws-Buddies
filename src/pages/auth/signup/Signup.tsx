@@ -77,8 +77,8 @@ export default function Signup() {
       name: data.name,
       owner: data.owner,
       avatars: {
-        buddy: `https://fakeimg.pl/100x100/282828/?text=${data.name}`,
-        owner: `https://api.dicebear.com/7.x/open-peeps/svg?seed=${data.owner}&face=awe,blank,calm,cheeky,concernedFear,contempt,cute,driven,eatingHappy,explaining,eyesClosed,lovingGrin1,smile,smileBig,smileLOL,smileTeethGap,old,lovingGrin2&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`
+        buddy: '',
+        owner: ''
       },
       gender: data.gender,
       age: data.age,
@@ -106,8 +106,8 @@ export default function Signup() {
       name: data.name,
       owner: data.owner,
       avatars: {
-        buddy: `https://fakeimg.pl/100x100/282828/?text=${data.name}`,
-        owner: `https://api.dicebear.com/7.x/open-peeps/svg?seed=${data.owner}&face=awe,blank,calm,cheeky,concernedFear,contempt,cute,driven,eatingHappy,explaining,eyesClosed,lovingGrin1,smile,smileBig,smileLOL,smileTeethGap,old,lovingGrin2&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`
+        buddy: '',
+        owner: ''
       },
       gender: data.gender,
       age: data.age,
