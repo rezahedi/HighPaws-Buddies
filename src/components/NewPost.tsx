@@ -95,7 +95,10 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
 
     await setDoc(docRef, newPost)
     console.log( "post created:", docRef.id )
-    navigate('/')
+    if( onCancel )
+      onCancel()
+    else
+      navigate('/')
   }
 
 
