@@ -17,8 +17,8 @@ export default function Profile() {
   const { profile: loggedInProfile } = useAuth()
   const [profile, setProfile] = useState<profileProp | null>(null)
   const [posts, setPosts] = useState<postProp[]>([])
-  const [profileLoading, setProfileLoading] = useState<boolean>(true)
-  const [postsLoading, setPostsLoading] = useState<boolean>(true)
+  const [profileLoading, setProfileLoading] = useState<boolean>(false)
+  const [postsLoading, setPostsLoading] = useState<boolean>(false)
   const [switched, setSwitched] = useState<boolean>(false)
   const [showFollowers, setShowFollowers] = useState<boolean>(false)
   const [showFollowing, setShowFollowing] = useState<boolean>(false)
@@ -26,18 +26,25 @@ export default function Profile() {
 
   // Get user profile from /profiles/:userHandler
   useEffect(() => {
+    setSwitched(false)
+    setShowFollowers(false)
+    setShowFollowing(false)
+    setProfile(null)
+    setProfileLoading(true)
     // TODO: Change doc id to a readable user handler like /bjorn
     const unsubscribe = onSnapshot(doc(db, `profiles/${userHandler}`), (doc) => {
       // TODO: if doc doesn't exist, redirect to 404 page
       const res: profileProp | null = returnProfileProp(doc)
-      setProfile( res )
+      setProfile(res)
       setProfileLoading(false)
     })
     return () => unsubscribe()
-  }, [])
+  }, [userHandler])
 
   // Get user posts from /profiles/:userHandler/posts
   useEffect(() => {
+    setPosts([])
+    setPostsLoading(true)
     // get user posts from /profiles/:userHandler/posts
     const unsubscribe = onSnapshot(query(
       collection(db, `profiles/${userHandler}/posts`),
@@ -49,7 +56,7 @@ export default function Profile() {
       setPostsLoading(false)
     })
     return () => unsubscribe()
-  }, [])
+  }, [userHandler])
 
   const handleAvatarSwitch = () => {
     setSwitched(!switched)
