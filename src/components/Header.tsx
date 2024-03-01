@@ -5,6 +5,8 @@ import { db } from '@/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { Notifications } from '@/components';
 import '@/styles/Header.css'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Header() {
 
@@ -40,8 +42,8 @@ export default function Header() {
         </h1>
         Something Here
         <div className='user'>
-          {loading && <p>Loading...</p>}
-          {profile &&
+          {loading && <Skeleton width={100} />}
+          {profile && !loading &&
           <>
             <Link to={`/${profile.id}`} className='flex gap-2 items-center'>
               {profile.name}
@@ -54,7 +56,7 @@ export default function Header() {
               </>}
             <button onClick={logout}>Logout</button>
           </>}
-          {!profile && 
+          {!profile && !loading && 
           <>
             <Link to="/login">Login</Link>{' '}
             <Link to="/signup">Signup</Link>
