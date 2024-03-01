@@ -4,9 +4,9 @@ import {
   User, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut,
   GoogleAuthProvider, signInWithPopup, AuthError
 } from "firebase/auth"
-import { doc, getDoc, setDoc } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
 import { returnProfileProp, profileProp, newProfileProp } from "@/types/firestore"
-import { getBuddyAvatar, getOwnerAvatar } from "@/utils"
+import { createProfile } from "@/providers/utils"
 
 const AuthContext = createContext(
   {} as {
@@ -36,7 +36,7 @@ export default function AuthProvider({children}: {children: React.ReactNode})
   // TODO: Should I handle errors here? or in auth pages /src/pages/auth/*
   const [error, setError] = useState<string | null>(null)
 
-  async function signupWithGoogle(profile: newProfileProp) {
+  async function signupWithGoogle(profileData: newProfileProp) {
     setLoading(true)
     setError(null)
 
@@ -44,24 +44,12 @@ export default function AuthProvider({children}: {children: React.ReactNode})
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider).then(async (userCredential) => {
 
-      // TODO: This part is duplicated
-      // Check if profile document does not exists create it
-      const res = await getDoc( doc(db, 'profiles', userCredential.user.uid) )
-      if ( !res.exists() ) {
-        
-        // TODO: For Profile avatars, I should upload a copy of profile image or placeholder image to CDN with a unique name specific to the user id for example if user id is 123, then the avatars should be 123-owner.jpg and 123-buddy.jpg
-        // Or 123/owner.jpg and 123/buddy.jpg then don't need to store avatar urls in the profile document
-
-        // Create profile document
-        const profileRef = doc(db, 'profiles', userCredential.user.uid)
-        profile.owner = userCredential.user.displayName || ''
-        profile.avatars.owner = userCredential.user.photoURL || getOwnerAvatar()
-        profile.avatars.buddy = getBuddyAvatar()
-        await setDoc(profileRef, profile).catch(() => {
-          setError("Error creating profile")
+      // Create Profile (include uploading avatars and profile document)
+      await createProfile(userCredential, profileData)
+        .catch((errorMessage: string) => {
+          setError(errorMessage)
           result = false
         })
-      }
 
     }).catch((e) => {
       const error = e as AuthError;
@@ -73,28 +61,19 @@ export default function AuthProvider({children}: {children: React.ReactNode})
     return result;
   }
 
-  async function signup(email: string, password: string, profile: newProfileProp) {
+  async function signup(email: string, password: string, profileData: newProfileProp) {
     setLoading(true)
     setError(null)
 
     let result = true;
     await createUserWithEmailAndPassword(auth, email, password).then( async (userCredential) => {
 
-      // TODO: This part is duplicated
-      // Check if profile document does not exists create it
-      const res = await getDoc( doc(db, 'profiles', userCredential.user.uid) )
-      if ( !res.exists() ) {
-
-        // Create profile document
-        const profileRef = doc(db, 'profiles', userCredential.user.uid)
-        profile.owner = userCredential.user.displayName || ''
-        profile.avatars.owner = userCredential.user.photoURL || getOwnerAvatar()
-        profile.avatars.buddy = getBuddyAvatar()
-        await setDoc(profileRef, profile).catch(() => {
-          setError("Error creating profile")
+      // Create Profile (include uploading avatars and profile document)
+      await createProfile(userCredential, profileData)
+        .catch((errorMessage: string) => {
+          setError(errorMessage)
           result = false
         })
-      }
 
     }).catch((e) => {
       const error = e as AuthError;
