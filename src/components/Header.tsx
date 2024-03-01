@@ -34,7 +34,7 @@ export default function Header() {
       <div className='container w-full sm:max-w-7xl'>
         <h1>
           <Link to='/' className='flex items-center gap-2 text-2xl font-bold text-[#d56a34]'>
-            <img src="./logo.png" alt="HighPaws Logo" width="50" height="50" />
+            <img src="/logo.png" alt="HighPaws Logo" width="50" height="50" />
             HighPaws
           </Link>
         </h1>
