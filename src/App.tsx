@@ -12,6 +12,7 @@ const New = lazy(() => import('@/pages/new'))
 const Signup = lazy(() => import('@/pages/auth/signup/Signup'))
 const Login = lazy(() => import('@/pages/auth/login'))
 const ForgotPassword = lazy(() => import('@/pages/auth/forgotpassword'))
+const Discover = lazy(() => import('@/pages/discover'))
 const Notifications = lazy(() => import('@/pages/notifications'))
 
 // TODO: Read below article about routing layers to build routes like next.js with layout and hierarchy
@@ -26,6 +27,7 @@ function App() {
           <Route path="/" element={<Suspense fallback={<div>Loading</div>}><Feed /></Suspense>} />
           <Route path="/:userHandler/:postId" element={<Suspense fallback={<div>Loading</div>}><PostPage /></Suspense>} />
           <Route path="/:userHandler" element={<Suspense fallback={<div>Loading</div>}><Profile /></Suspense>} />
+          <Route path="/discover" element={<Suspense fallback={<div>Loading</div>}><Discover /></Suspense>} />
           <Route path="/notifications" element={<Suspense fallback={<div>Loading</div>}><Notifications /></Suspense>} />
           <Route path="/new" element={<Suspense fallback={<div>Loading</div>}><New /></Suspense>} />
           <Route path="/signup" element={<Suspense fallback={<div>Loading</div>}><Signup /></Suspense>} />

@@ -15,10 +15,10 @@ export default function SidebarNav() {
           </Link>
         </li>
         <li>
-          <a href='#' title='Discover' className='disabled'>
+          <Link to='/discover' title='Discover'>
             <Search />
             <span>Discover</span>
-          </a>
+          </Link>
         </li>
         <li>
           <a href='#' title='Lost & Found' className='disabled'>
