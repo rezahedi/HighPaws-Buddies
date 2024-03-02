@@ -32,10 +32,10 @@ button.primary:hover:not(:disabled){
   @apply bg-[#d56a34];
 }
 .main{
-  @apply container max-w-7xl flex gap-4
+  @apply container xl:max-w-7xl flex gap-4
 }
 .wall{
-  @apply w-full sm:max-w-2xl min-h-screen bg-white mx-auto border-l border-r border-gray-300 divide-y divide-gray-300;
+  @apply w-full sm:max-w-2xl min-h-screen bg-white border-l border-r border-gray-300 divide-y divide-gray-300;
 }
 
 .post{
@@ -127,4 +127,32 @@ button.primary:hover:not(:disabled){
 }
 .ListInModal .item img{
   @apply size-9 rounded-full
+}
+
+.sidebar{
+  @apply border bg-white w-fit xl:w-[275px] mt-5 py-5 px-2 xl:p-5 sticky h-fit top-5 space-y-5
+}
+.sidebar ul{
+  @apply space-y-2 text-xl
+}
+.sidebar li a{
+  @apply w-fit flex gap-2 items-center rounded-md px-3 py-2 hover:bg-gray-200 transition-all duration-200 no-underline
+}
+.sidebar li a.active{
+  @apply bg-gray-100
+}
+.sidebar li a.disabled{
+  @apply cursor-default text-gray-400 hover:bg-white
+}
+.sidebar li a.disabled div{
+  @apply text-gray-400
+} 
+.sidebar svg{
+  @apply size-6
+}
+.sidebar span{
+  @apply hidden xl:inline
+}
+.sidebar button{
+  @apply w-full flex gap-2 px-3
 }

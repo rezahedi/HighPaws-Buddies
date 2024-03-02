@@ -1,7 +1,7 @@
 
 export default function SidebarBanners() {
   return (
-    <nav className='sidebar w-[275px] mt-5 sticky h-fit top-5 space-y-5'>
+    <nav className='w-[275px] mt-5 sticky h-fit top-5 space-y-5 hidden lg:block'>
       <div className="card rounded-xl overflow-hidden bg-white">
         <img src="https://fakeimg.pl/260x150/61A97E/000" alt="Any Banner" width="100%" />
         <div className="p-5">

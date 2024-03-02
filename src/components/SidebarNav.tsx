@@ -1,19 +1,66 @@
 import { Link } from 'react-router-dom'
+import { Group, Home, Message, Money, Notification, Pen, Profile, Search } from '@/components/icons'
+import { useAuth } from '@/providers/auth'
 
 export default function SidebarNav() {
+  const { profile } = useAuth()
+
   return (
-    <nav className='sidebar border bg-white w-[275px] mt-5 p-5 sticky h-fit top-5 space-y-5'>
-      <ul className='space-y-2 text-xl'>
-        <li><Link to='/'>Home</Link></li>
-        <li>Discover</li>
-        <li>Lost & Found</li>
-        <li>For Sale & Free</li>
-        <li>Packs</li>
-        <li>Notifications</li>
-        <li>Messages</li>
-        <li>Profiles</li>
+    <nav className='sidebar'>
+      <ul>
+        <li>
+          <Link to='/' title='Home'>
+            <Home />
+            <span>Home</span>
+          </Link>
+        </li>
+        <li>
+          <a href='#' title='Discover' className='disabled'>
+            <Search />
+            <span>Discover</span>
+          </a>
+        </li>
+        <li>
+          <a href='#' title='Lost & Found' className='disabled'>
+            <Search />
+            <span>Lost & Found</span>
+          </a>
+        </li>
+        <li>
+          <a href='#' title='For Sale & Free' className='disabled'>
+            <Money />
+            <span>For Sale & Free</span>
+          </a>
+        </li>
+        <li>
+          <a href='#' title='Packs' className='disabled'>
+            <Group />
+            <span>Packs</span>
+          </a>
+        </li>
+        <li>
+          <a href='/notifications' title='Notifications'>
+            <Notification />
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href='#' title='Messages' className='disabled'>
+            <Message />
+            <span>Messages</span>
+          </a>
+        </li>
+        <li>
+          <a href={`/${profile?.id}`} title='Profiles'>
+            <Profile />
+            <span>Profiles</span>
+          </a>
+        </li>
       </ul>
-      <button className='primary w-full'>+ Post</button>
+      <button title='Post' className='primary'>
+        <Pen />
+        <span>Post</span>
+      </button>
     </nav>
   )
 }
