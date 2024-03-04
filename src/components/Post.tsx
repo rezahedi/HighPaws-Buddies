@@ -6,8 +6,7 @@ import { doc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import { useAuth } from '@/providers/auth';
 
 // TODO: Lazy load the Comments component when user clicks to show comments
-import { Comments } from '@/components'
-import { Likes } from "@/components/posts"
+import { Comments, UserListInModal } from '@/components'
 
 export default function Post(
   { post, showComment = false, onDelete }:
@@ -130,7 +129,14 @@ export default function Post(
       </div>
       <footer>
         {post.liked && `🩷`} <a href='#' onClick={handleLikes}>{post.stats.likes} likes</a>
-        {post.stats.likes > 0 && showLikes && <Likes post={post} onClose={()=>setShowLikes(false)} />}
+        {post.stats.likes > 0 && showLikes &&
+          <UserListInModal
+            title="Likes"
+            collectionRef={`profiles/${post.profile_id.id}/posts/${post.id}/likes`}
+            count={post.stats.likes}
+            onClose={()=>setShowLikes(false)}
+          />
+        }
         <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
       </footer>
       {showComments &&

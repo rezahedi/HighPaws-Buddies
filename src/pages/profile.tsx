@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import '@/styles/Profile.css'
-import { EmptyFeed, Header, Post, SidebarBanners, SidebarNav } from "@/components"
+import { EmptyFeed, Header, Post, SidebarBanners, SidebarNav, UserListInModal } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
 import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
-import { Followers, Following, FollowRequest } from '@/components/profile';
+import { FollowRequest } from '@/components/profile';
 import { useAuth } from '@/providers/auth';
 import { PostSkeleton, ProfileSkeleton } from '@/components/skeletons';
 
@@ -94,8 +94,22 @@ export default function Profile() {
               <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
               <a href="#" onClick={handleFollowing}>{profile.stats.following} following</a>
               <a href="#">{profile.stats.posts} posts</a>
-              {showFollowers && <Followers profileId={profile.id} onClose={()=>setShowFollowers(false)} />}
-              {showFollowing && <Following profileId={profile.id} onClose={()=>setShowFollowing(false)} />}
+              {showFollowers &&
+                <UserListInModal
+                  title='Followers'
+                  collectionRef={`profiles/${profile.id}/followers`}
+                  count={profile.stats.followers}
+                  onClose={()=>setShowFollowers(false)}
+                />
+              }
+              {showFollowing &&
+                <UserListInModal
+                  title='Following'
+                  collectionRef={`profiles/${profile.id}/following`}
+                  count={profile.stats.following}
+                  onClose={()=>setShowFollowing(false)}
+                />
+              }
             </section>
             <section className="detail">
               <div>🎂 {profile.age}</div>
