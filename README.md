@@ -29,6 +29,7 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Places and Businesses with geo queries
 - [ ] HoverCard for user profile
 - [ ] Dark mode
+- [ ] Pagination or infinite scroll (For the feed, comments, likes, or followers)
 
 ## Firebase Emulators for local development
 
