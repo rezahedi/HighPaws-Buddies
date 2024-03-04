@@ -14,7 +14,7 @@ a:hover{
 }
 
 button{
-  @apply px-6 py-2 rounded-md border border-gray-300 transition-all duration-100;
+  @apply px-4 py-2 rounded-md border border-gray-300 transition-all duration-100;
 }
 button:hover:not(:disabled){
   @apply bg-gray-100 border-gray-400;
@@ -134,7 +134,7 @@ button.primary:hover:not(:disabled){
   @apply text-lg font-semibold text-center
 }
 .ListInModal>div{
-  @apply space-y-3
+  @apply space-y-3 max-h-[calc(50vh)] overflow-y-auto
 }
 .ListInModal .item{
   @apply flex justify-between
@@ -144,6 +144,25 @@ button.primary:hover:not(:disabled){
 }
 .ListInModal .item img{
   @apply size-9 rounded-full
+}
+
+.notificationItem{
+  @apply bg-gray-100 border p-3 rounded-md flex gap-3 items-center
+}
+.notificationItem img{
+  @apply size-9 rounded-full
+}
+.notificationItem>div{
+  @apply flex-grow flex gap-3 items-center cursor-pointer font-bold
+}
+.notificationItem>div time{
+  @apply text-xs opacity-70 italic
+}
+.notificationItem.seen{
+  @apply bg-transparent
+}
+.notificationItem.seen>div{
+  @apply text-gray-600 font-normal
 }
 
 .sidebar{

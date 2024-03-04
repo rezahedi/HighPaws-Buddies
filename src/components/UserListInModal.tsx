@@ -53,7 +53,7 @@ export default function UserListInModal(
   return (
     <Modal onClose={onClose} className="ListInModal">
       <h3>{title}</h3>
-      <div className="space-y-2 max-h-[calc(50vh)] overflow-y-auto">
+      <div>
         {loading && <UserListInModalSkeleton count={count} />}
         {userList.map((user) =>
           <div key={user.id.id} className='item'>

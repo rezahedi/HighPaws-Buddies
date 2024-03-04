@@ -4,7 +4,8 @@ import { db } from '@/firebase';
 import { collection, doc, orderBy, limit, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { notificationProp, returnNotificationProp } from '@/types/firestore';
 import { Modal } from '@/components';
-import '@/styles/Notifications.css';
+import { NotificationsSkeleton } from '@/components/skeletons';
+import { Archive } from '@/components/icons';
 
 export default function Notifications( { profileId, onClose }: { profileId: string, onClose: () => void } ) {
 
@@ -39,26 +40,30 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
   }
 
   return (
-    <Modal onClose={onClose}>
-      <div className='notificationsList'>
-        {loading && <p>Loading notifications ...</p>}
-        {notifications.map((notification, index) =>
-          <div key={index} className={`item ${notification.seen ? `seen` : ``}`}>
-            <div>
-              <Link to={`/${notification.profile_id.id}`} className='avatar'>
-                <img src={notification.avatar} alt={notification.name} />
-                {notification.name}
-              </Link>
-            </div>
+    <Modal onClose={onClose} className='ListInModal'>
+      <h3>Notifications</h3>
+      <div>
+        {loading && <NotificationsSkeleton count={5} />}
+        {notifications.map((notification) =>
+          <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
             <div onClick={()=>handleSeenAction(notification)}>
-              <p>{notification.message}</p>
-              <time>
-                {notification.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
-              </time>
+              <img src={notification.avatar} alt={notification.name} />
+              <p>
+                {notification.message}<br />
+                <time>
+                  {notification.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+                </time>
+              </p>
             </div>
-            <button onClick={()=>handleArchiveAction(notification)}>Archive</button>
+            <button onClick={()=>handleArchiveAction(notification)} className='flex gap-2 items-center px-2'>
+              <Archive className='size-5' />
+              <span className='hidden sm:inline'>Archive</span>
+            </button>
           </div>
         )}
+      </div>
+      <div className='flex  justify-center my-1 mx-auto'>
+        <Link to={`/notifications`} className='py-2 inline-block px-4 border rounded-md'>See all the notifications</Link>
       </div>
     </Modal>
   )
