@@ -32,10 +32,10 @@ button.primary:hover:not(:disabled){
   @apply bg-[#d56a34];
 }
 .main{
-  @apply container xl:max-w-7xl flex gap-4
+  @apply sm:container xl:max-w-7xl flex gap-4 flex-col sm:flex-row
 }
 .wall{
-  @apply w-full sm:max-w-2xl min-h-screen bg-white border-l border-r border-gray-300 divide-y divide-gray-300;
+  @apply w-full sm:max-w-2xl min-h-screen bg-white sm:border-l sm:border-r border-gray-300 divide-y divide-gray-300;
 }
 
 .post{
@@ -130,10 +130,10 @@ button.primary:hover:not(:disabled){
 }
 
 .sidebar{
-  @apply border bg-white w-fit xl:w-[275px] mt-5 py-5 px-2 xl:p-5 sticky h-fit top-5 space-y-5
+  @apply border bg-white w-full sm:w-fit xl:w-[275px] sm:mt-5 py-5 px-2 xl:p-5 fixed bottom-0 sm:sticky sm:top-5 h-fit
 }
 .sidebar ul{
-  @apply space-y-2 text-xl
+  @apply text-xl flex gap-1 sm:gap-2 sm:flex-col justify-center
 }
 .sidebar li a{
   @apply w-fit flex gap-2 items-center rounded-md px-3 py-2 hover:bg-gray-200 transition-all duration-200 no-underline
@@ -154,5 +154,5 @@ button.primary:hover:not(:disabled){
   @apply hidden xl:inline
 }
 .sidebar button{
-  @apply w-full flex gap-2 px-3
+  @apply w-full flex gap-2 px-3 sm:mt-5
 }
