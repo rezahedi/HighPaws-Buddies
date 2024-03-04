@@ -14,6 +14,7 @@ import Close from '@/components/icons/Close'
 import Bin from '@/components/icons/Bin'
 import Pen from '@/components/icons/Pen'
 import PhotoPlus from '@/components/icons/PhotoPlus'
+import Archive from '@/components/icons/Archive'
 
 export {
   Home,
@@ -32,4 +33,5 @@ export {
   Bin,
   Pen,
   PhotoPlus,
+  Archive,
 }
