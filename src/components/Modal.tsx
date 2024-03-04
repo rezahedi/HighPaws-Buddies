@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { Close } from "@/components/icons"
 
 export default function Modal({ onClose: closeModal, className, children }: { onClose: () => void, className?: string, children: React.ReactNode }) {
 
@@ -22,8 +23,9 @@ export default function Modal({ onClose: closeModal, className, children }: { on
   }, [])
 
   return (
-    <div className='overlay z-10 fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center'>
-      <div className='modal bg-white border border-gray-300 rounded-lg shadow-lg p-4 w-full sm:w-auto'>
+    <div className='overlay'>
+      <div className='modal'>
+        <button className='close' onClick={closeModal}><Close /></button>
         <div className={className}>
           {children}
         </div>
