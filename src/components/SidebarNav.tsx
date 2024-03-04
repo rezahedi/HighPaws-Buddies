@@ -21,12 +21,6 @@ export default function SidebarNav() {
           </Link>
         </li>
         <li>
-          <a href='#' title='Lost & Found' className='disabled'>
-            <Search />
-            <span>Lost & Found</span>
-          </a>
-        </li>
-        <li>
           <a href='#' title='For Sale & Free' className='disabled'>
             <Money />
             <span>For Sale & Free</span>
@@ -56,11 +50,13 @@ export default function SidebarNav() {
             <span>Profiles</span>
           </a>
         </li>
+        <li>
+          <button title='Post' className='primary'>
+            <Pen />
+            <span>Post</span>
+          </button>
+        </li>
       </ul>
-      <button title='Post' className='primary'>
-        <Pen />
-        <span>Post</span>
-      </button>
     </nav>
   )
 }
