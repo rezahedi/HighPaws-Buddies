@@ -8,6 +8,7 @@ import SidebarNav from '@/components/SidebarNav'
 import SidebarBanners from '@/components/SidebarBanners'
 import NewPost from '@/components/NewPost'
 import EmptyFeed from '@/components/EmptyFeed'
+import UserListInModal from '@/components/UserListInModal'
 
 export {
   Post,
@@ -20,4 +21,5 @@ export {
   SidebarBanners,
   NewPost,
   EmptyFeed,
+  UserListInModal,
 }
