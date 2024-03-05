@@ -2,7 +2,7 @@ import { Header, SidebarBanners, SidebarNav } from '@/components'
 import { useAuth } from '@/providers/auth'
 import { notificationProp, returnNotificationProp } from '@/types/firestore'
 import { db } from '@/firebase'
-import { onSnapshot, query, collection, where, orderBy, limit, updateDoc, doc  } from 'firebase/firestore'
+import { onSnapshot, query, collection, orderBy, limit, updateDoc, doc  } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { NotificationsSkeleton } from '@/components/skeletons'
 import { useNavigate } from 'react-router-dom'
@@ -21,7 +21,6 @@ export default function Notifications() {
     const unsubscribe = onSnapshot(
       query(
         collection(db, `profiles/${profile.id}/notifications`),
-        where('archived', '==', false),
         orderBy('published_at', 'desc'),
         limit(10)
       ), (snapshot) => {
@@ -43,6 +42,11 @@ export default function Notifications() {
     updateDoc(docRef, { archived: true })
   }
 
+  if( profile === null ){
+    navigate('/login')
+    return null
+  } 
+
   return (
     <>
       <Header />
@@ -63,12 +67,15 @@ export default function Notifications() {
                     </time>
                   </p>
                 </div>
-                <button onClick={()=>handleArchiveAction(notification)} className='flex gap-2 items-center px-2'>
-                  <Archive className='size-5' />
-                  <span className='hidden sm:inline'>Archive</span>
-                </button>
+                {notification.archived && <p className='text-xs text-gray-500'>Archived</p>}
+                {!notification.archived && 
+                  <button onClick={()=>handleArchiveAction(notification)} className='flex gap-2 items-center px-2'>
+                    <Archive className='size-5' />
+                    <span className='hidden sm:inline'>Archive</span>
+                  </button>}
               </div>
             )}
+            {!loading && notifications.length === 0 && <div className='text-center py-14'><p>This area will light up with new notifications once there's activity related to you.</p></div>}
           </div>
           <div className='h-24'></div>
         </main>
