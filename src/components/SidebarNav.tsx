@@ -33,10 +33,10 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
           </a>
         </li>
         <li>
-          <a href='/notifications' title='Notifications'>
+          <Link to='/notifications' title='Notifications'>
             <Notification />
             <span>Notifications</span>
-          </a>
+          </Link>
         </li>
         <li>
           <a href='#' title='Messages' className='disabled'>
@@ -45,10 +45,10 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
           </a>
         </li>
         <li>
-          <a href={`/${profile?.id}`} title='Profiles'>
+          <Link to={`/${profile?.id}`} title='Profiles'>
             <Profile />
             <span>Profiles</span>
-          </a>
+          </Link>
         </li>
         <li>
           <button onClick={()=>setShowModal(true)} title='Post' className='primary'>
