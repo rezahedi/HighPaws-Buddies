@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Header, SidebarBanners, SidebarNav } from '@/components'
 import { useAuth } from '@/providers/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,15 +11,6 @@ export default function Discover() {
   }, [authProfile, authLoading]);
 
   return (
-    <>
-      <Header />
-      <div className='main'>
-        <SidebarNav />
-        <main className="wall">
-          <div className="post">Map of local places</div>
-        </main>
-        <SidebarBanners />
-      </div>
-    </>
+    <div className="post">Map of local places</div>
   )
 }

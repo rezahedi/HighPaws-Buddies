@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { AuthProvider } from "@/providers"
+import Layout from "@/Layout"
 // TODO: Should be Lazy Loaded (Except main component all should be lazy loaded)
 // import { Login, ForgotPassword } from "@/pages/auth"
 import '@/styles/global.css'
@@ -23,11 +24,13 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Suspense fallback={<div>Loading</div>}><Feed /></Suspense>} />
-          <Route path="/:userHandler/:postId" element={<Suspense fallback={<div>Loading</div>}><PostPage /></Suspense>} />
-          <Route path="/:userHandler" element={<Suspense fallback={<div>Loading</div>}><Profile /></Suspense>} />
-          <Route path="/discover" element={<Suspense fallback={<div>Loading</div>}><Discover /></Suspense>} />
-          <Route path="/notifications" element={<Suspense fallback={<div>Loading</div>}><Notifications /></Suspense>} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Feed />} />
+            <Route path="/:userHandler/:postId" element={<PostPage />} />
+            <Route path="/:userHandler" element={<Profile />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/notifications" element={<Notifications />} />
+          </Route>
           <Route path="/signup" element={<Suspense fallback={<div>Loading</div>}><Signup /></Suspense>} />
           <Route path="/login" element={<Suspense fallback={<div>Loading</div>}><Login /></Suspense>} />
           <Route path="/forgot-password" element={<Suspense fallback={<div>Loading</div>}><ForgotPassword /></Suspense>} />

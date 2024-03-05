@@ -1,4 +1,3 @@
-import { Header, SidebarBanners, SidebarNav } from '@/components'
 import { useAuth } from '@/providers/auth'
 import { notificationProp, returnNotificationProp } from '@/types/firestore'
 import { db } from '@/firebase'
@@ -48,42 +47,34 @@ export default function Notifications() {
 
   return (
     <>
-      <Header />
-      <div className='main'>
-        <SidebarNav />
-        <main className="wall">
-          <div className='post'><h3 className='font-semibold text-center text-lg'>Notifications</h3></div>
-          <div className='space-y-2 p-2'>
-            {loading && <NotificationsSkeleton count={8} />}
-            {notifications.map((notification) =>
-              <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
-                <div onClick={()=>handleSeenAction(notification)}>
-                  <img src={notification.avatar} alt={notification.name} />
-                  <p>
-                    {notification.message}<br />
-                    <time>
-                      {notification.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
-                    </time>
-                  </p>
-                </div>
-                {notification.archived && <p className='text-xs text-gray-500'>Archived</p>}
-                {!notification.archived && 
-                  <button onClick={()=>handleArchiveAction(notification)} className='flex gap-2 items-center px-2'>
-                    <Archive className='size-5' />
-                    <span className='hidden sm:inline'>Archive</span>
-                  </button>}
-              </div>
-            )}
-            {!loading && notifications.length === 0 &&
-              <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
-                <Notification className='size-28 text-gray-300' />
-                This area will light up with new notifications<br /> once there's activity related to you.
-              </div>
-            }
+      <h3 className='font-semibold text-center text-lg p-4'>Notifications</h3>
+      <div className='space-y-2 p-2'>
+        {loading && <NotificationsSkeleton count={8} />}
+        {notifications.map((notification) =>
+          <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
+            <div onClick={()=>handleSeenAction(notification)}>
+              <img src={notification.avatar} alt={notification.name} />
+              <p>
+                {notification.message}<br />
+                <time>
+                  {notification.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+                </time>
+              </p>
+            </div>
+            {notification.archived && <p className='text-xs text-gray-500'>Archived</p>}
+            {!notification.archived && 
+              <button onClick={()=>handleArchiveAction(notification)} className='flex gap-2 items-center px-2'>
+                <Archive className='size-5' />
+                <span className='hidden sm:inline'>Archive</span>
+              </button>}
           </div>
-          <div className='h-24'></div>
-        </main>
-        <SidebarBanners />
+        )}
+        {!loading && notifications.length === 0 &&
+          <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
+            <Notification className='size-28 text-gray-300' />
+            This area will light up with new notifications<br /> once there's activity related to you.
+          </div>
+        }
       </div>
     </>
   )

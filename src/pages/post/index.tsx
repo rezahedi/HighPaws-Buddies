@@ -3,7 +3,7 @@ import { db } from '@/firebase';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from "react";
 import { postProp, returnPostProp } from "@/types/firestore";
-import { Header, Post, SidebarBanners, SidebarNav } from "@/components";
+import { Post } from "@/components";
 import { PostSkeleton } from "@/components/skeletons";
 import { useAuth } from "@/providers/auth";
 
@@ -52,16 +52,9 @@ export default function PostPage() {
 
   return (
     <>
-      <Header />
-      <div className='main'>
-        <SidebarNav />
-        <main className="wall">
-          {dataLoading && <PostSkeleton />}
-          {error && <div className="post flex flex-col items-center gap-2 my-14 mx-10 text-center"><h3 className="text-7xl font-semibold">404</h3>It seems the post does not exist!</div>}
-          {post && <Post post={post} showComment />}
-        </main>
-        <SidebarBanners />
-      </div>
+      {dataLoading && <PostSkeleton />}
+      {error && <div className="post flex flex-col items-center gap-2 my-14 mx-10 text-center"><h3 className="text-7xl font-semibold">404</h3>It seems the post does not exist!</div>}
+      {post && <Post post={post} showComment />}
     </>
   )
 }

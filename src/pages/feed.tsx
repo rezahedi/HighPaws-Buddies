@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Header, Post, SidebarNav, SidebarBanners, EmptyFeed, NewPost, Modal } from '@/components';
+import { Post, EmptyFeed, NewPost, Modal } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
@@ -42,25 +42,17 @@ export default function Feed() {
 
   return (
     <>
-      <Header />
-      <div className='main'>
-        <SidebarNav setShowModal={setShowNewPostModal} />
-        <main className='wall'>
-          {authProfile && <NewPostBlock profile={authProfile} onClick={setShowNewPostModal} />}
-          {showNewPostModal &&
-            <Modal onClose={()=>setShowNewPostModal(false)}>
-              <NewPost onCancel={()=>setShowNewPostModal(false)} />
-            </Modal>
-          }
-          {loading && <PostSkeleton count={3} />}
-          {posts.map((post) =>
-            <Post key={post.id} post={post} />
-          )}
-          {posts.length === 0 && !loading && <EmptyFeed />}
-          <div className='h-24'></div>
-        </main>
-        <SidebarBanners />
-      </div>
+      {authProfile && <NewPostBlock profile={authProfile} onClick={setShowNewPostModal} />}
+      {showNewPostModal &&
+        <Modal onClose={()=>setShowNewPostModal(false)}>
+          <NewPost onCancel={()=>setShowNewPostModal(false)} />
+        </Modal>
+      }
+      {loading && <PostSkeleton count={3} />}
+      {posts.map((post) =>
+        <Post key={post.id} post={post} />
+      )}
+      {posts.length === 0 && !loading && <EmptyFeed />}
     </>
   )
 }
