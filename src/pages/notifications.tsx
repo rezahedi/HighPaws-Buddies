@@ -6,7 +6,7 @@ import { onSnapshot, query, collection, orderBy, limit, updateDoc, doc  } from '
 import { useEffect, useState } from 'react'
 import { NotificationsSkeleton } from '@/components/skeletons'
 import { useNavigate } from 'react-router-dom'
-import { Archive } from '@/components/icons'
+import { Archive, Notification } from '@/components/icons'
 
 export default function Notifications() {
   const { profile } = useAuth()
@@ -75,7 +75,12 @@ export default function Notifications() {
                   </button>}
               </div>
             )}
-            {!loading && notifications.length === 0 && <div className='text-center py-14'><p>This area will light up with new notifications once there's activity related to you.</p></div>}
+            {!loading && notifications.length === 0 &&
+              <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
+                <Notification className='size-28 text-gray-300' />
+                This area will light up with new notifications<br /> once there's activity related to you.
+              </div>
+            }
           </div>
           <div className='h-24'></div>
         </main>
