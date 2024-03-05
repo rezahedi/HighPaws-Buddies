@@ -134,6 +134,6 @@ export function returnNotificationProp(doc: DocumentSnapshot): notificationProp 
     name: doc.data().name,
     published_at: doc.data().published_at,
     seen: doc.data().seen,
-    archived: doc.data().archive,
+    archived: doc.data().archived,
   }
 }
