@@ -8,13 +8,14 @@ import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/type
 import { FollowRequest } from '@/components/profile';
 import { useAuth } from '@/providers/auth';
 import { PostSkeleton, ProfileSkeleton } from '@/components/skeletons';
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
   
   // TODO: Get state passed by Link to make a profile page until profile's data is fetched
   // const { state } = useLocation() or
   // const { state } = props.location
-  const { profile: loggedInProfile } = useAuth()
+  const { profile: authProfile, loading: authLoading } = useAuth()
   const [profile, setProfile] = useState<profileProp | null>(null)
   const [posts, setPosts] = useState<postProp[]>([])
   const [profileLoading, setProfileLoading] = useState<boolean>(false)
@@ -23,6 +24,11 @@ export default function Profile() {
   const [showFollowers, setShowFollowers] = useState<boolean>(false)
   const [showFollowing, setShowFollowing] = useState<boolean>(false)
   const { userHandler } = useParams()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if( authProfile === null && authLoading === false ) return navigate('/login')
+  }, [authProfile, authLoading])
 
   // Get user profile from /profiles/:userHandler
   useEffect(() => {
@@ -88,7 +94,7 @@ export default function Profile() {
                 <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
               </figure>
               <h2>{profile.name}</h2>
-              {loggedInProfile && loggedInProfile.id !== profile.id && <FollowRequest to={profile} />}
+              {authProfile && authProfile.id !== profile.id && <FollowRequest to={profile} />}
             </section>
             <section className="stats">
               <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>

@@ -9,18 +9,22 @@ import { useNavigate } from 'react-router-dom'
 import { Archive, Notification } from '@/components/icons'
 
 export default function Notifications() {
-  const { profile } = useAuth()
+  const { profile: authProfile, loading: authLoading } = useAuth()
   const [notifications, setNotifications] = useState<notificationProp[]>([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (profile === null) return
+    if( authProfile === null && authLoading === false ) return navigate('/login')
+  }, [authProfile, authLoading]);
+
+  useEffect(() => {
+    if (authProfile === null) return
 
     setLoading(true)
     const unsubscribe = onSnapshot(
       query(
-        collection(db, `profiles/${profile.id}/notifications`),
+        collection(db, `profiles/${authProfile.id}/notifications`),
         orderBy('published_at', 'desc'),
         limit(10)
       ), (snapshot) => {
@@ -29,23 +33,18 @@ export default function Notifications() {
         setLoading(false);
     })
     return () => unsubscribe()
-  }, [profile])
+  }, [authProfile])
 
   const handleSeenAction = (notification: notificationProp) => {
-    const docRef = doc(db, `profiles/${profile?.id}/notifications/${notification.id}`)
+    const docRef = doc(db, `profiles/${authProfile?.id}/notifications/${notification.id}`)
     updateDoc(docRef, { seen: true })
     navigate(notification.link)
   }
 
   const handleArchiveAction = (notification: notificationProp) => {
-    const docRef = doc(db, `profiles/${profile?.id}/notifications/${notification.id}`)
+    const docRef = doc(db, `profiles/${authProfile?.id}/notifications/${notification.id}`)
     updateDoc(docRef, { archived: true })
   }
-
-  if( profile === null ){
-    navigate('/login')
-    return null
-  } 
 
   return (
     <>

@@ -11,18 +11,21 @@ import { PostSkeleton } from '@/components/skeletons';
 export default function Feed() {
 
   const navigate = useNavigate()
-  const { profile, loading: authLoading } = useAuth()
+  const { profile: authProfile, loading: authLoading } = useAuth()
   const [posts, setPosts] = useState<postProp[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if( authLoading ) return
-    if( profile === null ) return navigate('/login')
+    if( authProfile === null && authLoading === false ) return navigate('/login')
+  }, [authProfile, authLoading]);
+
+  useEffect(() => {
+    if( authProfile === null ) return
 
     // snapshot listener to get real-time updates from the firestore posts collection with where filter for public posts
     const unsubscribe = onSnapshot(
       query(
-        collection(db, `profiles/${profile.id}/feed`),
+        collection(db, `profiles/${authProfile.id}/feed`),
         where('private', '==', false),
         orderBy('published_at', 'desc'),
         limit(10)
@@ -34,12 +37,7 @@ export default function Feed() {
       }
     );
     return () => unsubscribe();
-  }, [profile]);
-
-  if( profile === null ){
-    navigate('/login')
-    return null
-  } 
+  }, [authProfile]);
 
   return (
     <>
@@ -47,7 +45,7 @@ export default function Feed() {
       <div className='main'>
         <SidebarNav />
         <main className='wall'>
-          <NewPostBlock profile={profile} />
+          {authProfile && <NewPostBlock profile={authProfile} />}
           {loading && <PostSkeleton count={3} />}
           {posts.map((post) =>
             <Post key={post.id} post={post} />
