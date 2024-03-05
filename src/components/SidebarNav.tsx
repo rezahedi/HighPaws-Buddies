@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Group, Home, Message, Money, Notification, Pen, Profile, Search } from '@/components/icons'
 import { useAuth } from '@/providers/auth'
 
-export default function SidebarNav() {
+export default function SidebarNav({setShowModal}: {setShowModal: (value: boolean) => void}) {
   const { profile } = useAuth()
 
   return (
@@ -51,7 +51,7 @@ export default function SidebarNav() {
           </a>
         </li>
         <li>
-          <button title='Post' className='primary'>
+          <button onClick={()=>setShowModal(true)} title='Post' className='primary'>
             <Pen />
             <span>Post</span>
           </button>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Header, Post, SidebarNav, SidebarBanners, EmptyFeed } from '@/components';
+import { Header, Post, SidebarNav, SidebarBanners, EmptyFeed, NewPost, Modal } from '@/components';
 import { db } from '@/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { postProp, returnPostProp } from '@/types/firestore';
@@ -14,6 +14,7 @@ export default function Feed() {
   const { profile: authProfile, loading: authLoading } = useAuth()
   const [posts, setPosts] = useState<postProp[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showNewPostModal, setShowNewPostModal] = useState(false)
 
   useEffect(() => {
     if( authProfile === null && authLoading === false ) return navigate('/login')
@@ -43,9 +44,14 @@ export default function Feed() {
     <>
       <Header />
       <div className='main'>
-        <SidebarNav />
+        <SidebarNav setShowModal={setShowNewPostModal} />
         <main className='wall'>
-          {authProfile && <NewPostBlock profile={authProfile} />}
+          {authProfile && <NewPostBlock profile={authProfile} onClick={setShowNewPostModal} />}
+          {showNewPostModal &&
+            <Modal onClose={()=>setShowNewPostModal(false)}>
+              <NewPost onCancel={()=>setShowNewPostModal(false)} />
+            </Modal>
+          }
           {loading && <PostSkeleton count={3} />}
           {posts.map((post) =>
             <Post key={post.id} post={post} />
