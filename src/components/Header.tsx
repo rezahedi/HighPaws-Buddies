@@ -7,6 +7,7 @@ import { Notifications } from '@/components';
 import '@/styles/Header.css'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { Logout, Notification } from '@/components/icons';
 
 export default function Header() {
 
@@ -27,7 +28,6 @@ export default function Header() {
   }, [profile, authUser])
 
   const handleNotifications = () => {
-    if (notificationStats == 0) return
     setShowNotifications(!showNotifications)
   }
 
@@ -49,17 +49,20 @@ export default function Header() {
               {profile.name}
               <img src={profile.avatars.buddy} alt={profile.name} className='size-9 rounded-full' width={36} height={36} />
             </Link>
-            {notificationStats > 0 && 
-              <>
-                <button onClick={handleNotifications}>{notificationStats}</button>
-                {showNotifications && <Notifications profileId={profile.id} onClose={()=>setShowNotifications(false)} />}
-              </>}
-            <button onClick={logout}>Logout</button>
+
+            <button onClick={handleNotifications} className='relative p-2'>
+              <Notification className='size-5' />
+              {notificationStats > 0 && <sup className='absolute -top-1 -right-1 rounded-full size-3 bg-[#d56a34] -indent-20 overflow-hidden'>&nbsp;</sup>}
+            </button>
+            {showNotifications && 
+            <Notifications profileId={profile.id} onClose={()=>setShowNotifications(false)} />}
+
+            <button onClick={logout} className='p-2'><Logout className='size-5' /></button>
           </>}
           {!profile && !loading && 
           <>
-            <Link to="/login">Login</Link>{' '}
-            <Link to="/signup">Signup</Link>
+            <Link to="/login" className='border rounded-full px-3 py-1'>Login</Link>{' '}
+            <Link to="/signup" className='border rounded-full px-3 py-1 bg-[#d56a34]'>Signup</Link>
           </>}
         </div>
       </div>
