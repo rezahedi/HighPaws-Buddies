@@ -5,7 +5,7 @@ import { collection, doc, orderBy, limit, onSnapshot, query, updateDoc, where } 
 import { notificationProp, returnNotificationProp } from '@/types/firestore';
 import { Modal } from '@/components';
 import { NotificationsSkeleton } from '@/components/skeletons';
-import { Archive } from '@/components/icons';
+import { Archive, Notification } from '@/components/icons';
 
 export default function Notifications( { profileId, onClose }: { profileId: string, onClose: () => void } ) {
 
@@ -61,6 +61,12 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
             </button>
           </div>
         )}
+        {!loading && notifications.length === 0 &&
+          <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
+            <Notification className='size-28 text-gray-300' />
+            This area will light up with new notifications<br /> once there's activity related to you.
+          </div>
+        }
       </div>
       <div className='flex  justify-center my-1 mx-auto'>
         <Link to={`/notifications`} className='py-2 inline-block px-4 border rounded-md'>See all the notifications</Link>
