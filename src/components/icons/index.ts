@@ -15,6 +15,7 @@ import Bin from '@/components/icons/Bin'
 import Pen from '@/components/icons/Pen'
 import PhotoPlus from '@/components/icons/PhotoPlus'
 import Archive from '@/components/icons/Archive'
+import Logout from '@/components/icons/Logout'
 
 export {
   Home,
@@ -34,4 +35,5 @@ export {
   Pen,
   PhotoPlus,
   Archive,
+  Logout,
 }
