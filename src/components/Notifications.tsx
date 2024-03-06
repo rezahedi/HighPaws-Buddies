@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { db } from '@/firebase';
-import { collection, doc, orderBy, limit, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, orderBy, limit, startAfter, onSnapshot, query, updateDoc, where, DocumentSnapshot } from 'firebase/firestore';
 import { notificationProp, returnNotificationProp } from '@/types/firestore';
 import { Modal } from '@/components';
 import { NotificationsSkeleton } from '@/components/skeletons';
@@ -10,23 +10,66 @@ import { Archive, Notification } from '@/components/icons';
 export default function Notifications( { profileId, onClose }: { profileId: string, onClose: () => void } ) {
 
   const [notifications, setNotifications] = useState<notificationProp[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState<boolean>(false)
+  const scrollableContainer = useRef<HTMLDivElement>(null)
+  const itemsPerLoad = 8
+  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
   const navigate = useNavigate()
 
+  // Scroll event listener
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      query(
+    if(loadingMore === null) return
+    const container = scrollableContainer.current
+    if(!container) return
+
+    const handleScroll = () => {
+      if(container.scrollTop + container.clientHeight >= container.scrollHeight-20) {
+        console.log('loading more')
+        setLoadingMore(true)
+      }
+    }
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [loadingMore])
+
+  useEffect(() => {
+    if(!loadingMore || !profileId) return
+
+    setLoading(true);
+    let q = query(
+      collection(db, `profiles/${profileId}/notifications`),
+      where('archived', '==', false),
+      orderBy('published_at', 'desc'),
+      limit(itemsPerLoad)
+    )
+    if(lastDoc !== null) {
+      q = query(
         collection(db, `profiles/${profileId}/notifications`),
         where('archived', '==', false),
         orderBy('published_at', 'desc'),
-        limit(10)
-      ), (snapshot) => {
+        startAfter(lastDoc),
+        limit(itemsPerLoad)
+      )
+    }
+    const unsubscribe = onSnapshot(
+      q, (snapshot) => {
         const docs: notificationProp[] = snapshot.docs.map(doc => returnNotificationProp(doc));
-        setNotifications(docs);
+
+        if( docs.length == itemsPerLoad ) {
+          setLastDoc( snapshot.docs[snapshot.docs.length - 1] );
+          setLoadingMore(false);
+
+        } else {
+          // Null means no more data to load
+          setLoadingMore(null);
+        }
+        setNotifications([...notifications, ...docs])
         setLoading(false);
-    })
+      }
+    )
     return () => unsubscribe()
-  }, [profileId])
+  }, [profileId, loadingMore])
 
   const handleSeenAction = (notification: notificationProp) => {
     const docRef = doc(db, `profiles/${profileId}/notifications/${notification.id}`)
@@ -42,8 +85,7 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
   return (
     <Modal onClose={onClose} className='ListInModal'>
       <h3>Notifications</h3>
-      <div>
-        {loading && <NotificationsSkeleton count={5} />}
+      <div ref={scrollableContainer}>
         {notifications.map((notification) =>
           <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
             <div onClick={()=>handleSeenAction(notification)}>
@@ -61,6 +103,7 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
             </button>
           </div>
         )}
+        {loading && <NotificationsSkeleton count={itemsPerLoad} />}
         {!loading && notifications.length === 0 &&
           <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
             <Notification className='size-28 text-gray-300' />
