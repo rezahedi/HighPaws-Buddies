@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useAuth } from "@/providers/auth"
 import { db } from "@/firebase"
-import { onSnapshot, query, collection, limit, DocumentReference } from "firebase/firestore"
+import { onSnapshot, query, collection, orderBy, limit, startAfter, DocumentReference, DocumentSnapshot } from "firebase/firestore"
 import { Modal } from '@/components'
 import { Link } from "react-router-dom"
 import { UserListInModalSkeleton } from '@/components/skeletons'
@@ -20,19 +20,40 @@ export default function UserListInModal(
     onClose:       () => void,
   }
 ) {
+  const scrollableContainer = useRef<HTMLDivElement>(null)
   const { profile } = useAuth()
   const [userList, setUserList] = useState<docProp[]>([])
-  const [loading, setLoading] = useState(false)
-  const MaxSkeletonCount = 5
+  const [loading, setLoading] = useState<boolean | null>(false)
+  const itemsPerLoad = 15
+  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
+  count = Math.min(count || Infinity, itemsPerLoad)
 
-  count = Math.min(count || Infinity, MaxSkeletonCount)
+  // Scroll event listener
+  useEffect(() => {
+    if(loadingMore === null) return
+    const container = scrollableContainer.current
+    if(!container) return
+
+    const handleScroll = () => {
+      if(container.scrollTop + container.clientHeight >= container.scrollHeight-20) {
+        setLoadingMore(true)
+      }
+    }
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [loadingMore])
 
   useEffect(() => {
+    if(!loadingMore || !profile) return
+
     setLoading(true);
     const unsubscribe = onSnapshot(
       query(
         collection(db, collectionRef),
-        limit(30)
+        orderBy('name', 'asc'),
+        startAfter(lastDoc),
+        limit(itemsPerLoad),
       ),
       (snapshot) => {
         const docs: docProp[] = snapshot.docs.map(doc => {
@@ -43,18 +64,26 @@ export default function UserListInModal(
             avatar: doc.data().avatar
           }
         });
+
+        if( docs.length == itemsPerLoad ) {
+          setLastDoc( snapshot.docs[snapshot.docs.length - 1] );
+          setLoadingMore(false);
+
+        } else {
+          // Null means no more data to load
+          setLoadingMore(null);
+        }
+        setUserList([...userList, ...docs])
         setLoading(false);
-        setUserList(docs);
       }
     )
     return () => unsubscribe()
-  }, [profile])
+  }, [profile, loadingMore])
 
   return (
     <Modal onClose={onClose} className="ListInModal">
       <h3>{title}</h3>
-      <div>
-        {loading && <UserListInModalSkeleton count={count} />}
+      <div ref={scrollableContainer}>
         {userList.map((user) =>
           <div key={user.id.id} className='item'>
             <Link to={`/${user.id.id}`}>
@@ -64,6 +93,7 @@ export default function UserListInModal(
             <button>Some Action</button>
           </div>
         )}
+        {loading && <UserListInModalSkeleton count={count} />}
       </div>
     </Modal>
   )
