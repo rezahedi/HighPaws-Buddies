@@ -13,32 +13,44 @@ export default function Feed() {
   const navigate = useNavigate()
   const { profile: authProfile, loading: authLoading } = useAuth()
   const [posts, setPosts] = useState<postProp[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showNewPostModal, setShowNewPostModal] = useState(false)
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showNewPostModal, setShowNewPostModal] = useState<boolean>(false)
+  const itemsPerLoad = 10
+  const skeletonItemsPerLoad = 4
+  const [limitCount, setLimitCount] = useState<number>(itemsPerLoad)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
 
   useEffect(() => {
     if( authProfile === null && authLoading === false ) return navigate('/login')
   }, [authProfile, authLoading]);
 
   useEffect(() => {
-    if( authProfile === null ) return
+    if( !authProfile ) return
 
-    // snapshot listener to get real-time updates from the firestore posts collection with where filter for public posts
+    setLoading(true);
     const unsubscribe = onSnapshot(
       query(
         collection(db, `profiles/${authProfile.id}/feed`),
         where('private', '==', false),
         orderBy('published_at', 'desc'),
-        limit(10)
+        limit(limitCount)
       ),
       (snapshot) => {
         const docs: postProp[] = snapshot.docs.map(doc => returnPostProp(doc));
-        setPosts(docs);
+
+        if( docs.length == limitCount ) {
+          setLoadingMore(false);
+
+        } else {
+          // Null means no more data to load
+          setLoadingMore(null);
+        }
         setLoading(false);
+        setPosts(docs)
       }
     );
     return () => unsubscribe();
-  }, [authProfile]);
+  }, [authProfile, loadingMore]);
 
   return (
     <>
@@ -48,11 +60,12 @@ export default function Feed() {
           <NewPost onCancel={()=>setShowNewPostModal(false)} />
         </Modal>
       }
-      {loading && <PostSkeleton count={3} />}
       {posts.map((post) =>
         <Post key={post.id} post={post} />
       )}
+      {loading && <PostSkeleton count={skeletonItemsPerLoad} />}
       {posts.length === 0 && !loading && <EmptyFeed />}
+      {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount+itemsPerLoad);setLoadingMore(true)}}>Load more posts</button></div>}
     </>
   )
 }

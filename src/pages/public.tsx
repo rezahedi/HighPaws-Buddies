@@ -8,33 +8,47 @@ import { PostSkeleton } from '@/components/skeletons';
 export default function Public() {
 
   const [posts, setPosts] = useState<postProp[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const itemsPerLoad = 10
+  const skeletonItemsPerLoad = 4
+  const [limitCount, setLimitCount] = useState<number>(itemsPerLoad)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
 
   useEffect(() => {
-    // snapshot listener to get real-time updates from the firestore posts collection with where filter for public posts
+
+    setLoading(true);
     const unsubscribe = onSnapshot(
       query(
         collection(db, 'posts'),
         where('private', '==', false),
         orderBy('published_at', 'desc'),
-        limit(10)
+        limit(limitCount)
       ),
       (snapshot) => {
         const docs: postProp[] = snapshot.docs.map(doc => returnPostProp(doc));
-        setPosts(docs);
+
+        if( docs.length == limitCount ) {
+          setLoadingMore(false);
+
+        } else {
+          // Null means no more data to load
+          setLoadingMore(null);
+        }
         setLoading(false);
+        setPosts(docs);
       }
     );
     return () => unsubscribe();
-  }, []);
+  }, [loadingMore]);
 
   return (
     <>
-      {loading && <PostSkeleton count={3} />}
       {posts.map((post, index) =>
         <Post key={index} post={post} />
       )}
+      {loading && <PostSkeleton count={skeletonItemsPerLoad} />}
       {posts.length === 0 && !loading && <EmptyFeed />}
+      {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount+itemsPerLoad);setLoadingMore(true)}}>Load more posts</button></div>}
     </>
   )
 }

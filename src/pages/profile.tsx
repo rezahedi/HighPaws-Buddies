@@ -18,11 +18,15 @@ export default function Profile() {
   const { profile: authProfile, loading: authLoading } = useAuth()
   const [profile, setProfile] = useState<profileProp | null>(null)
   const [posts, setPosts] = useState<postProp[]>([])
-  const [profileLoading, setProfileLoading] = useState<boolean>(false)
-  const [postsLoading, setPostsLoading] = useState<boolean>(false)
+  const [profileLoading, setProfileLoading] = useState<boolean>(true)
+  const [postsLoading, setPostsLoading] = useState<boolean>(true)
   const [switched, setSwitched] = useState<boolean>(false)
   const [showFollowers, setShowFollowers] = useState<boolean>(false)
   const [showFollowing, setShowFollowing] = useState<boolean>(false)
+  const itemsPerLoad = 10
+  const skeletonItemsPerLoad = 4
+  const [limitCount, setLimitCount] = useState<number>(itemsPerLoad)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
   const { userHandler } = useParams()
   const navigate = useNavigate()
 
@@ -30,12 +34,18 @@ export default function Profile() {
     if( authProfile === null && authLoading === false ) return navigate('/login')
   }, [authProfile, authLoading])
 
-  // Get user profile from /profiles/:userHandler
   useEffect(() => {
     setSwitched(false)
     setShowFollowers(false)
     setShowFollowing(false)
     setProfile(null)
+    setPosts([])
+    setLimitCount(itemsPerLoad)
+    setLoadingMore(true)
+  }, [userHandler])
+
+  // Get user profile from /profiles/:userHandler
+  useEffect(() => {
     setProfileLoading(true)
     // TODO: Change doc id to a readable user handler like /bjorn
     const unsubscribe = onSnapshot(doc(db, `profiles/${userHandler}`), (doc) => {
@@ -49,20 +59,28 @@ export default function Profile() {
 
   // Get user posts from /profiles/:userHandler/posts
   useEffect(() => {
-    setPosts([])
     setPostsLoading(true)
     // get user posts from /profiles/:userHandler/posts
     const unsubscribe = onSnapshot(query(
       collection(db, `profiles/${userHandler}/posts`),
       orderBy('published_at', 'desc'),
-      limit(10)
+      limit(limitCount)
     ), (snapshot) => {
       const docs: postProp[] = snapshot.docs.map( doc => returnPostProp(doc) )
-      setPosts(docs)
+
+      if( docs.length == limitCount ) {
+        setLoadingMore(false);
+
+      } else {
+        // Null means no more data to load
+        setLoadingMore(null);
+      }
+  
       setPostsLoading(false)
+      setPosts(docs)
     })
     return () => unsubscribe()
-  }, [userHandler])
+  }, [userHandler, loadingMore])
 
   const handleAvatarSwitch = () => {
     setSwitched(!switched)
@@ -129,11 +147,12 @@ export default function Profile() {
         </>
         }
       </div>
-      {postsLoading && <PostSkeleton count={3} />}
       {posts && posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
+      {postsLoading && <PostSkeleton count={skeletonItemsPerLoad} />}
       {posts.length === 0 && !postsLoading && <EmptyFeed>You haven't post anything yet! 😏</EmptyFeed>}
+      {!postsLoading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount+itemsPerLoad);setLoadingMore(true)}}>Load more posts</button></div>}
     </>
   )
 }

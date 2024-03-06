@@ -10,7 +10,11 @@ import { Archive, Notification } from '@/components/icons'
 export default function Notifications() {
   const { profile: authProfile, loading: authLoading } = useAuth()
   const [notifications, setNotifications] = useState<notificationProp[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
+  const itemsPerLoad = 15
+  const skeletonItemsPerLoad = 8
+  const [limitCount, setLimitCount] = useState<number>(itemsPerLoad)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -18,21 +22,29 @@ export default function Notifications() {
   }, [authProfile, authLoading]);
 
   useEffect(() => {
-    if (authProfile === null) return
+    if ( !authProfile ) return
 
     setLoading(true)
     const unsubscribe = onSnapshot(
       query(
         collection(db, `profiles/${authProfile.id}/notifications`),
         orderBy('published_at', 'desc'),
-        limit(10)
+        limit(limitCount)
       ), (snapshot) => {
         const docs: notificationProp[] = snapshot.docs.map(doc => returnNotificationProp(doc));
-        setNotifications(docs);
+
+        if( docs.length == limitCount ) {
+          setLoadingMore(false);
+
+        } else {
+          // Null means no more data to load
+          setLoadingMore(null);
+        }
         setLoading(false);
+        setNotifications(docs);
     })
     return () => unsubscribe()
-  }, [authProfile])
+  }, [authProfile, loadingMore])
 
   const handleSeenAction = (notification: notificationProp) => {
     const docRef = doc(db, `profiles/${authProfile?.id}/notifications/${notification.id}`)
@@ -49,7 +61,6 @@ export default function Notifications() {
     <>
       <h3 className='font-semibold text-center text-lg p-4'>Notifications</h3>
       <div className='space-y-2 p-2'>
-        {loading && <NotificationsSkeleton count={8} />}
         {notifications.map((notification) =>
           <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
             <div onClick={()=>handleSeenAction(notification)}>
@@ -69,12 +80,14 @@ export default function Notifications() {
               </button>}
           </div>
         )}
+        {loading && <NotificationsSkeleton count={skeletonItemsPerLoad} />}
         {!loading && notifications.length === 0 &&
           <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
             <Notification className='size-28 text-gray-300' />
             This area will light up with new notifications<br /> once there's activity related to you.
           </div>
         }
+        {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount+itemsPerLoad);setLoadingMore(true)}}>Load more</button></div>}
       </div>
     </>
   )
