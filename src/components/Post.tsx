@@ -7,6 +7,7 @@ import { useAuth } from '@/providers/auth';
 
 // TODO: Lazy load the Comments component when user clicks to show comments
 import { Comments, UserListInModal } from '@/components'
+import { Bin, Comment, Like } from '@/components/icons';
 
 export default function Post(
   { post, showComment = false, onDelete }:
@@ -80,12 +81,12 @@ export default function Post(
     return liked === 1 ? 'liked' : liked === -1 ? 'unliked' : ''
   }
 
-  const handleLikes = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleLikes = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setShowLikes(true)
   }
 
-  const handleComments = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleComments = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setShowComments(true)
   }
@@ -111,7 +112,12 @@ export default function Post(
           </Link>
         }
         <h3>{post.title}</h3>
-        {deletable && !deleting && <button onClick={handleDeleteAction} className='deleteBtn'>Delete</button>}
+        {deletable && !deleting &&
+          <button onClick={handleDeleteAction} className='flex items-center gap-1 p-2' title='Delete post'>
+            <Bin className='size-5' />
+            <span className='hidden sm:inline'>Delete</span>
+          </button>
+        }
         {deleting && <p>Deleting...</p>}
       </header>
       <div>
@@ -128,7 +134,10 @@ export default function Post(
         </figure>
       </div>
       <footer>
-        {post.liked && `🩷`} <a href='#' onClick={handleLikes}>{post.stats.likes} likes</a>
+        <button onClick={handleLikes} className={`flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-red-600 ${post.liked && `text-red-600`}`}>
+          <Like className='size-5' filled={post.liked} />
+          {post.stats.likes === 0 ? 'Like' : `${post.stats.likes} likes`}
+        </button>
         {post.stats.likes > 0 && showLikes &&
           <UserListInModal
             title="Likes"
@@ -137,7 +146,10 @@ export default function Post(
             onClose={()=>setShowLikes(false)}
           />
         }
-        <a href='#' onClick={handleComments}>{post.stats.comments} comments</a>
+        <button onClick={handleComments} className='flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-blue-600'>
+          <Comment className='size-5' />
+          {post.stats.comments === 0 ? 'Comment' : `${post.stats.comments} comments`}
+        </button>
       </footer>
       {showComments &&
         <Comments postId={post.id} profileId={post.profile_id.id} />
