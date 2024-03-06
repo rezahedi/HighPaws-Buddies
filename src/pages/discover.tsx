@@ -11,6 +11,6 @@ export default function Discover() {
   }, [authProfile, authLoading]);
 
   return (
-    <div className="post">Map of local places</div>
+    <h3 className='font-semibold text-center text-lg p-4'>List of local places or businesses</h3>
   )
 }
