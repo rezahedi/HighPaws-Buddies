@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { db } from '@/firebase';
-import { collection, doc, orderBy, limit, startAfter, onSnapshot, query, updateDoc, where, DocumentSnapshot } from 'firebase/firestore';
+import { collection, doc, orderBy, limit, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { notificationProp, returnNotificationProp } from '@/types/firestore';
 import { Modal } from '@/components';
 import { NotificationsSkeleton } from '@/components/skeletons';
@@ -12,8 +12,9 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
   const [notifications, setNotifications] = useState<notificationProp[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const scrollableContainer = useRef<HTMLDivElement>(null)
-  const itemsPerLoad = 8
-  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null)
+  const itemsPerLoad = 6
+  const skeletonItemsPerLoad = 3
+  const [limitCount, setLimitCount] = useState<number>(itemsPerLoad)
   const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
   const navigate = useNavigate()
 
@@ -25,7 +26,7 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
 
     const handleScroll = () => {
       if(container.scrollTop + container.clientHeight >= container.scrollHeight-20) {
-        console.log('loading more')
+        setLimitCount( limitCount + itemsPerLoad )
         setLoadingMore(true)
       }
     }
@@ -34,38 +35,25 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
   }, [loadingMore])
 
   useEffect(() => {
-    if(!loadingMore || !profileId) return
-
     setLoading(true);
-    let q = query(
-      collection(db, `profiles/${profileId}/notifications`),
-      where('archived', '==', false),
-      orderBy('published_at', 'desc'),
-      limit(itemsPerLoad)
-    )
-    if(lastDoc !== null) {
-      q = query(
+    const unsubscribe = onSnapshot(
+      query(
         collection(db, `profiles/${profileId}/notifications`),
         where('archived', '==', false),
         orderBy('published_at', 'desc'),
-        startAfter(lastDoc),
-        limit(itemsPerLoad)
-      )
-    }
-    const unsubscribe = onSnapshot(
-      q, (snapshot) => {
+        limit(limitCount)
+      ), (snapshot) => {
         const docs: notificationProp[] = snapshot.docs.map(doc => returnNotificationProp(doc));
 
-        if( docs.length == itemsPerLoad ) {
-          setLastDoc( snapshot.docs[snapshot.docs.length - 1] );
+        if( docs.length == limitCount ) {
           setLoadingMore(false);
 
         } else {
           // Null means no more data to load
           setLoadingMore(null);
         }
-        setNotifications([...notifications, ...docs])
         setLoading(false);
+        setNotifications(docs)
       }
     )
     return () => unsubscribe()
@@ -74,12 +62,18 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
   const handleSeenAction = (notification: notificationProp) => {
     const docRef = doc(db, `profiles/${profileId}/notifications/${notification.id}`)
     updateDoc(docRef, { seen: true })
+    onClose()
     navigate(notification.link)
   }
 
   const handleArchiveAction = (notification: notificationProp) => {
     const docRef = doc(db, `profiles/${profileId}/notifications/${notification.id}`)
     updateDoc(docRef, { archived: true })
+  }
+
+  const handleLinkToAllNotifications = () => {
+    onClose()
+    navigate(`/notifications`)
   }
 
   return (
@@ -103,7 +97,7 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
             </button>
           </div>
         )}
-        {loading && <NotificationsSkeleton count={itemsPerLoad} />}
+        {loading && <NotificationsSkeleton count={skeletonItemsPerLoad} />}
         {!loading && notifications.length === 0 &&
           <div className='flex flex-col items-center gap-2 my-14 mx-10 text-center'>
             <Notification className='size-28 text-gray-300' />
@@ -112,7 +106,7 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
         }
       </div>
       <div className='flex  justify-center my-1 mx-auto'>
-        <Link to={`/notifications`} className='py-2 inline-block px-4 border rounded-md'>See all the notifications</Link>
+        <button onClick={handleLinkToAllNotifications} className='py-2 inline-block px-4 border rounded-md'>See all the notifications</button>
       </div>
     </Modal>
   )
