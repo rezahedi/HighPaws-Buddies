@@ -7,7 +7,7 @@ import { Notifications } from '@/components';
 import '@/styles/Header.css'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Logout, Notification } from '@/components/icons';
+import { Logout, Notification, Search } from '@/components/icons';
 
 export default function Header() {
 
@@ -37,15 +37,18 @@ export default function Header() {
         <h1>
           <Link to='/' className='flex items-center gap-2 text-2xl font-bold text-[#d56a34]'>
             <img src="/logo.png" alt="HighPaws Logo" width="50" height="50" />
-            HighPaws
+            <span className='hidden sm:inline'>HighPaws</span>
           </Link>
         </h1>
-        Something Here
+        <div className='flex -space-x-8 items-center flex-grow sm:max-w-2xl px-5'>
+          <input type='text' placeholder='Search ...' className='pl-4 pr-10 bg-gray-50 w-full' />
+          <Search className='size-5 text-gray-300' />
+        </div>
         <div className='user'>
           {loading && <Skeleton width={100} />}
           {profile && !loading &&
           <>
-            <Link to={`/${profile.id}`} className='flex gap-2 items-center'>
+            <Link to={`/${profile.id}`} className='flex gap-2 size-9 sm:w-auto items-center'>
               <span className='hidden sm:inline'>{profile.name}</span>
               <img src={profile.avatars.buddy} alt={profile.name} className='size-9 rounded-full' width={36} height={36} />
             </Link>
