@@ -145,7 +145,7 @@ export default function Post(
         </button>
       </footer>
       {showComments &&
-        <Comments postId={post.id} profileId={post.profile_id.id} />
+        <Comments post={post} />
       }
     </article>
   )
