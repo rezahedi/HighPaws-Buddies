@@ -46,7 +46,7 @@ export default function Header() {
           {profile && !loading &&
           <>
             <Link to={`/${profile.id}`} className='flex gap-2 items-center'>
-              {profile.name}
+              <span className='hidden sm:inline'>{profile.name}</span>
               <img src={profile.avatars.buddy} alt={profile.name} className='size-9 rounded-full' width={36} height={36} />
             </Link>
 
