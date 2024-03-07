@@ -8,13 +8,14 @@ import { useAuth } from '@/providers/auth';
 // TODO: Lazy load the Comments component when user clicks to show comments
 import { Comments, UserListInModal } from '@/components'
 import { Bin, Comment, Like } from '@/components/icons';
+import Likes from '@/components/post/Likes'
 
 export default function Post(
   { post, showComment = false, onDelete }:
   { post: postProp, showComment?: boolean, onDelete?: (postId: string) => void}
 ) {
   const { profile } = useAuth()
-  const [liked, setLiked] = useState<number>(0)
+  const [liked, setLiked] = useState<number>( post.liked ? 1 : 0 )
   const [showLikes, setShowLikes] = useState<boolean>(false)
   const [showComments, setShowComments] = useState<boolean>(showComment)
   const [deletable, setDeletable] = useState<boolean>(false)
@@ -22,8 +23,6 @@ export default function Post(
 
   useEffect(() => {
     if (profile === null) return
-
-    if (post.liked) setLiked(1)
 
     // TODO: check if loggedin user has liked the post
     // TODO: Liked posts other than in user's feed, should get the liked status from the post's likes subcollection
@@ -41,8 +40,6 @@ export default function Post(
   useEffect(() => {
     if (profile === null) return
     if (liked === 0) return
-    // To prevent running liking logic if post liked before: post:{liked: true}
-    if (liked === 1 && post.liked) return
     
     // TODO: Should prevent below code from running if liked state set by post.liked value
     // TODO: Following code should run only if user clicks like/unlike button
@@ -64,31 +61,25 @@ export default function Post(
         }
         await setDoc(originalDocRef, newLike)
         // Update /profiles/:currentUserId/feed/:postId { liked: true }
-        await updateDoc(feedDocRef, { liked: true })
+        await updateDoc(feedDocRef, { liked: true, stats: post.stats })
       } else {
         await deleteDoc(originalDocRef)
-        await updateDoc(feedDocRef, { liked: false })
+        await updateDoc(feedDocRef, { liked: false, stats: post.stats })
       }
     })()
   }, [liked])
 
   const handleLike = () => {
-    if (liked === 0) return setLiked(1)
-    setLiked( -(liked) )
+    let value = -1
+    if (liked !== 1)
+      value = +1
+    post.liked = !post.liked
+    post.stats.likes = post.stats.likes + value
+    setLiked(value)
   }
 
   const addLikeClass = () => {
     return liked === 1 ? 'liked' : liked === -1 ? 'unliked' : ''
-  }
-
-  const handleLikes = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setShowLikes(true)
-  }
-
-  const handleComments = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setShowComments(true)
   }
 
   const handleDeleteAction = async () => {
@@ -134,10 +125,12 @@ export default function Post(
         </figure>
       </div>
       <footer>
-        <button onClick={handleLikes} className={`flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-red-600 ${post.liked && `text-red-600`}`}>
-          <Like className='size-5' filled={post.liked} />
-          {post.stats.likes === 0 ? 'Like' : `${post.stats.likes} likes`}
-        </button>
+        <Likes post={post} onClick={()=>setShowLikes(true)} />
+          <div className='flex-grow'></div>
+          <button onClick={handleLike} className={`flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-red-600 ${post.liked && `text-red-600`}`}>
+            <Like className='size-5' filled={post.liked} />
+            {post.stats.likes === 0 ? 'Like' : `${post.stats.likes} likes`}
+          </button>
         {post.stats.likes > 0 && showLikes &&
           <UserListInModal
             title="Likes"
@@ -146,7 +139,7 @@ export default function Post(
             onClose={()=>setShowLikes(false)}
           />
         }
-        <button onClick={handleComments} className='flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-blue-600'>
+        <button onClick={()=>setShowComments(true)} className='flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-blue-600'>
           <Comment className='size-5' />
           {post.stats.comments === 0 ? 'Comment' : `${post.stats.comments} comments`}
         </button>

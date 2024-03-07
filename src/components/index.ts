@@ -1,4 +1,4 @@
-import Post from '@/components/Post'
+import Post from '@/components/post'
 import Comments from '@/components/Comments'
 import NewComment from '@/components/NewComment'
 import Header from '@/components/Header'
