@@ -11,13 +11,13 @@ import { Bin, Comment, Like } from '@/components/icons';
 import Likes from '@/components/post/Likes'
 
 export default function Post(
-  { post, showComment = false, onDelete }:
-  { post: postProp, showComment?: boolean, onDelete?: (postId: string) => void}
+  { post, withComment = false, onDelete }:
+  { post: postProp, withComment?: boolean, onDelete?: (postId: string) => void}
 ) {
   const { profile } = useAuth()
   const [liked, setLiked] = useState<number>( post.liked ? 1 : 0 )
   const [showLikes, setShowLikes] = useState<boolean>(false)
-  const [showComments, setShowComments] = useState<boolean>(showComment)
+  const [showComments, setShowComments] = useState<boolean>(withComment)
   const [deletable, setDeletable] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
 
@@ -139,7 +139,7 @@ export default function Post(
             onClose={()=>setShowLikes(false)}
           />
         }
-        <button onClick={()=>setShowComments(true)} className='flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-blue-600'>
+        <button onClick={()=>setShowComments(!showComments)} className='flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-blue-600'>
           <Comment className='size-5' />
           {post.stats.comments === 0 ? 'Comment' : `${post.stats.comments} comments`}
         </button>

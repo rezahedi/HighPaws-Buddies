@@ -1,17 +1,11 @@
 .comment{
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #666;
-  border-radius: 5px;
-  font-size: small;
+  @apply bg-gray-100 flex gap-3 px-3 py-2 rounded-lg text-sm
 }
 .comment a{
   display: flex;
   align-items: center;
   flex-direction: column;
+  font-size: x-small;
 }
 .comment img{
   border-radius: 50%;
@@ -31,6 +25,10 @@
   animation: highlight 1s;
 }
 @keyframes highlight {
-  0% { background-color: #ff0; }
-  100% { background-color: #fff; }
+  0% {
+    @apply bg-yellow-200
+  }
+  100% {
+    @apply bg-gray-100
+  }
 }

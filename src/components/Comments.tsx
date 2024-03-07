@@ -10,7 +10,9 @@ import { CommentsSkeleton } from '@/components/skeletons';
 export default function Comments({post}: {post: postProp}) {
 
   const itemsPerLoad = 8
-  const skeletonItemsPerLoad = post.stats.comments < 3 ? post.stats.comments : 3
+  const skeletonItemsPerLoad = 3
+  const [limitCount, setLimitCount] = useState<number>(itemsPerLoad)
+  const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
   const [comments, setComments] = useState<commentProp[]>([])
   const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation()
@@ -22,16 +24,24 @@ export default function Comments({post}: {post: postProp}) {
       query(
         collection(db, `profiles/${post.profile_id.id}/posts/${post.id}/comments`),
         orderBy('created_at', 'desc'),
-        limit(itemsPerLoad)
+        limit(limitCount)
       ),
       (snapshot) => {
         const docs: commentProp[] = snapshot.docs.map(doc => returnCommentProp(doc));
-        setComments(docs);
+
+        if( docs.length == limitCount ) {
+          setLoadingMore(false);
+
+        } else {
+          // Null means no more data to load
+          setLoadingMore(null);
+        }
         setLoading(false);
+        setComments(docs);
       }
     );
     return () => unsubscribe();
-  }, []);
+  }, [limitCount]);
 
   useEffect(() => {
     if( commentFragmentIdentifier === '' ) return
@@ -43,8 +53,7 @@ export default function Comments({post}: {post: postProp}) {
 
   return (
     <>
-      {loading && <CommentsSkeleton count={skeletonItemsPerLoad} />}
-      {comments.map((comment, index) =>
+      {comments.length>0 && comments.map((comment, index) =>
         <div key={index} className='comment' id={comment.id}>
           <Link to={`/${comment.profile_id.id}`}>
             <img src={comment.avatar} alt={comment.name} />
@@ -58,6 +67,10 @@ export default function Comments({post}: {post: postProp}) {
           </time>
         </div>
       )}
+      {loading && <CommentsSkeleton count={limitCount===itemsPerLoad ? (post.stats.comments < skeletonItemsPerLoad ? post.stats.comments : skeletonItemsPerLoad) : skeletonItemsPerLoad} />}
+      {!loading && loadingMore!==null &&
+        <button onClick={()=>{setLimitCount(limitCount+itemsPerLoad);setLoadingMore(true)}} className='text-blue-600 text-sm hover:underline p-1 pt-0 w-fit border-0'>See more comments</button>
+      }
       <NewComment postId={post.id} profileId={post.profile_id.id} />
     </>
   )

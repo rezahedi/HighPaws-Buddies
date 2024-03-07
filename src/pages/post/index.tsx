@@ -54,7 +54,7 @@ export default function PostPage() {
     <>
       {dataLoading && <PostSkeleton />}
       {error && <div className="post flex flex-col items-center gap-2 my-14 mx-10 text-center"><h3 className="text-7xl font-semibold">404</h3>It seems the post does not exist!</div>}
-      {post && <Post post={post} showComment />}
+      {post && <Post post={post} withComment />}
     </>
   )
 }

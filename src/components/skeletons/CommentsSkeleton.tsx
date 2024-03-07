@@ -5,7 +5,7 @@ export default function CommentsSkeleton({count = 1}: {count?: number}) {
   return (
     <>
       {Array(count).fill(0).map((_, i) => (
-        <div key={i} className="comment border-gray-200">
+        <div key={i} className="comment bg-gray-50">
           <a>
             <Skeleton circle width={36} height={36} />
             <Skeleton width={60} />
