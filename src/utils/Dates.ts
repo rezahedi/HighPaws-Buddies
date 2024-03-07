@@ -3,7 +3,7 @@ export function formatRelativeDate(inputDate: Date): string {
   const diffInSeconds = Math.floor((now.getTime() - inputDate.getTime()) / 1000);
 
   if (diffInSeconds < 60) {
-    return 'few seconds ago';
+    return 'Now';
   } else if (diffInSeconds < 3600) {
     const minutes = Math.floor(diffInSeconds / 60);
     return `${minutes} min${minutes > 1 ? 's' : ''} ago`;
