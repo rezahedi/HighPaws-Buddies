@@ -43,7 +43,7 @@ export default function NewComment({postId, profileId}: {postId: string, profile
         {profile.name}
       </div>
       <textarea name="comment" placeholder="Write your comment ..."></textarea>
-      <button type="submit">Post</button>
+      <button type="submit">Comment</button>
     </form>
   )
 }
