@@ -62,43 +62,28 @@ button.primary:hover:not(:disabled){
   @apply p-5 flex flex-col gap-2;
 }
 .post figure{
-  @apply m-0 p-0;
+  @apply m-0 p-0 text-xs italic;
 }
 .post figure img{
   @apply w-full rounded-md cursor-pointer
 }
 .post figure div{
-  display: flex;
-  justify-content: space-between;
-}
-.post figure p{
-  margin: 0;
-  padding: 0;
-  font-size: small;
-  font-style: italic;
+  @apply flex justify-between
 }
 .post header{
-  display: flex;
-  gap: 20px;
-  align-items: center;
+  @apply flex gap-5 items-center
 }
 .post header h3{
-  flex-grow: 1;
+  @apply flex-grow font-semibold
 }
 .post .user{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply flex flex-col items-center text-sm
 }
 .post .user img{
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  @apply size-12 rounded-full
 }
 .post footer{
-  display: flex;
-  gap: 2px;
-  align-items: center;
+  @apply flex gap-[2px] items-center
 }
 .post.liked figure img{
   animation: like 0.3s;

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { NotificationsSkeleton } from '@/components/skeletons'
 import { useNavigate } from 'react-router-dom'
 import { Archive, Notification } from '@/components/icons'
+import { formatRelativeDate } from '@/utils'
 
 export default function Notifications() {
   const { profile: authProfile, loading: authLoading } = useAuth()
@@ -67,8 +68,8 @@ export default function Notifications() {
               <img src={notification.avatar} alt={notification.name} />
               <p>
                 {notification.message}<br />
-                <time>
-                  {notification.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+                <time dateTime={notification.published_at.toDate().toISOString()}>
+                  {formatRelativeDate(notification.published_at.toDate())}
                 </time>
               </p>
             </div>

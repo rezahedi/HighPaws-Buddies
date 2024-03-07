@@ -9,6 +9,7 @@ import { useAuth } from '@/providers/auth';
 import { Comments, UserListInModal } from '@/components'
 import { Bin, Comment, Like } from '@/components/icons';
 import Likes from '@/components/post/Likes'
+import { formatRelativeDate } from '@/utils';
 
 export default function Post(
   { post, withComment = false, onDelete }:
@@ -114,11 +115,11 @@ export default function Post(
       <div>
         <figure>
           <div>
-            <p>
-              <Link to={`/${post.profile_id.id}/${post.id}`}>
-                {post.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
-              </Link>
-            </p>
+            <Link to={`/${post.profile_id.id}/${post.id}`}>
+              <time dateTime={post.published_at.toDate().toISOString()}>
+                {formatRelativeDate(post.published_at.toDate())}
+              </time>
+            </Link>
             <p>{post.location}</p>
           </div>
           <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} loading='lazy' />

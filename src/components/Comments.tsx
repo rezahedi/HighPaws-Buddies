@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom'
 import '@/styles/Comments.css'
 import { NewComment } from '@/components';
 import { CommentsSkeleton } from '@/components/skeletons';
+import { formatRelativeDate } from '@/utils'
 
 export default function Comments({post}: {post: postProp}) {
 
@@ -60,11 +61,11 @@ export default function Comments({post}: {post: postProp}) {
             {comment.name}
           </Link>
           <p>{comment.comment}</p>
-          <time>
-            <Link to={`/${post.profile_id.id}/${post.id}#${comment.id}`}>
-              {comment.created_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
-            </Link>
-          </time>
+          <Link to={`/${post.profile_id.id}/${post.id}#${comment.id}`}>
+            <time dateTime={comment.created_at.toDate().toISOString()}>
+              {formatRelativeDate(comment.created_at.toDate())}
+            </time>
+          </Link>
         </div>
       )}
       {loading && <CommentsSkeleton count={limitCount===itemsPerLoad ? (post.stats.comments < skeletonItemsPerLoad ? post.stats.comments : skeletonItemsPerLoad) : skeletonItemsPerLoad} />}

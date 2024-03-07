@@ -6,6 +6,7 @@ import { notificationProp, returnNotificationProp } from '@/types/firestore';
 import { Modal } from '@/components';
 import { NotificationsSkeleton } from '@/components/skeletons';
 import { Archive, Notification } from '@/components/icons';
+import { formatRelativeDate } from '@/utils'
 
 export default function Notifications( { profileId, onClose }: { profileId: string, onClose: () => void } ) {
 
@@ -86,8 +87,8 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
               <img src={notification.avatar} alt={notification.name} />
               <p>
                 {notification.message}<br />
-                <time>
-                  {notification.published_at.toDate().toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+                <time dateTime={notification.published_at.toDate().toISOString()}>
+                  {formatRelativeDate(notification.published_at.toDate())}
                 </time>
               </p>
             </div>
