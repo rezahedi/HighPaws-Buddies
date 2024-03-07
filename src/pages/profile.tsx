@@ -88,11 +88,15 @@ export default function Profile() {
 
   const handleFollowers = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
+    if (profile?.stats.followers === 0) return
+
     setShowFollowers(true)
   }
 
   const handleFollowing = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
+    if (profile?.stats.following === 0) return
+    
     setShowFollowing(true)
   }
 
