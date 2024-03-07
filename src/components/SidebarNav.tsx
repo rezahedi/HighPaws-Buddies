@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Group, Home, Message, Money, Notification, Pen, Profile, Search } from '@/components/icons'
 import { useAuth } from '@/providers/auth'
 
@@ -9,16 +9,16 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
     <nav className='sidebar'>
       <ul>
         <li>
-          <Link to='/' title='Home'>
+          <NavLink to='/' title='Home'>
             <Home />
             <span>Home</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to='/discover' title='Discover'>
+          <NavLink to='/discover' title='Discover'>
             <Search />
             <span>Discover</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
           <a href='#' title='For Sale & Free' className='disabled'>
@@ -33,10 +33,10 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
           </a>
         </li>
         <li>
-          <Link to='/notifications' title='Notifications'>
+          <NavLink to='/notifications' title='Notifications'>
             <Notification />
             <span>Notifications</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
           <a href='#' title='Messages' className='disabled'>
@@ -45,10 +45,10 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
           </a>
         </li>
         <li>
-          <Link to={`/${profile?.id}`} title='Profiles'>
+          <NavLink to={`/${profile?.id}`} title='Profiles'>
             <Profile />
             <span>Profiles</span>
-          </Link>
+          </NavLink>
         </li>
         <li>
           <button onClick={()=>setShowModal(true)} title='Post' className='primary'>
