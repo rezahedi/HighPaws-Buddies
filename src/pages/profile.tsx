@@ -112,7 +112,7 @@ export default function Profile() {
             <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
           </figure>
           <h2>{profile.name}</h2>
-          {authProfile && authProfile.id !== profile.id && <FollowRequest to={profile} />}
+          {authProfile && <FollowRequest from={authProfile} to={profile} />}
         </section>
         <section className="stats">
           <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
