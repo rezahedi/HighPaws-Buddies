@@ -54,7 +54,7 @@ export default function Feed() {
 
   return (
     <>
-      {authProfile && <NewPostBlock profile={authProfile} onClick={setShowNewPostModal} />}
+      <NewPostBlock profile={authProfile} onClick={setShowNewPostModal} />
       {showNewPostModal &&
         <Modal onClose={()=>setShowNewPostModal(false)}>
           <NewPost onCancel={()=>setShowNewPostModal(false)} />
