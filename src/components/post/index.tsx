@@ -122,7 +122,7 @@ export default function Post(
             </Link>
             <p>{post.location}</p>
           </div>
-          <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} className='size-full' loading='lazy' />
+          <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} width={'100%'} height={'auto'} className='size-full' loading='lazy' />
         </figure>
       </div>
       <footer>
