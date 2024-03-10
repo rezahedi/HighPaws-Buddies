@@ -61,30 +61,6 @@ button.primary:hover:not(:disabled){
 .post{
   @apply p-5 flex flex-col gap-2;
 }
-.post figure{
-  @apply m-0 p-0 text-xs italic;
-}
-.post figure img{
-  @apply w-full rounded-md cursor-pointer
-}
-.post figure div{
-  @apply flex justify-between
-}
-.post header{
-  @apply flex gap-5 items-center
-}
-.post header h3{
-  @apply flex-grow font-semibold
-}
-.post .user{
-  @apply flex flex-col items-center text-sm
-}
-.post .user img{
-  @apply size-12 rounded-full
-}
-.post footer{
-  @apply flex gap-[2px] items-center
-}
 .post.liked figure img{
   animation: like 0.3s;
 }
