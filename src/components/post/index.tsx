@@ -97,18 +97,25 @@ export default function Post(
   return (
     <article className={`post ${addLikeClass()}`}>
       <header className='flex gap-5 items-center'>
-        {post.profile_detail &&
-          <Link className='flex flex-col items-center text-sm' to={`/${post.profile_id.id}`}>
-            <img
-              src={post.profile_detail.avatar_url}
-              alt={post.profile_detail.name}
-              width={'3rem'} height={'3rem'} loading='lazy'
-              className='size-12 rounded-full'
-            />
+        <Link to={`/${post.profile_id.id}`}>
+          <img
+            src={post.profile_detail.avatar_url}
+            alt={post.profile_detail.name}
+            width={'3rem'} height={'3rem'} loading='lazy'
+            className='size-12 rounded-full'
+          />
+        </Link>
+        <div className='flex-grow flex flex-col leading-5'>
+          <Link className='font-semibold' to={`/${post.profile_id.id}`}>
             {post.profile_detail.name}
           </Link>
-        }
-        <h3 className='flex-grow font-semibold'>{post.title}</h3>
+          <Link to={`/${post.profile_id.id}/${post.id}`}>
+            <time dateTime={post.published_at.toDate().toISOString()} className='text-xs'>
+              {formatRelativeDate(post.published_at.toDate())}
+            </time>
+            {post.location && ` • ${post.location}`}
+          </Link>
+        </div>
         {deletable && !deleting &&
           <button onClick={handleDeleteAction} title='Delete post' className='flex items-center gap-1 p-2'>
             <Bin className='size-5' />
@@ -117,16 +124,9 @@ export default function Post(
         }
         {deleting && <p>Deleting...</p>}
       </header>
+      <h3 className='font-semibold'>{post.title}</h3>
       <div>
         <figure className='m-0 p-0 text-xs italic'>
-          <div className='flex justify-between'>
-            <Link to={`/${post.profile_id.id}/${post.id}`}>
-              <time dateTime={post.published_at.toDate().toISOString()}>
-                {formatRelativeDate(post.published_at.toDate())}
-              </time>
-            </Link>
-            <p>{post.location}</p>
-          </div>
           <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} width={'100%'} height={'auto'} loading='lazy'
             className='size-full rounded-md cursor-pointer' />
         </figure>
