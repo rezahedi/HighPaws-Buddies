@@ -42,7 +42,7 @@ export default function NewComment({postId, profileId}: {postId: string, profile
         <img src={profile.avatars.buddy} alt={profile.name} />
         {profile.name}
       </div>
-      <textarea name="comment" placeholder="Write your comment ..."></textarea>
+      <textarea name="comment" maxLength={500} required placeholder="Write your comment ..."></textarea>
       <button type="submit">Comment</button>
     </form>
   )
