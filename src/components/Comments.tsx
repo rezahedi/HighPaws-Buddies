@@ -55,17 +55,23 @@ export default function Comments({post}: {post: postProp}) {
   return (
     <>
       {comments.length>0 && comments.map((comment, index) =>
-        <div key={index} className='comment' id={comment.id}>
+        <div
+          key={index} id={comment.id}
+          className='bg-gray-100 flex gap-3 px-3 py-2 rounded-lg text-sm'
+        >
           <Link to={`/${comment.profile_id.id}`}>
-            <img src={comment.avatar} alt={comment.name} />
-            {comment.name}
+            <img src={comment.avatar} alt={comment.name} width={36} height={36} className='size-9 rounded-full' />
           </Link>
-          <p>{comment.comment}</p>
-          <Link to={`/${post.profile_id.id}/${post.id}#${comment.id}`}>
-            <time dateTime={comment.created_at.toDate().toISOString()}>
-              {formatRelativeDate(comment.created_at.toDate())}
-            </time>
-          </Link>
+          <div className='flex-1'>
+            <Link to={`/${comment.profile_id.id}`} className='font-semibold'>{comment.name}</Link>
+            {' '}•{' '}
+            <Link className='inline' to={`/${post.profile_id.id}/${post.id}#${comment.id}`}>
+              <time dateTime={comment.created_at.toDate().toISOString()} className='text-xs'>
+                {formatRelativeDate(comment.created_at.toDate())}
+              </time>
+            </Link>
+            <p className='pt-1'>{comment.comment}</p>
+          </div>
         </div>
       )}
       {loading && <CommentsSkeleton count={limitCount===itemsPerLoad ? (post.stats.comments < skeletonItemsPerLoad ? post.stats.comments : skeletonItemsPerLoad) : skeletonItemsPerLoad} />}
