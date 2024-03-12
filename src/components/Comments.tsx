@@ -7,6 +7,7 @@ import '@/styles/Comments.css'
 import { NewComment } from '@/components';
 import { CommentsSkeleton } from '@/components/skeletons';
 import { formatRelativeDate } from '@/utils'
+import Avatar from '@/components/post/Avatar';
 
 export default function Comments({post}: {post: postProp}) {
 
@@ -59,11 +60,9 @@ export default function Comments({post}: {post: postProp}) {
           key={index} id={comment.id}
           className='bg-gray-100 flex gap-3 px-3 py-2 rounded-lg text-sm'
         >
-          <Link to={`/${comment.profile_id.id}`}>
-            <img src={comment.avatar} alt={comment.name} width={36} height={36} className='size-9 rounded-full' />
-          </Link>
+          <Avatar profileId={comment.profile_id.id} name={comment.name} url={comment.avatar} size='sm' />
           <div className='flex-1'>
-            <Link to={`/${comment.profile_id.id}`} className='font-semibold'>{comment.name}</Link>
+            <Avatar profileId={comment.profile_id.id} name={comment.name} className='font-semibold' />
             {' '}•{' '}
             <Link className='inline' to={`/${post.profile_id.id}/${post.id}#${comment.id}`}>
               <time dateTime={comment.created_at.toDate().toISOString()} className='text-xs'>

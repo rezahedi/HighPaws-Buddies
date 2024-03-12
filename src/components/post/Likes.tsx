@@ -2,6 +2,7 @@ import { postProp } from '@/types/firestore'
 import { useEffect, useState } from 'react'
 import { db } from '@/firebase'
 import { query, collection, limit, getDocs, DocumentReference } from 'firebase/firestore'
+import Avatar from '@/components/post/Avatar'
 
 type docProp = {
   id: DocumentReference,
@@ -38,7 +39,7 @@ export default function Likes(
         <button onClick={onClick} className={`group flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-red-600 ${post.liked && `text-red-600`}`}>
           <div className='flex items-center -space-x-5 group-hover:-space-x-3'>
             {docs.map((doc, i) => (
-              <img key={i} src={doc.avatar} alt={doc.name} title={doc.name} className='border-[3px] border-white size-8 rounded-full transition-all duration-100' />
+              <Avatar key={i} profileId={doc.id.id} url={doc.avatar} name={doc.name} size='xs' linked={false} className='transition-all duration-100' />
             ))}
           </div>
           <span className='hidden sm:inline'>liked</span>

@@ -10,6 +10,7 @@ import { Comments, UserListInModal } from '@/components'
 import { Bin, Comment, Like } from '@/components/icons';
 import Likes from '@/components/post/Likes'
 import { formatRelativeDate } from '@/utils';
+import Avatar from '@/components/post/Avatar';
 
 export default function Post(
   { post, withComment = false, onDelete }:
@@ -96,19 +97,18 @@ export default function Post(
 
   return (
     <article className={`post ${addLikeClass()}`}>
-      <header className='flex gap-5 items-center'>
-        <Link to={`/${post.profile_id.id}`}>
-          <img
-            src={post.profile_detail.avatar_url}
-            alt={post.profile_detail.name}
-            width={'3rem'} height={'3rem'} loading='lazy'
-            className='size-12 rounded-full'
+      <header className='flex gap-2 items-center'>
+        <Avatar
+          profileId={post.profile_id.id}
+          url={post.profile_detail.avatar_url}
+          name={post.profile_detail.name}
+        />
+        <div className='flex-grow flex flex-col items-start leading-5'>
+          <Avatar
+            profileId={post.profile_id.id}
+            name={post.profile_detail.name}
+            className='font-semibold'
           />
-        </Link>
-        <div className='flex-grow flex flex-col leading-5'>
-          <Link className='font-semibold' to={`/${post.profile_id.id}`}>
-            {post.profile_detail.name}
-          </Link>
           <Link to={`/${post.profile_id.id}/${post.id}`}>
             <time dateTime={post.published_at.toDate().toISOString()} className='text-xs'>
               {formatRelativeDate(post.published_at.toDate())}

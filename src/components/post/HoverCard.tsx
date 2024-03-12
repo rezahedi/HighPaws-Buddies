@@ -38,7 +38,7 @@ export default function HoverCard({profileId, children}: {profileId: string, chi
             {profile &&
               <div className='flex items-start'>
                 <Link to={`/${profileId}`}>
-                  <AvatarImage url={profile.avatars.buddy} name={profile.name} size='big' />
+                  <AvatarImage url={profile.avatars.buddy} name={profile.name} size='bg' />
                 </Link>
                 <div className='flex-1 space-y-2'>
                   <h2 className='font-semibold'>

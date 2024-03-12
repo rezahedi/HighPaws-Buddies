@@ -7,6 +7,7 @@ import { Modal } from '@/components';
 import { NotificationsSkeleton } from '@/components/skeletons';
 import { Archive, Notification } from '@/components/icons';
 import { formatRelativeDate } from '@/utils'
+import Avatar from '@/components/post/Avatar';
 
 export default function Notifications( { profileId, onClose }: { profileId: string, onClose: () => void } ) {
 
@@ -84,7 +85,8 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
         {notifications.map((notification) =>
           <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
             <div onClick={()=>handleSeenAction(notification)}>
-              <img src={notification.avatar} alt={notification.name} />
+              <Avatar profileId={notification.profile_id.id} name={notification.name} url={notification.avatar} linked={false} size='sm' />
+              {/* <img src={notification.avatar} alt={notification.name} /> */}
               <p>
                 {notification.message}<br />
                 <time dateTime={notification.published_at.toDate().toISOString()}>

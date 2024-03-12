@@ -3,8 +3,8 @@ import { useAuth } from "@/providers/auth"
 import { db } from "@/firebase"
 import { onSnapshot, query, collection, orderBy, limit, startAfter, DocumentReference, DocumentSnapshot } from "firebase/firestore"
 import { Modal } from '@/components'
-import { Link } from "react-router-dom"
 import { UserListInModalSkeleton } from '@/components/skeletons'
+import Avatar from '@/components/post/Avatar'
 
 type docProp = {
   id: DocumentReference,
@@ -86,10 +86,9 @@ export default function UserListInModal(
       <div ref={scrollableContainer}>
         {userList.map((user) =>
           <div key={user.id.id} className='item'>
-            <Link to={`/${user.id.id}`}>
-              <img src={user.avatar} alt={user.name} width="36" height="36" loading='lazy' />
-              {user.name}
-            </Link>
+            <div className="flex gap-1 items-center">
+              <Avatar profileId={user.id.id} url={user.avatar} name={user.name} withName size='sm' className="flex gap-1 items-center font-semibold" />
+            </div>
             <button>Some Action</button>
           </div>
         )}

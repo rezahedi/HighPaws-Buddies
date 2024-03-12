@@ -1,14 +1,16 @@
-type sizeOptions = 'big' | 'base' | 'small'
+type sizeOptions = 'bg' | 'base' | 'sm' | 'xs'
 
 const sizeOptionsRem: {[key: string]: string} = {
-  big: '5rem',
+  bg: '5rem',
   base: '3rem',
-  small: '2.25rem'
+  sm: '2.25rem',
+  xs: '2rem'
 }
 const sizeOptionsClass: {[key: string]: string} = {
-  big: 'size-20',
+  bg: 'size-20',
   base: 'size-12',
-  small: 'size-9'
+  sm: 'size-9',
+  xs: 'size-8'
 }
 
 export default function AvatarImage ({url, name, size='base'} :{url: string, name: string, size?: sizeOptions}) {
