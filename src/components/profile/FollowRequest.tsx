@@ -3,7 +3,7 @@ import { db } from "@/firebase"
 import { onSnapshot, doc, writeBatch, getDoc } from 'firebase/firestore';
 import { profileProp } from "@/types/firestore";
 
-export default function FollowRequest( {from, to}: {from:profileProp, to: profileProp} ) {
+export default function FollowRequest( {from, to, className=''}: {from:profileProp, to: profileProp, className?: string} ) {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [followStatus, setFollowStatus] = useState<boolean | null>(null)
@@ -87,12 +87,12 @@ export default function FollowRequest( {from, to}: {from:profileProp, to: profil
   return (
     <>
       {followStatus===true &&
-        <button onClick={handleUnfollow} disabled={loading}>
+        <button onClick={handleUnfollow} disabled={loading} className={className}>
           {loading ? 'Following ...' : 'Unfollow'}
         </button>
       }
       {followStatus===false &&
-        <button onClick={handleFollow} disabled={loading}>
+        <button onClick={handleFollow} disabled={loading} className={className}>
           {loading ? 'Unfollowing ...' : (isFollowBack ? 'Follow Back' : 'Follow Request')}
         </button>
       }
