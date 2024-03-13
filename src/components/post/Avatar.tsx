@@ -43,7 +43,7 @@ export default function Avatar({
     )
   
   return (
-    <Link to={`/${profileId}`} className={className} onMouseOver={()=>setHover(true)}>
+    <>
       {linked
       ?
         <Link to={`/${profileId}`} className={className} onMouseOver={()=>setHover(true)}>
@@ -56,6 +56,6 @@ export default function Avatar({
           {withName && <span>{name}</span>}
         </div>
       }
-    </Link>
+    </>
   )
 }
