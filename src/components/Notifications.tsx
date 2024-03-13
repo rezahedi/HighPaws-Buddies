@@ -85,7 +85,6 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
           <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>
             <div onClick={()=>handleSeenAction(notification)}>
               <Avatar profileId={notification.profile_id.id} name={notification.name} url={notification.avatar} linked={false} size='sm' />
-              {/* <img src={notification.avatar} alt={notification.name} /> */}
               <p>
                 {notification.message}<br />
                 <time dateTime={notification.published_at.toDate().toISOString()}>

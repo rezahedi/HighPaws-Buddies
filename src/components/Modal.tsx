@@ -48,13 +48,5 @@ export default function Modal({
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
-    // <div className='overlay'>
-    //   <div className='modal'>
-    //     <button className='close' onClick={closeModal}><Close /></button>
-    //     <div className={className}>
-    //       {children}
-    //     </div>
-    //   </div>
-    // </div>
   )
 }
