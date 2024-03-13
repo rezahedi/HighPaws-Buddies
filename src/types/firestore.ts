@@ -47,6 +47,15 @@ export type profileProp = newProfileProp & {
   id: string;
 };
 
+export type newTidyProfileProp = {
+  name: string;
+  avatar: string;
+};
+
+export type tidyProfileProp = newTidyProfileProp & {
+  id: string;
+};
+
 export type newCommentProp = {
   comment: string;
   created_at: Timestamp;
@@ -90,6 +99,23 @@ export function returnProfileProp(doc: DocumentSnapshot): profileProp | null {
     characteristics: doc.data().characteristics,
     stats: doc.data().stats,
     public: doc.data().public,
+  }
+}
+
+export function returnTidyProfileProp(doc: DocumentSnapshot): tidyProfileProp {
+  if( !doc.exists() ) return {} as tidyProfileProp
+  return {
+    id: doc.id,
+    name: doc.data().name,
+    avatar: doc.data().avatar,
+  }
+}
+
+export function makeProfilePrepTidy(profile: profileProp): tidyProfileProp {
+  return {
+    id: profile.id,
+    name: profile.name,
+    avatar: profile.avatars.buddy,
   }
 }
 
