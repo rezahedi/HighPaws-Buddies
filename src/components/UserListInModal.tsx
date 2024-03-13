@@ -1,28 +1,24 @@
 import { useEffect, useState, useRef } from "react"
 import { useAuth } from "@/providers/auth"
 import { db } from "@/firebase"
-import { onSnapshot, query, collection, orderBy, limit, startAfter, DocumentReference, DocumentSnapshot } from "firebase/firestore"
+import { onSnapshot, query, collection, orderBy, limit, startAfter, DocumentSnapshot } from "firebase/firestore"
 import { Modal } from '@/components'
 import { UserListInModalSkeleton } from '@/components/skeletons'
 import Avatar from '@/components/post/Avatar'
-
-type docProp = {
-  id: DocumentReference,
-  name: string,
-  avatar: string
-}
+import { FollowRequest } from "@/components/profile"
+import { makeProfilePrepTidy, returnTidyProfileProp, tidyProfileProp } from "@/types/firestore"
 
 export default function UserListInModal(
   { title, collectionRef, count, onClose }: {
     title:         string,
     collectionRef: string,
-    count?:         number,
+    count?:        number,
     onClose:       () => void,
   }
 ) {
   const scrollableContainer = useRef<HTMLDivElement>(null)
   const { profile } = useAuth()
-  const [userList, setUserList] = useState<docProp[]>([])
+  const [userList, setUserList] = useState<tidyProfileProp[]>([])
   const [loading, setLoading] = useState<boolean | null>(false)
   const itemsPerLoad = 15
   const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null)
@@ -56,14 +52,7 @@ export default function UserListInModal(
         limit(itemsPerLoad),
       ),
       (snapshot) => {
-        const docs: docProp[] = snapshot.docs.map(doc => {
-          if(!doc.exists()) return {} as docProp;
-          return {
-            id: doc.ref,
-            name: doc.data().name,
-            avatar: doc.data().avatar
-          }
-        });
+        const docs: tidyProfileProp[] = snapshot.docs.map(doc => returnTidyProfileProp(doc));
 
         if( docs.length == itemsPerLoad ) {
           setLastDoc( snapshot.docs[snapshot.docs.length - 1] );
@@ -84,11 +73,13 @@ export default function UserListInModal(
     <Modal onClose={onClose} title={title} className="ListInModal">
       <div ref={scrollableContainer}>
         {userList.map((user) =>
-          <div key={user.id.id} className='item'>
+          <div key={user.id} className='item'>
             <div className="flex gap-1 items-center">
-              <Avatar profileId={user.id.id} url={user.avatar} name={user.name} withName size='sm' className="flex gap-1 items-center font-semibold" />
+              <Avatar profileId={user.id} url={user.avatar} name={user.name} withName size='sm' className="flex gap-1 items-center font-semibold" />
             </div>
-            <button>Some Action</button>
+            {profile && profile.id !== user.id && 
+              <FollowRequest from={makeProfilePrepTidy(profile)} to={user} className="py-1 px-3" />
+            }
           </div>
         )}
         {loading && <UserListInModalSkeleton count={count} />}

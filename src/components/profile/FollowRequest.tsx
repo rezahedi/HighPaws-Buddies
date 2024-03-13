@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { db } from "@/firebase"
 import { onSnapshot, doc, writeBatch, getDoc } from 'firebase/firestore';
-import { profileProp } from "@/types/firestore";
+import { tidyProfileProp } from "@/types/firestore";
 
-export default function FollowRequest( {from, to, className=''}: {from:profileProp, to: profileProp, className?: string} ) {
+export default function FollowRequest( {from, to, className=''}: {from:tidyProfileProp, to: tidyProfileProp, className?: string} ) {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [followStatus, setFollowStatus] = useState<boolean | null>(null)
@@ -56,12 +56,12 @@ export default function FollowRequest( {from, to, className=''}: {from:profilePr
     // Add followed user to currentUser's following list
     batch.set( doc(db, `profiles/${from.id}/following/${to.id}`), {
       name: to.name,
-      avatar: to.avatars.buddy,
+      avatar: to.avatar,
     })
     // Add currentUser to user's followers list
     batch.set( doc(db, `profiles/${to.id}/followers/${from.id}`), {
       name: from.name,
-      avatar: from.avatars.buddy,
+      avatar: from.avatar,
     })
     await batch.commit()
 

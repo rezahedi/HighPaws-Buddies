@@ -1,7 +1,7 @@
 import * as RadixHoverCard from '@radix-ui/react-hover-card';
 import '@/components/post/HoverCard.style.css'
 import { useEffect, useState } from 'react';
-import { profileProp, returnProfileProp } from '@/types/firestore';
+import { makeProfilePrepTidy, profileProp, returnProfileProp } from '@/types/firestore';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '@/firebase';
 import AvatarImage from '@/components/post/AvatarImage';
@@ -56,7 +56,7 @@ export default function HoverCard({profileId, children}: {profileId: string, chi
                     <span><b className='text-black'>{profile.stats.followers}</b> followers{' '}</span>
                     <span><b className='text-black'>{profile.stats.following}</b> following</span>
                   </p>
-                  {authProfile && authProfile.id !== profileId && <FollowRequest from={authProfile} to={profile} className='px-3 py-1 primary' />}
+                  {authProfile && authProfile.id !== profileId && <FollowRequest from={makeProfilePrepTidy(authProfile)} to={makeProfilePrepTidy(profile)} className='px-3 py-1 primary' />}
                 </div>
               </div>
             }

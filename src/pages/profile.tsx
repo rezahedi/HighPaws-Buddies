@@ -4,7 +4,7 @@ import '@/styles/Profile.css'
 import { EmptyFeed, Post, UserListInModal } from "@/components"
 import { db } from '@/firebase';
 import { collection, doc, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
-import { postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
+import { makeProfilePrepTidy, postProp, profileProp, returnPostProp, returnProfileProp } from '@/types/firestore';
 import { FollowRequest } from '@/components/profile';
 import { useAuth } from '@/providers/auth';
 import { PostSkeleton, ProfileSkeleton } from '@/components/skeletons';
@@ -112,7 +112,7 @@ export default function Profile() {
             <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
           </figure>
           <h2>{profile.name}</h2>
-          {authProfile && <FollowRequest from={authProfile} to={profile} />}
+          {authProfile && <FollowRequest from={makeProfilePrepTidy(authProfile)} to={makeProfilePrepTidy(profile)} className='px-3 py-1 primary' />}
         </section>
         <section className="stats">
           <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
