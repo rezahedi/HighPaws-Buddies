@@ -79,8 +79,7 @@ export default function Notifications( { profileId, onClose }: { profileId: stri
   }
 
   return (
-    <Modal onClose={onClose} className='ListInModal'>
-      <h3>Notifications</h3>
+    <Modal title='Notifications' onClose={onClose} className='ListInModal'>
       <div ref={scrollableContainer}>
         {notifications.map((notification) =>
           <div key={notification.id} className={`notificationItem ${notification.seen ? `seen` : ``}`}>

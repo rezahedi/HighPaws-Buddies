@@ -81,8 +81,7 @@ export default function UserListInModal(
   }, [profile, loadingMore])
 
   return (
-    <Modal onClose={onClose} className="ListInModal">
-      <h3>{title}</h3>
+    <Modal onClose={onClose} title={title} className="ListInModal">
       <div ref={scrollableContainer}>
         {userList.map((user) =>
           <div key={user.id.id} className='item'>
