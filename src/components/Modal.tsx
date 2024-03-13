@@ -42,9 +42,9 @@ export default function Modal({
             <button onClick={closeModal}><Close className="size-6" /></button>
           </Dialog.Close>
           <Dialog.Title className="text-lg font-semibold text-center mb-4">{title}</Dialog.Title>
-          <Dialog.Description className={className}>
+          <div className={className}>
             {children}
-          </Dialog.Description>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
