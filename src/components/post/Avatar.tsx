@@ -29,7 +29,7 @@ export default function Avatar({
       <HoverCard profileId={profileId}>
         {linked
         ?
-          <Link to={`/${profileId}`} className={className} onMouseOver={()=>setHover(true)}>
+          <Link to={`/${profileId}`} className={className}>
             <AvatarImage url={url} name={name} size={size} />
             {withName && <span>{name}</span>}
           </Link>
@@ -51,7 +51,7 @@ export default function Avatar({
           {withName && <span>{name}</span>}
         </Link>
       :
-        <div>
+        <div onMouseOver={()=>setHover(true)}>
           <AvatarImage url={url} name={name} size={size} />
           {withName && <span>{name}</span>}
         </div>
