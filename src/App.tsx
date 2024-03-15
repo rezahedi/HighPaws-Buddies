@@ -6,6 +6,7 @@ import Layout from "@/Layout"
 // import { Login, ForgotPassword } from "@/pages/auth"
 import '@/styles/global.css'
 
+const Intro = lazy(() => import('@/pages/intro'))
 const Feed = lazy(() => import('@/pages/feed'))
 const PostPage = lazy(() => import('@/pages/post'))
 const Profile = lazy(() => import('@/pages/profile'))
@@ -24,6 +25,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route path="/intro" element={<Intro />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Feed />} />
             <Route path="/:userHandler/:postId" element={<PostPage />} />
