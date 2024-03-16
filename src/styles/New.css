@@ -34,12 +34,3 @@
 .cropArea{
   @apply relative
 }
-.cropArea .remove{
-  @apply absolute top-2 right-2
-}
-.cropArea .location{
-  @apply absolute top-2 left-2 flex flex-col items-start gap-1
-}
-.cropArea button{
-  @apply bg-white/50
-}

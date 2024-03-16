@@ -13,6 +13,7 @@ import AvatarEditor from 'react-avatar-editor'
 import { useDropzone } from 'react-dropzone'
 import exifr from 'exifr'
 import '@/styles/New.css'
+import { Bin } from "@/components/icons"
 
 export default function NewPost({onCancel}: {onCancel?: () => void}) {
 
@@ -137,6 +138,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
   const handleShareLocation = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setShareLocation(!shareLocation)
+    setLocation('')
   }
 
   const onDragEnter = () => {
@@ -184,9 +186,14 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
               scale={1}
               rotate={0}
               />
-            <button onClick={handleImageRemove} className="remove">Remove</button>
-            <div className="location">
-              <button onClick={handleShareLocation}>{shareLocation ? `Location will share` : `Share Location?`}</button>
+            <button onClick={handleImageRemove} className="absolute top-2 right-2 flex gap-1 items-center p-2 sm:px-3 bg-white/50">
+              <Bin className="size-6 sm:size-5" />
+              <span className="hidden sm:inline">Remove</span>
+            </button>
+            <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
+              <button onClick={handleShareLocation} className="p-2 sm:px-3 text-5 bg-white/50">
+                {shareLocation ? `Location shared` : `Share Location`}
+              </button>
               {location}
             </div>
           </div>
