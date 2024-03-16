@@ -146,7 +146,7 @@ button.primary:hover:not(:disabled){
   @apply w-fit rounded-md hover:bg-gray-200 transition-all duration-200 no-underline
 }
 .sidebar li a.active{
-  @apply bg-gray-100
+  @apply bg-gray-100 text-[#d56a34]
 }
 .sidebar li a.disabled{
   @apply cursor-default text-gray-400 hover:bg-white
