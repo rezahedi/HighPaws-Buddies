@@ -128,7 +128,7 @@ button.primary:hover:not(:disabled){
 }
 
 .sidebar{
-  @apply border bg-white w-full sm:w-fit xl:w-[275px] sm:mt-5 p-2 sm:py-5 xl:p-5 fixed bottom-0 sm:sticky sm:top-5 h-fit
+  @apply border bg-white w-full sm:w-fit xl:w-[275px] sm:mt-5 p-2 sm:py-5 xl:p-5 fixed z-[1] sm:z-auto bottom-0 sm:sticky sm:top-5 h-fit
 }
 .sidebar ul{
   @apply text-xs sm:text-xl flex gap-1 sm:gap-2 sm:flex-col justify-evenly
