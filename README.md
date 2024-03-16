@@ -1,5 +1,7 @@
 # A cool project about our furry buddies!
 
+[![Deploy to Firebase Hosting](https://github.com/rezahedi/HighPaws-Buddies/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/rezahedi/HighPaws-Buddies/actions/workflows/firebase-hosting-merge.yml)
+
 I'm going to build a social media app for our lovely buddies 🐕‍🦺, our dogs. It comes to my mind when I was walking puppy Bjørn to the dog park for a playdate. I was wondering are there bigger dogs in the park, or is it allowed for off-leash play? I thought it would be cool to have an app where I can check the dog parks, see other dogs, and any useful information related to our friends. I'm going to build this app and share the journey with you. I hope it come out as I imagine it. 😀🤞
 
 I'm using Vite, React, TypeScript, and Firebase tech stacks for Auth, database and CDN.
