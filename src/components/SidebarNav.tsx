@@ -8,13 +8,13 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
   return (
     <nav className='sidebar'>
       <ul>
-        <li>
+        <li className='mobile order-1'>
           <NavLink to='/' title='Home'>
             <Home />
             <span>Home</span>
           </NavLink>
         </li>
-        <li>
+        <li className='mobile order-2'>
           <NavLink to='/discover' title='Discover'>
             <Search />
             <span>Discover</span>
@@ -32,7 +32,7 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
             <span>Packs</span>
           </a>
         </li>
-        <li>
+        <li className='mobile order-4'>
           <NavLink to='/notifications' title='Notifications'>
             <Notification />
             <span>Notifications</span>
@@ -44,13 +44,13 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
             <span>Messages</span>
           </a>
         </li>
-        <li>
+        <li className='mobile order-5'>
           <NavLink to={`/${profile?.id}`} title='Profiles'>
             <Profile />
             <span>Profiles</span>
           </NavLink>
         </li>
-        <li>
+        <li className='mobile order-3'>
           <button onClick={()=>setShowModal(true)} title='Post' className='primary'>
             <Pen />
             <span>Post</span>

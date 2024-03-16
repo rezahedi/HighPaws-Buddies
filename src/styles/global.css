@@ -128,13 +128,22 @@ button.primary:hover:not(:disabled){
 }
 
 .sidebar{
-  @apply border bg-white w-full sm:w-fit xl:w-[275px] sm:mt-5 py-5 px-2 xl:p-5 fixed bottom-0 sm:sticky sm:top-5 h-fit
+  @apply border bg-white w-full sm:w-fit xl:w-[275px] sm:mt-5 p-2 sm:py-5 xl:p-5 fixed bottom-0 sm:sticky sm:top-5 h-fit
 }
 .sidebar ul{
-  @apply text-xl flex gap-1 sm:gap-2 sm:flex-col justify-center
+  @apply text-xs sm:text-xl flex gap-1 sm:gap-2 sm:flex-col justify-evenly
+}
+.sidebar li{
+  @apply hidden sm:block sm:order-none
+}
+.sidebar li.mobile{
+  @apply block
+}
+.sidebar li a, .sidebar button{
+  @apply flex flex-col items-center sm:flex-row gap-0 sm:gap-2 px-3 py-2
 }
 .sidebar li a{
-  @apply w-fit flex gap-2 items-center rounded-md px-3 py-2 hover:bg-gray-200 transition-all duration-200 no-underline
+  @apply w-fit rounded-md hover:bg-gray-200 transition-all duration-200 no-underline
 }
 .sidebar li a.active{
   @apply bg-gray-100
@@ -149,8 +158,8 @@ button.primary:hover:not(:disabled){
   @apply size-6
 }
 .sidebar span{
-  @apply hidden xl:inline
+  @apply sm:hidden xl:inline
 }
 .sidebar button{
-  @apply w-full flex gap-2 px-3 sm:mt-5
+  @apply w-full sm:mt-5 justify-center
 }
