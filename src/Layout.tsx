@@ -1,15 +1,16 @@
-import { Suspense, useState } from 'react';
+import { ReactNode, Suspense, useState } from 'react';
 import { Outlet } from "react-router-dom"
 import { Header, SidebarNav, SidebarBanners, Modal, NewPost } from "@/components"
 
-export default function Layout() {
+export default function Layout({sidebar}: {sidebar?: ReactNode}) {
   const [showNewPostModal, setShowNewPostModal] = useState(false)
 
   return (
     <>
       <Header />
       <div className='main'>
-        <SidebarNav setShowModal={setShowNewPostModal} />
+        {sidebar && sidebar}
+        {!sidebar && <SidebarNav setShowModal={setShowNewPostModal} />}
         {showNewPostModal &&
           <Modal onClose={()=>setShowNewPostModal(false)}>
             <NewPost onCancel={()=>setShowNewPostModal(false)} />
