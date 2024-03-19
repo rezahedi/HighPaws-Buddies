@@ -46,8 +46,10 @@ export default function Login() {
             <input type='password' ref={passwordRef} required />
           </label>
           <div className='space-x-2'>
-            <button onClick={(e)=>{e.preventDefault();login('r.zahedi@gmail.com', 'demO4231')}} className='px-2 py-1'>Demo login 1</button>
-            <button onClick={(e)=>{e.preventDefault();login('rezahedi.dev@gmail.com', 'demO4231')}} className='px-2 py-1'>Demo login 2</button>
+            <span>Login as a demo user:</span>
+            <button onClick={(e)=>{e.preventDefault();login('r.zahedi@gmail.com', 'demO4231')}} className='px-2 py-1'>Bjorn</button>
+            <button onClick={(e)=>{e.preventDefault();login('rezahedi.dev@gmail.com', 'demO4231')}} className='px-2 py-1'>Cooper</button>
+            <button onClick={(e)=>{e.preventDefault();login('john@example.com', 'john@example.com')}} className='px-2 py-1'>Casper</button>
           </div>
           <div className='actions'>
             <Link to="/forgot-password">Forgot Password?</Link>
