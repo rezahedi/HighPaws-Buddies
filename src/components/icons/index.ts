@@ -16,6 +16,8 @@ import Pen from '@/components/icons/Pen'
 import PhotoPlus from '@/components/icons/PhotoPlus'
 import Archive from '@/components/icons/Archive'
 import Logout from '@/components/icons/Logout'
+import Back from '@/components/icons/Back'
+import Forward from '@/components/icons/Forward'
 
 export {
   Home,
@@ -36,4 +38,6 @@ export {
   PhotoPlus,
   Archive,
   Logout,
+  Back,
+  Forward,
 }
