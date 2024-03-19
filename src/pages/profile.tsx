@@ -155,7 +155,7 @@ export default function Profile() {
         <Post key={post.id} post={post} />
       ))}
       {postsLoading && <PostSkeleton count={skeletonItemsPerLoad} />}
-      {posts.length === 0 && !postsLoading && <EmptyFeed>You haven't post anything yet! 😏</EmptyFeed>}
+      {posts.length === 0 && !postsLoading && <EmptyFeed />}
       {!postsLoading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount+itemsPerLoad);setLoadingMore(true)}}>Load more posts</button></div>}
     </>
   )

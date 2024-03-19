@@ -1,3 +1,4 @@
+import { LatestJoined } from "@/components";
 
 
 export default function EmptyFeed({children}: {children?: React.ReactNode}) {
@@ -6,9 +7,10 @@ export default function EmptyFeed({children}: {children?: React.ReactNode}) {
       {children && children}
       {!children &&
         <>
-          <b>Wall is Empty! 🤷‍♂️</b>
-          Post the first one by clicking on the 'What's happening?!' above. 👆<br />
-          Or start following people to see their posts here. 🤩
+          <h3 className='text-xl font-bold'>Feed is Empty! 🤷‍♂️</h3>
+          Post your first one by clicking on the 'Post' button in the sidebar. 👈<br />
+          Or start following people to see their posts in your wall.
+          <LatestJoined />
         </>
       }
     </div>
