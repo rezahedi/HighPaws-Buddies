@@ -33,22 +33,22 @@ a:hover{
   @apply underline;
 }
 
-button{
-  @apply px-4 py-2 rounded-md border border-gray-300 transition-all duration-100;
+button, .btn{
+  @apply px-4 py-2 rounded-md border border-gray-300 transition-all duration-100
 }
-button:hover:not(:disabled){
-  @apply bg-gray-100 border-gray-400;
+button:hover:not(:disabled), .btn:hover{
+  @apply bg-gray-100 border-gray-400 no-underline;
 }
 
-button:active:not(:disabled){
+button:active:not(:disabled), .btn:active{
   @apply scale-95
 }
 
-button.primary{
+button.primary, .btn.primary{
   @apply bg-[#d56a34]/90 border-none text-[#3f170e];
 }
 
-button.primary:hover:not(:disabled){
+button.primary:hover:not(:disabled), .btn.primary:hover{
   @apply bg-[#d56a34];
 }
 .main{

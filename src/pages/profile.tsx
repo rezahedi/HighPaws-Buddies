@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import '@/styles/Profile.css'
 import { EmptyFeed, Post, UserListInModal } from "@/components"
 import { db } from '@/firebase';
@@ -102,7 +102,7 @@ export default function Profile() {
 
   return (
     <>
-      <div className='profile'>
+      <div className='profile relative'>
         {profileLoading && <ProfileSkeleton />}
         {profile &&
         <>
@@ -148,6 +148,7 @@ export default function Profile() {
             ))}
           </section>
         }
+        {profile.id===authProfile?.id && <Link to='/settings/account' className='btn absolute top-4 right-4 flex gap-1 items-center px-2 py-1'>Edit profile</Link>}
         </>
         }
       </div>
