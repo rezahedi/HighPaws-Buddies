@@ -33,6 +33,8 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Dark mode
 - [x] Pagination or infinite scroll (For the feed, comments, likes, or followers)
 - [ ] Use geoHash for locations
+- [ ] Update profile
+- [ ] Add profile banner
 
 ## Firebase Emulators for local development
 
