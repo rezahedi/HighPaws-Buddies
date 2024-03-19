@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { AuthProvider } from "@/providers"
 import Layout from "@/Layout"
 // TODO: Should be Lazy Loaded (Except main component all should be lazy loaded)
@@ -15,6 +15,10 @@ const Login = lazy(() => import('@/pages/auth/login'))
 const ForgotPassword = lazy(() => import('@/pages/auth/forgotpassword'))
 const Discover = lazy(() => import('@/pages/discover'))
 const Notifications = lazy(() => import('@/pages/notifications'))
+
+const Account = lazy(() => import('@/pages/settings/account'))
+const NotificationSetting = lazy(() => import('@/pages/settings/notifications'))
+const SidebarNav = lazy(() => import('@/components/settings/SidebarNav'))
 
 // TODO: Read below article about routing layers to build routes like next.js with layout and hierarchy
 // https://semaphoreci.com/blog/routing-layer-react
@@ -32,6 +36,11 @@ function App() {
             <Route path="/:userHandler" element={<Profile />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/notifications" element={<Notifications />} />
+          </Route>
+          <Route element={<Layout sidebar={<SidebarNav />} />}>
+            <Route path="/settings" element={<Navigate to='/settings/account' />} />
+            <Route path="/settings/account" element={<Account />} />
+            <Route path="/settings/notifications" element={<NotificationSetting />} />
           </Route>
           <Route path="/signup" element={<Suspense fallback={<div>Loading</div>}><Signup /></Suspense>} />
           <Route path="/login" element={<Suspense fallback={<div>Loading</div>}><Login /></Suspense>} />
