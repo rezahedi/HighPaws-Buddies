@@ -1,6 +1,7 @@
 import { ReactNode, Suspense, useState } from 'react';
 import { Outlet } from "react-router-dom"
 import { Header, SidebarNav, SidebarBanners, Modal, NewPost } from "@/components"
+import { Toaster } from "sonner";
 
 export default function Layout({sidebar}: {sidebar?: ReactNode}) {
   const [showNewPostModal, setShowNewPostModal] = useState(false)
@@ -23,6 +24,7 @@ export default function Layout({sidebar}: {sidebar?: ReactNode}) {
           <div className='h-24'></div>
         </main>
         <SidebarBanners />
+        <Toaster closeButton />
       </div>
     </>
   )
