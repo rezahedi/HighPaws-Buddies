@@ -18,7 +18,7 @@ import Archive from '@/components/icons/Archive'
 import Logout from '@/components/icons/Logout'
 import Back from '@/components/icons/Back'
 import Forward from '@/components/icons/Forward'
-
+import Loading from '@/components/icons/Loading'
 export {
   Home,
   Search,
@@ -40,4 +40,5 @@ export {
   Logout,
   Back,
   Forward,
+  Loading,
 }
