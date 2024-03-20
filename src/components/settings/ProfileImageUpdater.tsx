@@ -4,6 +4,7 @@ import React, { useRef, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone';
 import { EditImage, Loading } from '@/components/icons';
 import { readBlob, resizeImage, uploadAvatarToStorage } from "@/providers/utils";
+import { toast } from 'sonner';
 
 export default function ProfileImageUpdater( { id, img, name }: { id: string, img: string, name: string } )
 {
@@ -20,7 +21,9 @@ export default function ProfileImageUpdater( { id, img, name }: { id: string, im
       const url = await uploadAvatarToStorage(image, id, `${name}.jpg`)
       setLoading(false)
       if( !url )
-        console.error("Failed to update picture, Please try again.")
+        toast.error("Failed to update picture, Please try again.")
+      else
+        toast.success("Profile picture updated.")
     })()
 
   }, [image])
@@ -31,7 +34,7 @@ export default function ProfileImageUpdater( { id, img, name }: { id: string, im
       if( !file ) return
 
       if ( file.size > maxSize2MB ) {
-        console.error("File size too big (max 2MB)");
+        toast.error("File size too big (max 2MB)");
       } else {
         let content = await readBlob(file)
         // Crop image to fit 160x160
@@ -59,7 +62,7 @@ export default function ProfileImageUpdater( { id, img, name }: { id: string, im
     onDragLeave,
     maxFiles: 1,
     onDrop,
-    onError: (err) => console.error(err.message)
+    onError: (err) => toast.error(err.message)
   })
 
   return (

@@ -14,6 +14,7 @@ import { useDropzone } from 'react-dropzone'
 import exifr from 'exifr'
 import '@/styles/New.css'
 import { Bin } from "@/components/icons"
+import { toast } from "sonner"
 
 export default function NewPost({onCancel}: {onCancel?: () => void}) {
 
@@ -39,7 +40,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
       navigator.geolocation.getCurrentPosition((position) => {
         setLocation(`${position.coords.latitude.toFixed(3)}, ${position.coords.longitude.toFixed(3)}`)
       }, (error) => {
-        console.error("Error getting location:", error)
+        toast.error("Error getting location: " + error.message)
       })
     }
   }, [shareLocation])
@@ -73,7 +74,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
     }
 
     if( !imageUploadedURL )
-      return console.error("Error uploading image, try again.")
+      return toast.error("Error uploading image, try again.")
 
     // TODO: Sanitize data
     const newPost: newPostProp = {
@@ -95,7 +96,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
     }
 
     await setDoc(docRef, newPost)
-    console.log( "post created:", docRef.id )
+    toast.success( "Post created!" )
     if( onCancel )
       onCancel()
     else
@@ -110,7 +111,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
       if( !file ) return
 
       if ( file.size > maxSize2MB ) {
-        console.error("File size too big (max 2MB)");
+        toast.error("File size too big (max 2MB)");
       } else {
         const reader = new FileReader();
         reader.onload = async (event) => {
@@ -159,7 +160,7 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
     onDragLeave,
     maxFiles: 1,
     onDrop,
-    onError: (err) => console.error(err.message)
+    onError: (err) => toast.error(err.message)
   })
 
   function adjustTextareaHeight(e: React.FormEvent<HTMLTextAreaElement>) {

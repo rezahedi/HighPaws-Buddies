@@ -6,6 +6,7 @@ import { updateDoc, doc } from "firebase/firestore"
 import { Loading } from '@/components/icons';
 import { stringLength, HTMLSanitize } from '@/utils/formValidation';
 import ProfileImageUpdater from '@/components/settings/ProfileImageUpdater';
+import { toast } from 'sonner';
 
 export default function Account() {
   const { profile } = useAuth()
@@ -15,7 +16,7 @@ export default function Account() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if(!profile) return console.error('Profile not found')
+    if(!profile) return toast.error('Profile not found!')
 
     setLoading(true)
 
@@ -38,7 +39,7 @@ export default function Account() {
 
     // Data validation
     if(stringLength(buddy, 3, 30) === false || stringLength(owner, 3, 30) === false || stringLength(breed, 3, 30) === false)
-      return console.error('Required fields invalid.')
+      return toast.error('Required fields invalid.')
 
     // Create new updated profile object
     const updatedProfile: profileProp = {
@@ -55,6 +56,8 @@ export default function Account() {
     // Update profile in Firestore
     const docRef = doc(db, `/profiles/${profile.id}`)
     await updateDoc(docRef, updatedProfile)
+
+    toast.success('Profile updated!')
 
     setLoading(false)
   }
@@ -115,7 +118,7 @@ export default function Account() {
         </label>
         <div className="flex justify-end items-center mt-4 space-x-2 text-right">
           {loading && <Loading className="inline-block size-6 text-[#f06a1d]" />}
-          <button className="primary" disabled={loading}>Update Profile</button>
+          <button className="btn primary" disabled={loading}>Update Profile</button>
         </div>
       </form>
     </div>
