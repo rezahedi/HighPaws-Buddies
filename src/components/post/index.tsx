@@ -11,7 +11,6 @@ import { Bin, Comment, Like } from '@/components/icons';
 import Likes from '@/components/post/Likes'
 import { formatRelativeDate } from '@/utils';
 import Avatar from '@/components/post/Avatar';
-import { toast } from 'sonner';
 
 export default function Post(
   { post, withComment = false, onDelete }:
