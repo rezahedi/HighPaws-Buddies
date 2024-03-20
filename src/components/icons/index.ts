@@ -19,6 +19,8 @@ import Logout from '@/components/icons/Logout'
 import Back from '@/components/icons/Back'
 import Forward from '@/components/icons/Forward'
 import Loading from '@/components/icons/Loading'
+import EditImage from '@/components/icons/EditImage'
+
 export {
   Home,
   Search,
@@ -41,4 +43,5 @@ export {
   Back,
   Forward,
   Loading,
+  EditImage,
 }
