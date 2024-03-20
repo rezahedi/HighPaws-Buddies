@@ -37,7 +37,7 @@ function App() {
             <Route path="/discover" element={<Discover />} />
             <Route path="/notifications" element={<Notifications />} />
           </Route>
-          <Route element={<Layout sidebar={<SidebarNav />} />}>
+          <Route element={<Layout sidebar={<Suspense><SidebarNav /></Suspense>} />}>
             <Route path="/settings" element={<Navigate to='/settings/account' />} />
             <Route path="/settings/account" element={<Account />} />
             <Route path="/settings/notifications" element={<NotificationSetting />} />
