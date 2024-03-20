@@ -82,3 +82,29 @@ export function createProfile(userCredential: UserCredential, profileData: newPr
     })
   })
 }
+
+export function resizeImage(content: string, width: number, height: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = content;
+    img.onload = function() {
+      const elem = document.createElement('canvas');
+      elem.width = width;
+      elem.height = height;
+      const ctx = elem.getContext('2d');
+      if (!ctx) return reject('Error creating canvas');
+
+      // Calculate the canvas position to draw the image to cover the width and height
+      const widthRatio = width / img.width;
+      const heightRatio = height / img.height;
+      const ratio = Math.max(widthRatio, heightRatio);
+      const newWidth = img.width * ratio;
+      const newHeight = img.height * ratio;
+      const x = (width - newWidth) / 2;
+      const y = (height - newHeight) / 2;
+      ctx.drawImage(img, x, y, newWidth, newHeight);
+
+      resolve(ctx.canvas.toDataURL('image/jpeg'));
+    };
+  });
+}

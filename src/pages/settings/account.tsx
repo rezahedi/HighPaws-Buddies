@@ -5,6 +5,7 @@ import { db } from '@/firebase';
 import { updateDoc, doc } from "firebase/firestore"
 import { Loading } from '@/components/icons';
 import { stringLength, HTMLSanitize } from '@/utils/formValidation';
+import ProfileImageUpdater from '@/components/settings/ProfileImageUpdater';
 
 export default function Account() {
   const { profile } = useAuth()
@@ -61,6 +62,24 @@ export default function Account() {
   return (
     <div className="post">
       <h3 className="text-center text-2xl font-semibold text-gray-800 mb-4">Edit Account</h3>
+      <div className='flex gap-4 justify-center text-center'>
+        <div>
+          <ProfileImageUpdater
+            id={profile.id}
+            img={profile.avatars.buddy}
+            name='buddy'
+          />
+          Buddy Avatar
+        </div>
+        <div>
+          <ProfileImageUpdater
+            id={profile.id}
+            img={profile.avatars.owner}
+            name='owner'
+          />
+          Owner Avatar
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <label>
           Buddy Name (required):
