@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Group, Home, Message, Money, Notification, Pen, Profile, Search } from '@/components/icons'
+import { Group, Home, Message, Money, Notification, Pen, Profile, Search, Setting } from '@/components/icons'
 import { useAuth } from '@/providers/auth'
 
 export default function SidebarNav({setShowModal}: {setShowModal: (value: boolean) => void}) {
@@ -43,6 +43,12 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
             <Message />
             <span>Messages</span>
           </a>
+        </li>
+        <li>
+          <NavLink to='/settings' title='Settings'>
+            <Setting />
+            <span>Settings</span>
+          </NavLink>
         </li>
         <li className='mobile order-5'>
           <NavLink to={`/${profile?.id}`} title='Profiles'>
