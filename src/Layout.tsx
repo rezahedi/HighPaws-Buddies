@@ -24,8 +24,8 @@ export default function Layout({sidebar}: {sidebar?: ReactNode}) {
           <div className='h-24'></div>
         </main>
         <SidebarBanners />
-        <Toaster closeButton />
       </div>
+      <Toaster />
     </>
   )
 }
