@@ -18,9 +18,9 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Create a schema for the data model, hierarchy of subcollections and documents, and the data types in a file called `schema.ts`
 - [x] Create a modal dialog to show followers, following
 - [x] Figure out `like/unlike` logic
-- [ ] Notifications subcollection /profiles/{profileId}/notifications/ for likes, comments, and follows or for specified followed users
+- [x] Notifications subcollection /profiles/{profileId}/notifications/ for likes, comments, and follows or for specified followed users
 - [ ] Find a way to optimize stats fanout to scale, maybe throttling the fanout!
-- [ ] Code splitting and lazy loading components for better performance
+- [x] Code splitting and lazy loading components for better performance
 - [ ] Security: Firebase Rules, Forms validation, and error handling
 - [ ] Reply to comments, or nested comments, notifications
 - [ ] Multiple images upload, and carousel for the post
@@ -33,12 +33,12 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Dark mode
 - [x] Pagination or infinite scroll (For the feed, comments, likes, or followers)
 - [ ] Use geoHash for locations
-- [ ] Update profile
+- [x] Update profile
 - [ ] Add profile banner
 
 ## Firebase Emulators for local development
 
-Used Firebase emulators for local development and to persist data in the Firestore, Auth & Storage emulators I used export import approuch.
+Used Firebase emulators for local development and to persist data in the Firestore, Auth & Storage emulators I used export import approach.
 
 To export/import data in `/firebase-export` I used the following commands and added them to the `package.json` scripts section for easy access.
 
