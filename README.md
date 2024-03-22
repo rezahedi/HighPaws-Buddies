@@ -21,7 +21,8 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [x] Notifications subcollection /profiles/{profileId}/notifications/ for likes, comments, and follows or for specified followed users
 - [ ] Find a way to optimize stats fanout to scale, maybe throttling the fanout!
 - [x] Code splitting and lazy loading components for better performance
-- [ ] Security: Firebase Rules, Forms validation, and error handling
+- [x] Security: Firebase Rules
+- [ ] Forms validation, and error handling
 - [ ] Reply to comments, or nested comments, notifications
 - [ ] Multiple images upload, and carousel for the post
 - [ ] Video upload and play in the post
