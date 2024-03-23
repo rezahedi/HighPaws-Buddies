@@ -163,3 +163,56 @@ export function returnNotificationProp(doc: DocumentSnapshot): notificationProp 
     archived: doc.data().archived,
   }
 }
+
+/**
+ * Messages
+ */
+export type conversationProp = {
+  id?: string;
+  with: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  last_message: string;
+  new_messages: number;
+  archived: boolean;
+  published_at: Timestamp;
+  modified_at: Timestamp;
+}
+
+export type messageProp = {
+  id?: string;
+  message: string;
+  direction: string; // in or out
+  seen: boolean;
+  published_at: Timestamp;
+}
+
+export function returnConversationProp(doc: DocumentSnapshot): conversationProp {
+  if( !doc.exists() ) return {} as conversationProp
+  return {
+    id: doc.id,
+    with: {
+      id: doc.data().with.id,
+      name: doc.data().with.name,
+      avatar: doc.data().with.avatar,
+    },
+    last_message: doc.data().last_message,
+    new_messages: doc.data().new_messages,
+    archived: doc.data().archived,
+    published_at: doc.data().published_at,
+    modified_at: doc.data().modified_at,
+  }
+}
+
+export function returnMessageProp(doc: DocumentSnapshot): messageProp {
+  if( !doc.exists() ) return {} as messageProp
+  return {
+    id: doc.id,
+    message: doc.data().message,
+    direction: doc.data().direction,
+    seen: doc.data().seen,
+    published_at: doc.data().published_at,
+  }
+}

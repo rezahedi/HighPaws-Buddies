@@ -14,7 +14,7 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
             <span>Home</span>
           </NavLink>
         </li>
-        <li className='mobile order-2'>
+        <li>
           <NavLink to='/discover' title='Discover'>
             <Search />
             <span>Discover</span>
@@ -38,11 +38,11 @@ export default function SidebarNav({setShowModal}: {setShowModal: (value: boolea
             <span>Notifications</span>
           </NavLink>
         </li>
-        <li>
-          <a href='#' title='Messages' className='disabled'>
+        <li className='mobile order-2'>
+          <NavLink to='/messages' title='Messages'>
             <Message />
             <span>Messages</span>
-          </a>
+          </NavLink>
         </li>
         <li>
           <NavLink to='/settings' title='Settings'>
