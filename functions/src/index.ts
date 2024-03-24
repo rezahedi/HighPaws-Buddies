@@ -340,3 +340,34 @@ export const markNotificationAsSeen = onDocumentUpdated(`profiles/{profileId}/no
     });
   }
 })
+
+
+/**
+ * Messages
+ */
+export const fanoutMessage = onDocumentCreated(`profiles/{profileId}/conversations/{conversationId}/messages/{messageId}`, (event) => {
+  const messageDoc = event.data;
+  if (!messageDoc) return
+
+  const profileId = event.params.profileId;
+  const conversationId = event.params.conversationId;
+  const messageId = event.params.messageId;
+  const conversationRef = db.doc(`profiles/${profileId}/conversations/${conversationId}`);
+  const messageData = messageDoc.data();
+
+  // Update the conversation
+  conversationRef.update({
+    "last_message": messageData.message,
+    "modified_at": FieldValue.serverTimestamp(),
+    "new_messages": (messageData.direction === 'in' ? FieldValue.increment(1) : 0),
+  });
+
+  // Do nothing if message direction is 'in'
+  if (messageData.direction === 'in') return
+
+  // Fanout message to the other profile's conversation
+  const withProfileId = conversationId;
+  const withConversationRef = db.doc(`profiles/${withProfileId}/conversations/${profileId}`);
+  const withMessageRef = db.doc(`profiles/${withProfileId}/conversations/${conversationId}/messages/${messageId}`);
+  withMessageRef.set( {...messageData, direction: 'in'} );
+})
