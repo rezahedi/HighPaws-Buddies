@@ -9,15 +9,34 @@ type withProfileProp = {
 }
 
 export default function Message({msg, from}: {msg: messageProp, from: withProfileProp}) {
+  const left = msg.direction=='in' ? true : false
+
   return (
-    <div className={msg.direction=='in' ? 'text-left' : 'text-right'}>
-      <div className={`flex gap-2 ${msg.direction=='in' ? 'flex-row' : 'flex-row-reverse'}`}>
-        {msg.direction=='in' &&
-          <Avatar profileId={from.id} url={from.avatar} name={from.name} size='sm' />
+    <div className={
+      left
+      ? 'text-left'
+      : 'text-right'
+    }>
+      <div className={
+        left
+        ? 'flex gap-2 flex-row'
+        : 'flex gap-2 flex-row-reverse'
+      }>
+        {left &&
+          <Avatar profileId={from.id} url={from.avatar} name={from.name} size='sm' className="size-9 inline-block" />
         }
-        <div className={`flex flex-col px-4 py-2 rounded-xl ${msg.direction=='in' ? 'bg-[#d56a34] text-white rounded-tl-none' : 'bg-[#d56a34]/20 text-black rounded-tr-none'}`}>
-          <span>{msg.message}</span>
-          <time dateTime={msg.published_at.toDate().toISOString()} className='text-xs opacity-70 italic'>{formatRelativeDate(msg.published_at.toDate())}</time>
+        <div className={
+          left
+          ? 'max-w-[65vw] bg-[#d56a34]    text-white rounded-tl-none sm:max-w-sm md:max-w-md flex flex-col gap-1 px-4 py-2 rounded-xl'
+          : 'max-w-[80vw] bg-[#d56a34]/20 text-black rounded-tr-none sm:max-w-sm md:max-w-md flex flex-col gap-1 px-4 py-2 rounded-xl'
+        }>
+          <span className="text-left">{msg.message}</span>
+          <time
+            dateTime={msg.published_at.toDate().toISOString()}
+            className='text-xs opacity-70 italic'
+          >
+            {formatRelativeDate(msg.published_at.toDate())}
+          </time>
         </div>
       </div>
     </div>

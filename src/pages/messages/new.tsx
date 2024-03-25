@@ -58,10 +58,8 @@ export default function New() {
         {loading && <div>Loading Profiles ...</div>}
         <div className="flex gap-2 flex-wrap">
           {filteredDocs && filteredDocs.map((item: tidyProfileProp) =>
-            <Link to={`/messages/${item.id}`} key={item.id} className="btn flex gap-2 items-center mt-3">
-              <div className="flex gap-2 flex-1">
-                <Avatar url={item.avatar} name={item.name} profileId={item.id} withName linked={false} className="flex flex-row items-center gap-2 font-semibold" />
-              </div>
+            <Link to={`/messages/${item.id}`} key={item.id} className="btn mt-3">
+              <Avatar url={item.avatar} name={item.name} profileId={item.id} withName linked={false} className="flex flex-col sm:flex-row items-center gap-2 font-semibold py-1" />
             </Link>
           )}
         </div>
