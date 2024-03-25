@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
 import { Conversation, EmptyMessage } from '@/components/messages';
 import { ChatBubble } from '@/components/icons';
+import { MessagesSkeleton } from '@/components/skeletons';
 
 export default function Messages() {
   const navigate = useNavigate()
@@ -13,7 +14,7 @@ export default function Messages() {
   const [messages, setMessages] = useState<conversationProp[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const ITEMS_PER_LOAD = 10
-  const SKELETON_ITEMS_PER_LOAD = 4
+  const SKELETON_ITEMS_PER_LOAD = 6
   const [limitCount, setLimitCount] = useState<number>(ITEMS_PER_LOAD)
   const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
 
@@ -58,13 +59,18 @@ export default function Messages() {
           <span className='hidden sm:inline'>Start chat</span>
         </button>
       </header>
-      {messages.map((item) =>
-        <Conversation key={item.id} doc={item} />
-      )}
-      {/* {loading && <MessageItemSkeleton count={SKELETON_ITEMS_PER_LOAD} />} */}
-      {loading && <div>Loading... {SKELETON_ITEMS_PER_LOAD}</div>}
-      {messages.length === 0 && !loading && <EmptyMessage />}
-      {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore(true)}}>Show more messages</button></div>}
+      {loading ? <MessagesSkeleton count={SKELETON_ITEMS_PER_LOAD} /> :
+      <>
+        {messages && messages.map((item) =>
+          <Conversation key={item.id} doc={item} />
+        )}
+        {loadingMore!==null &&
+          <div className='post'>
+            <button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore  (true)}}>Show more messages</button>
+          </div>
+        }
+        {messages.length === 0 && !loading && <EmptyMessage />}
+      </>}
     </>
   )
 }

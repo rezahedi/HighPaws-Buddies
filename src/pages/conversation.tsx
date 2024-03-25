@@ -5,7 +5,7 @@ import { useAuth } from "@/providers/auth";
 import { messageProp, returnMessageProp } from '@/types/firestore';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Message, NewMessage } from '@/components/messages';
-import { Back } from '@/components/icons';
+import { Back, Loading } from '@/components/icons';
 import Avatar from '@/components/post/Avatar';
 
 type withProfileProp = {
@@ -21,8 +21,7 @@ export default function Conversation() {
   const [withProfile, setWithProfile] = useState<withProfileProp | null>(null)
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(true);
-  const ITEMS_PER_LOAD = 20
-  const SKELETON_ITEMS_PER_LOAD = 6
+  const ITEMS_PER_LOAD = 8
   const [limitCount, setLimitCount] = useState<number>(ITEMS_PER_LOAD)
   const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
   const chat = useRef<HTMLDivElement>(null)
@@ -81,11 +80,11 @@ export default function Conversation() {
       }
     );
     return () => unsubscribe();
-  }, [withProfile]);
+  }, [withProfile, loadingMore]);
 
-  // Scroll to bottom of chat on each new message
+  // Scroll to bottom of chat on each new message if user is already at the bottom
   useEffect(() => {
-    if (chat.current) {
+    if (chat.current && chat.current.scrollTop > chat.current.scrollHeight - 50) {
       chat.current.scrollTop = chat.current.scrollHeight
     }
 
@@ -105,10 +104,9 @@ export default function Conversation() {
           <Back className="size-6" />
         </button>
       </header>
-      <div ref={chat} className='h-[calc(100vh-300px)] p-3 flex-1 overflow-y-auto space-y-3'>
+      <div ref={chat} className='h-[calc(100vh-262px)] sm:h-[calc(100vh-200px)] p-3 flex-1 overflow-y-auto space-y-3'>
         {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore(true)}}>Show more messages</button></div>}
-        {/* {loading && <MessageItemSkeleton count={SKELETON_ITEMS_PER_LOAD} />} */}
-        {loading && <div>Loading... {SKELETON_ITEMS_PER_LOAD}</div>}
+        {loading && <div className='flex justify-center'><Loading className='flex justify-center size-8 text-[#f06a1d]' /></div>}
         {messages.map((item) =>
           <Message key={item.id} msg={item} from={withProfile} />
         )}

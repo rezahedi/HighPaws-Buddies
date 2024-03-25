@@ -27,8 +27,8 @@ export default function Message({msg, from}: {msg: messageProp, from: withProfil
         }
         <div className={
           left
-          ? 'max-w-[65vw] bg-[#d56a34]    text-white rounded-tl-none sm:max-w-sm md:max-w-md flex flex-col gap-1 px-4 py-2 rounded-xl'
-          : 'max-w-[80vw] bg-[#d56a34]/20 text-black rounded-tr-none sm:max-w-sm md:max-w-md flex flex-col gap-1 px-4 py-2 rounded-xl'
+          ? 'max-w-[65vw] bg-[#d56a34]    text-white rounded-tl-none rounded-2xl sm:max-w-sm md:max-w-md flex flex-col gap-1 px-4 py-2'
+          : 'max-w-[80vw] bg-[#d56a34]/20 text-black rounded-tr-none rounded-2xl sm:max-w-sm md:max-w-md flex flex-col gap-1 px-4 py-2'
         }>
           <span className="text-left">{msg.message}</span>
           <time
