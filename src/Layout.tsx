@@ -21,7 +21,6 @@ export default function Layout({sidebar}: {sidebar?: ReactNode}) {
           <Suspense fallback={<div>Loading...</div>}>
             <Outlet />
           </Suspense>
-          <div className='h-24'></div>
         </main>
         <SidebarBanners />
       </div>

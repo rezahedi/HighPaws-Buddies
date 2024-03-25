@@ -55,7 +55,7 @@ button.primary:hover:not(:disabled), .btn.primary:hover{
   @apply sm:container xl:max-w-7xl flex gap-4 flex-col sm:flex-row
 }
 .wall{
-  @apply w-full sm:max-w-2xl min-h-screen bg-white sm:border-l sm:border-r border-gray-300 divide-y divide-gray-300;
+  @apply w-full sm:max-w-2xl min-h-[calc(100vh-156px)] sm:min-h-[calc(100vh-56px)] mb-[73px] sm:mb-0 bg-white sm:border-l sm:border-r border-gray-300 divide-y divide-gray-300;
 }
 
 .post{
