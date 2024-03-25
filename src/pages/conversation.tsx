@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { db } from '@/firebase';
-import { onSnapshot, query, collection, orderBy, limit, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, query, collection, orderBy, limit, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useAuth } from "@/providers/auth";
 import { messageProp, returnMessageProp } from '@/types/firestore';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Message, NewMessage } from '@/components/messages';
+import { Back } from '@/components/icons';
+import Avatar from '@/components/post/Avatar';
 
 type withProfileProp = {
   id: string,
@@ -23,6 +25,7 @@ export default function Conversation() {
   const SKELETON_ITEMS_PER_LOAD = 6
   const [limitCount, setLimitCount] = useState<number>(ITEMS_PER_LOAD)
   const [loadingMore, setLoadingMore] = useState<boolean | null>(true)
+  const chat = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if( authProfile === null && authLoading === false ) return navigate('/login')
@@ -33,13 +36,19 @@ export default function Conversation() {
 
     setLoading(true);
     (async () => {
-      const docRef = doc(db, `profiles/${authProfile.id}/conversations/${conversationId}`)
-      const withProfile = await getDoc(docRef)
-      if ( !withProfile.exists() ) return navigate('/messages')
+      const docRef = doc(db, `profiles/${conversationId}`)
+      const res = await getDoc(docRef)
+      if ( !res.exists() ) return navigate('/messages')
       setWithProfile({
-        id: withProfile.data().with.id.id,
-        name: withProfile.data().with.name,
-        avatar: withProfile.data().with.avatar
+        id: res.id,
+        name: res.data().name,
+        avatar: res.data().avatars.buddy
+      })
+
+      // Mark conversation as seen
+      const conversationRef = doc(db, `profiles/${authProfile.id}/conversations/${conversationId}`)
+      updateDoc(conversationRef, {
+        new_messages: 0
       })
     })()
   }, [authProfile]);
@@ -74,18 +83,38 @@ export default function Conversation() {
     return () => unsubscribe();
   }, [withProfile]);
 
+  // Scroll to bottom of chat on each new message
+  useEffect(() => {
+    if (chat.current) {
+      chat.current.scrollTop = chat.current.scrollHeight
+    }
+
+    // TODO: Mark conversation as seen because user is viewing it!
+
+  }, [messages]);
+
   if (authProfile === null || withProfile === null) return null
 
   return (
-    <div>
-      {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore(true)}}>Show more messages</button></div>}
-      {/* {loading && <MessageItemSkeleton count={SKELETON_ITEMS_PER_LOAD} />} */}
-      {loading && <div>Loading... {SKELETON_ITEMS_PER_LOAD}</div>}
-      {messages.map((item) =>
-        <Message key={item.id} msg={item} from={withProfile} />
-      )}
-      {messages.length === 0 && !loading && <>No Messages!</>}
-      {conversationId && <NewMessage conversationId={conversationId} profileId={'1'} />}
-    </div>
+    <>
+      <header className="flex gap-2 items-center justify-between m-3">
+        <h3 className="font-semibold text-lg">
+          <Avatar url={withProfile.avatar} name={withProfile.name} profileId={withProfile.id} withName linked={false} className="flex flex-row items-center gap-2 font-semibold" />
+        </h3>
+        <button title="Back" className="border-none" onClick={()=>navigate('/messages')}>
+          <Back className="size-6" />
+        </button>
+      </header>
+      <div ref={chat} className='h-[calc(100vh-300px)] p-3 flex-1 overflow-y-auto space-y-3'>
+        {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore(true)}}>Show more messages</button></div>}
+        {/* {loading && <MessageItemSkeleton count={SKELETON_ITEMS_PER_LOAD} />} */}
+        {loading && <div>Loading... {SKELETON_ITEMS_PER_LOAD}</div>}
+        {messages.map((item) =>
+          <Message key={item.id} msg={item} from={withProfile} />
+        )}
+        {messages.length === 0 && !loading && <>No Messages!</>}
+      </div>
+      {conversationId && <NewMessage conversationId={conversationId} profileId={authProfile.id} />}
+    </>
   )
 }

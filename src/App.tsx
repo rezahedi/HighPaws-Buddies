@@ -17,6 +17,7 @@ const Discover = lazy(() => import('@/pages/discover'))
 const Notifications = lazy(() => import('@/pages/notifications'))
 const Messages = lazy(() => import('@/pages/messages'))
 const Conversation = lazy(() => import('@/pages/conversation'))
+const NewChat = lazy(() => import('@/pages/messages/new'))
 
 const Account = lazy(() => import('@/pages/settings/account'))
 const NotificationSetting = lazy(() => import('@/pages/settings/notifications'))
@@ -40,6 +41,7 @@ function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/messages/:conversationId" element={<Conversation />} />
+            <Route path="/messages/new" element={<NewChat />} />
           </Route>
           <Route element={<Layout sidebar={<Suspense><SidebarNav /></Suspense>} />}>
             <Route path="/settings" element={<Navigate to='/settings/account' />} />

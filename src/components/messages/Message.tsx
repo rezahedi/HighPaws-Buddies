@@ -11,7 +11,7 @@ type withProfileProp = {
 export default function Message({msg, from}: {msg: messageProp, from: withProfileProp}) {
   return (
     <div className={msg.direction=='in' ? 'text-left' : 'text-right'}>
-      <div className={`flex gap-2 m-2 ${msg.direction=='in' ? 'flex-row' : 'flex-row-reverse'}`}>
+      <div className={`flex gap-2 ${msg.direction=='in' ? 'flex-row' : 'flex-row-reverse'}`}>
         {msg.direction=='in' &&
           <Avatar profileId={from.id} url={from.avatar} name={from.name} size='sm' />
         }

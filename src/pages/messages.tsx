@@ -4,8 +4,8 @@ import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/f
 import { conversationProp, returnConversationProp } from '@/types/firestore';
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "@/providers/auth"
-import { EmptyFeed } from '@/components';
-import { Conversation } from '@/components/messages';
+import { Conversation, EmptyMessage } from '@/components/messages';
+import { ChatBubble } from '@/components/icons';
 
 export default function Messages() {
   const navigate = useNavigate()
@@ -51,12 +51,19 @@ export default function Messages() {
 
   return (
     <>
+      <header className="flex gap-2 items-center justify-between m-3">
+        <h3 className="font-semibold text-lg">Conversations</h3>
+        <button className="primary flex gap-1 items-center" onClick={()=>navigate('/messages/new')}>
+          <ChatBubble className="size-6" />
+          <span className='hidden sm:inline'>Start chat</span>
+        </button>
+      </header>
       {messages.map((item) =>
         <Conversation key={item.id} doc={item} />
       )}
       {/* {loading && <MessageItemSkeleton count={SKELETON_ITEMS_PER_LOAD} />} */}
       {loading && <div>Loading... {SKELETON_ITEMS_PER_LOAD}</div>}
-      {messages.length === 0 && !loading && <EmptyFeed />}
+      {messages.length === 0 && !loading && <EmptyMessage />}
       {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore(true)}}>Show more messages</button></div>}
     </>
   )
