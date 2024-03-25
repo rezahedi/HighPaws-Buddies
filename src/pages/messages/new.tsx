@@ -53,7 +53,7 @@ export default function New() {
       </header>
       <main className="p-3">
         <div className="flex gap-3">
-          <input type="text" className="flex-1 border p-2" placeholder="Search for a user" onChange={(e) => setSearch(e.target.value)} />
+          <input type="text" className="flex-1 border p-2" autoFocus placeholder="Search for a user" onChange={(e) => setSearch(e.target.value)} />
         </div>
         {loading && <div>Loading Profiles ...</div>}
         <div className="flex gap-2 flex-wrap">

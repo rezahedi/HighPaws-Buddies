@@ -73,7 +73,7 @@ export default function NewMessage({conversationId, profileId}: {conversationId:
   return (
     <form onSubmit={(e) => handleSubmit(e)} ref={formRef} className='flex items-center gap-2 text-sm p-3'>
       <img src={profile.avatars.buddy} alt={profile.name} className='rounded-full size-9' />
-      <input name='message' maxLength={500} required autoComplete='off' placeholder='Write your message ...' className='flex-1 p-2 border rounded-md border-gray-300 resize-y' />
+      <input name='message' maxLength={500} required autoComplete='off' autoFocus placeholder='Write your message ...' className='flex-1 p-2 border rounded-md border-gray-300 resize-y' />
       <button type="submit">Send</button>
     </form>
   )
