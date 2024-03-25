@@ -366,8 +366,18 @@ export const fanoutMessage = onDocumentCreated(`profiles/{profileId}/conversatio
   if (messageData.direction === 'in') return
 
   // Fanout message to the other profile's conversation
-  const withProfileId = conversationId;
-  const withConversationRef = db.doc(`profiles/${withProfileId}/conversations/${profileId}`);
-  const withMessageRef = db.doc(`profiles/${withProfileId}/conversations/${conversationId}/messages/${messageId}`);
+  const withMessageRef = db.doc(`profiles/${conversationId}/conversations/${profileId}/messages/${messageId}`);
   withMessageRef.set( {...messageData, direction: 'in'} );
 })
+
+// export const initConversation = onDocumentCreated(`profiles/{profileId}/conversations/{conversationId}`, (event) => {
+//   const profileId = event.params.profileId;
+//   const conversationId = event.params.conversationId;
+//   const conversationRef = db.doc(`profiles/${conversationId}/conversations/${profileId}`);
+//   conversationRef.set({
+//     "last_message": "",
+//     "modified_at": FieldValue.serverTimestamp(),
+//     "new_messages": 0,
+//     "archived": false,
+//   });
+// })
