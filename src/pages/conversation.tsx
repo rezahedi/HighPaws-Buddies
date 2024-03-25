@@ -52,6 +52,22 @@ export default function Conversation() {
     })()
   }, [authProfile]);
 
+  // Scroll event listener
+  useEffect(() => {
+    if(loadingMore === null) return
+    const container = chat.current
+    if(!container) return
+
+    const handleScroll = () => {
+      if(container.scrollTop < 20) {
+        setLimitCount( limitCount + ITEMS_PER_LOAD )
+        setLoadingMore(true)
+      }
+    }
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [loadingMore])
+
   useEffect(() => {
     if( !authProfile ) return
 
@@ -68,7 +84,7 @@ export default function Conversation() {
         // Reverse the order for UI, so the latest message is at the bottom
         docs.reverse()
 
-        if( docs.length == limitCount ) {
+        if( docs.length == ITEMS_PER_LOAD ) {
           setLoadingMore(false);
 
         } else {
@@ -84,7 +100,7 @@ export default function Conversation() {
 
   // Scroll to bottom of chat on each new message if user is already at the bottom
   useEffect(() => {
-    if (chat.current && chat.current.scrollTop > chat.current.scrollHeight - 50) {
+    if (chat.current && (limitCount<=ITEMS_PER_LOAD || chat.current.scrollTop > chat.current.scrollHeight - 50)) {
       chat.current.scrollTop = chat.current.scrollHeight
     }
 
@@ -105,7 +121,6 @@ export default function Conversation() {
         </button>
       </header>
       <div ref={chat} className='h-[calc(100vh-262px)] sm:h-[calc(100vh-200px)] p-3 flex-1 overflow-y-auto space-y-3'>
-        {!loading && loadingMore!==null && <div className='post'><button onClick={()=>{setLimitCount(limitCount + ITEMS_PER_LOAD);setLoadingMore(true)}}>Show more messages</button></div>}
         {loading && <div className='flex justify-center'><Loading className='flex justify-center size-8 text-[#f06a1d]' /></div>}
         {messages.map((item) =>
           <Message key={item.id} msg={item} from={withProfile} />
