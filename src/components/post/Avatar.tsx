@@ -34,7 +34,7 @@ export default function Avatar({
             {withName && <span>{name}</span>}
           </Link>
         :
-          <div>
+          <div className={className}>
             <AvatarImage url={url} name={name} size={size} />
             {withName && <span>{name}</span>}
           </div>
@@ -51,7 +51,7 @@ export default function Avatar({
           {withName && <span>{name}</span>}
         </Link>
       :
-        <div onMouseOver={()=>setHover(true)}>
+        <div className={className} onMouseOver={()=>setHover(true)}>
           <AvatarImage url={url} name={name} size={size} />
           {withName && <span>{name}</span>}
         </div>
