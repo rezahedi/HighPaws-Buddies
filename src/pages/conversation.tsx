@@ -59,7 +59,7 @@ export default function Conversation() {
     if(!container) return
 
     const handleScroll = () => {
-      if(container.scrollTop < 20) {
+      if(!loading && container.scrollTop < 50) {
         setLimitCount( limitCount + ITEMS_PER_LOAD )
         setLoadingMore(true)
       }
@@ -84,7 +84,7 @@ export default function Conversation() {
         // Reverse the order for UI, so the latest message is at the bottom
         docs.reverse()
 
-        if( docs.length == ITEMS_PER_LOAD ) {
+        if( docs.length == limitCount ) {
           setLoadingMore(false);
 
         } else {
