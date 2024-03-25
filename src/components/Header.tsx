@@ -34,7 +34,7 @@ export default function Header() {
   return (
     <header className='nav bg-gray-100 p-1 border-b border-b-gray-300'>
       <div className='container w-full sm:max-w-7xl'>
-        <h1>
+        <h1 className='min-w-12'>
           <Link to='/' className='flex items-center gap-2 text-2xl font-bold text-[#d56a34]'>
             <img src="/logo.png" alt="HighPaws Logo" width="50" height="50" />
             <span className='hidden sm:inline'>HighPaws</span>
