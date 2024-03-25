@@ -20,6 +20,7 @@ import Back from '@/components/icons/Back'
 import Forward from '@/components/icons/Forward'
 import Loading from '@/components/icons/Loading'
 import EditImage from '@/components/icons/EditImage'
+import ChatBubble from '@/components/icons/ChatBubble'
 
 export {
   Home,
@@ -44,4 +45,5 @@ export {
   Forward,
   Loading,
   EditImage,
+  ChatBubble,
 }
