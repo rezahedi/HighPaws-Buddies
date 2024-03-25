@@ -28,7 +28,7 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Video upload and play in the post
 - [ ] Post types: Lost and Found, Adoption, Playdate, Poll, and General
 - [ ] Groups [Packs]
-- [ ] Chat
+- [x] Chat
 - [ ] Places and Businesses with geo queries
 - [x] HoverCard for user profile
 - [ ] Dark mode
