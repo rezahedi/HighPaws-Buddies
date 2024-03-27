@@ -92,13 +92,13 @@ export const fanoutPost = onDocumentCreated(`profiles/{profileId}/posts/{postId}
   // TODO: Add a limit in getting followers id, to make fanout in small batches like 500 followers at a time
   // And keep track of the followers batches in a separate collection like profiles/:profileId/followersBatches
 
+  // Write to user's self feed first!
+  const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
+  selfFeedRef.create(postDoc.data());
+
   // Get list of followers id from profiles/:profileId/followers and fanout created post to their feed
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
-
-    // Write to user's self feed first!
-    const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
-    bulkWriter.set(selfFeedRef, postDoc.data());
 
     // Write to followers feed
     querySnapshot.forEach((doc) => {
@@ -115,12 +115,13 @@ export const unfanoutPost = onDocumentDeleted(`profiles/{profileId}/posts/{postI
   const profileId = event.params.profileId;
   const postId = event.params.postId;
   const followersRef = db.collection(`profiles/${profileId}/followers`);
+
+  // Delete from user's self feed first!
+  const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
+  selfFeedRef.delete();
+
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
-
-    // Delete from user's self feed first!
-    const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
-    bulkWriter.delete(selfFeedRef);
 
     // Delete from followers feed
     querySnapshot.forEach((doc) => {
@@ -149,14 +150,15 @@ export const updateFanoutPost = onDocumentUpdated(`profiles/{profileId}/posts/{p
   const profileId = event.params.profileId;
   const postId = event.params.postId;
   const followersRef = db.collection(`profiles/${profileId}/followers`);
+
+  // Update user's self feed first!
+  const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
+  selfFeedRef.update({
+    "stats": afterData.stats
+  });
+
   followersRef.get().then((querySnapshot) => {
     const bulkWriter = db.bulkWriter()
-
-    // Update user's self feed first!
-    const selfFeedRef = db.doc(`profiles/${profileId}/feed/${postId}`);
-    bulkWriter.update(selfFeedRef, {
-      "stats": afterData.stats
-    });
 
     // Update followers feed
     querySnapshot.forEach((doc) => {
