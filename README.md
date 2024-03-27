@@ -36,6 +36,7 @@ I don't have a clear roadmap yet, I just follow the "keep it simple", but I'm go
 - [ ] Use geoHash for locations
 - [x] Update profile
 - [ ] Add profile banner
+- [ ] More app to /app route and reserve / for landing page
 
 ## Firebase Emulators for local development
 
