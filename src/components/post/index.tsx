@@ -110,7 +110,7 @@ export default function Post(
             className='font-semibold'
           />
           <Link to={`/${post.profile_id.id}/${post.id}`}>
-            <time dateTime={post.published_at.toDate().toISOString()} className='text-xs'>
+            <time dateTime={post.published_at.toDate().toISOString()} className='text-xs text-gray-500'>
               {formatRelativeDate(post.published_at.toDate())}
             </time>
             {post.location && ` • ${post.location}`}
@@ -124,24 +124,26 @@ export default function Post(
         }
         {deleting && <p>Deleting...</p>}
       </header>
-      <h3 className='font-semibold'>{post.title}</h3>
-      {post.media_url !== '' &&
-        <div>
-          <figure className='m-0 p-0 text-xs italic'>
-            <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} width={'100%'} height={'auto'} loading='lazy'
-              className='size-full rounded-md cursor-pointer' />
-          </figure>
-        </div>
-      }
-      <footer className='flex gap-[2px] items-center'>
+      <div className='my-4'>
+        <h3 className='font-semibold text-lg'>{post.title}</h3>
+        {post.media_url !== '' &&
+          <div>
+            <figure className='m-0 p-0 text-xs italic'>
+              <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} width={'100%'} height={'auto'} loading='lazy'
+                className='size-full rounded-md cursor-pointer' />
+            </figure>
+          </div>
+        }
+      </div>
+      <footer className='flex gap-[2px] items-center text-gray-500'>
         <Likes post={post} onClick={()=>setShowLikes(true)} />
-          <div className='flex-grow'></div>
-          <button onClick={handleLike}
-            className={`flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-red-600 ${post.liked && `text-red-600`}`}
-          >
-            <Like className='size-5' filled={post.liked} />
-            {post.stats.likes === 0 ? 'Like' : `${post.stats.likes} likes`}
-          </button>
+        <div className='flex-grow'></div>
+        <button onClick={handleLike}
+          className={`flex items-center gap-2 border-0 rounded-md px-2 py-1 hover:text-red-600 ${post.liked && `text-red-600`}`}
+        >
+          <Like className='size-5' filled={post.liked} />
+          {post.stats.likes === 0 ? 'Like' : `${post.stats.likes} likes`}
+        </button>
         {post.stats.likes > 0 && showLikes &&
           <UserListInModal
             title="Likes"
