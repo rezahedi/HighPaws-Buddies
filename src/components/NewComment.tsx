@@ -1,7 +1,6 @@
 import { db } from '@/firebase';
 import { newCommentProp } from '@/types/firestore';
 import { collection, doc, addDoc, Timestamp } from 'firebase/firestore';
-import '@/styles/NewComment.css'
 import { useRef } from 'react'
 import { useAuth } from '@/providers/auth';
 
@@ -37,13 +36,20 @@ export default function NewComment({postId, profileId}: {postId: string, profile
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)} ref={formRef} className='newComment'>
-      <div>
-        <img src={profile.avatars.buddy} alt={profile.name} />
-        {profile.name}
-      </div>
-      <textarea name="comment" maxLength={500} required placeholder="Write your comment ..."></textarea>
-      <button type="submit">Comment</button>
+    <form
+      onSubmit={(e) => handleSubmit(e)}
+      ref={formRef}
+      className='flex items-stretch justify-center gap-3 my-3 text-sm'
+    >
+      <img
+        src={profile.avatars.buddy} alt={profile.name}
+        className='rounded-full size-9'
+      />
+      <textarea
+        name="comment" maxLength={500} rows={1} required placeholder="Write your comment ..."
+        className='flex-grow p-2 rounded-md border border-gray-300 resize-none w-max resize-y'
+      ></textarea>
+      <button type="submit" className='text-gray-500'>Comment</button>
     </form>
   )
 }

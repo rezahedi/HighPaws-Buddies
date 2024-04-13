@@ -65,7 +65,7 @@ export default function Comments({post}: {post: postProp}) {
             <Avatar profileId={comment.profile_id.id} name={comment.name} className='font-semibold' />
             {' '}•{' '}
             <Link className='inline' to={`/${post.profile_id.id}/${post.id}#${comment.id}`}>
-              <time dateTime={comment.created_at.toDate().toISOString()} className='text-xs'>
+              <time dateTime={comment.created_at.toDate().toISOString()} className='text-xs text-gray-500'>
                 {formatRelativeDate(comment.created_at.toDate())}
               </time>
             </Link>
