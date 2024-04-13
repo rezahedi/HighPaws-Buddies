@@ -20,13 +20,22 @@
   @apply size-8 top-16 left-16 z-[1]
 }
 .profile .avatar h2{
-  @apply m-0 p-0 text-2xl
+  @apply m-0 p-0 text-2xl font-semibold
+}
+.profile .avatar h4{
+  @apply m-0 p-0 text-sm font-normal text-[#3f170e]/70
 }
 .profile .stats{
-  @apply flex gap-5
+  @apply flex gap-3 sm:gap-8 justify-evenly text-[#3f170e]
+}
+.profile .stats a{
+  @apply flex gap-1 items-center
 }
 .profile .detail{
-  @apply flex gap-2 flex-wrap justify-center
+  @apply flex gap-4 flex-wrap justify-center
+}
+.profile .detail div{
+  @apply bg-[#d56a34]/10 text-[#3f170e] px-2 py-0.5 rounded-md
 }
 .profile .tags{
   @apply flex gap-3 flex-wrap justify-center my-3 mx-0

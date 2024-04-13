@@ -112,12 +112,23 @@ export default function Profile() {
             <img className="owner" src={profile.avatars.owner} alt={profile.owner} />
           </figure>
           <h2>{profile.name}</h2>
+          {profile.location && <h4>{profile.location}</h4>}
           {authProfile && <FollowRequest from={makeProfilePrepTidy(authProfile)} to={makeProfilePrepTidy(profile)} className='px-3 py-1 primary' />}
         </section>
         <section className="stats">
-          <a href="#" onClick={handleFollowers}>{profile.stats.followers} followers</a>
-          <a href="#" onClick={handleFollowing}>{profile.stats.following} following</a>
-          <a href="#">{profile.stats.posts} posts</a>
+          <a className='flex flex-col hover:no-underline hover:bg-[#d56a34]/10 px-4 py-2 rounded-lg'>
+            <b className='font-bold text-xl'>{profile.stats.posts}</b>
+            <span className='uppercase text-[#3f170e]/70 text-sm'>posts</span>
+          </a>
+          <a href="#" onClick={handleFollowers} className='flex flex-col hover:no-underline hover:bg-[#d56a34]/10 px-4 py-2 rounded-lg
+          '>
+            <b className='font-bold text-xl'>{profile.stats.followers}</b>
+            <span className='uppercase text-[#3f170e]/70 text-sm'>followers</span>
+          </a>
+          <a href="#" onClick={handleFollowing} className='flex flex-col hover:no-underline hover:bg-[#d56a34]/10 px-4 py-2 rounded-lg'>
+            <b className='font-bold text-xl'>{profile.stats.following}</b>
+            <span className='uppercase text-[#3f170e]/70 text-sm'>following</span>
+          </a>
           {showFollowers &&
             <UserListInModal
               title='Followers'
