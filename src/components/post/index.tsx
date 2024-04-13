@@ -125,12 +125,14 @@ export default function Post(
         {deleting && <p>Deleting...</p>}
       </header>
       <h3 className='font-semibold'>{post.title}</h3>
-      <div>
-        <figure className='m-0 p-0 text-xs italic'>
-          <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} width={'100%'} height={'auto'} loading='lazy'
-            className='size-full rounded-md cursor-pointer' />
-        </figure>
-      </div>
+      {post.media_url !== '' &&
+        <div>
+          <figure className='m-0 p-0 text-xs italic'>
+            <img src={post.media_url} alt={post.title} onDoubleClick={handleLike} width={'100%'} height={'auto'} loading='lazy'
+              className='size-full rounded-md cursor-pointer' />
+          </figure>
+        </div>
+      }
       <footer className='flex gap-[2px] items-center'>
         <Likes post={post} onClick={()=>setShowLikes(true)} />
           <div className='flex-grow'></div>

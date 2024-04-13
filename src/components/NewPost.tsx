@@ -73,9 +73,6 @@ export default function NewPost({onCancel}: {onCancel?: () => void}) {
       });
     }
 
-    if( !imageUploadedURL )
-      return toast.error("Error uploading image, try again.")
-
     // TODO: Sanitize data
     const newPost: newPostProp = {
       title: formData.get('title') as string,
