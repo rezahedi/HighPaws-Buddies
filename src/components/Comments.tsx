@@ -25,7 +25,7 @@ export default function Comments({post}: {post: postProp}) {
     const unsubscribe = onSnapshot(
       query(
         collection(db, `profiles/${post.profile_id.id}/posts/${post.id}/comments`),
-        orderBy('created_at', 'desc'),
+        orderBy('created_at', 'asc'),
         limit(limitCount)
       ),
       (snapshot) => {
