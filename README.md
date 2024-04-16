@@ -6,6 +6,7 @@ I'm going to build a social media app for our lovely buddies 🐕‍🦺, our do
 
 I'm using Vite, React, TypeScript, and Firebase tech stacks for Auth, database and CDN.
 
+https://github.com/rezahedi/HighPaws-Buddies/assets/1499349/e9943574-7c30-41dc-88af-cd09342f74fe
 
 ## Roadmap
 
